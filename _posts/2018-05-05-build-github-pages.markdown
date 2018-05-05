@@ -1,6 +1,6 @@
 ---
 layout: single
-title:  "Github pages + Minimal-Mistakes + Disqus建立个人博客记录"
+title:  "Github pages + Minimal-Mistakes + Disqus建立个人博客"
 date:   2018-05-05 10:10:10 +0800
 categories: Tools
 tags: github-pages
