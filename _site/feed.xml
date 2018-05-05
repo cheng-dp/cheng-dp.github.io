@@ -1,4 +1,151 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-04T23:46:17+08:00</updated><id>http://localhost:4000/</id><title type="html">东平的博客</title><subtitle>一只成长中的程序猿</subtitle><author><name>&gt;&gt;&gt;程东平&lt;&lt;&lt;</name><email>dpchengx@gmail.com</email></author><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/welcome-to-jekyll/" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2018-05-04T22:13:38+08:00</published><updated>2018-05-04T22:13:38+08:00</updated><id>http://localhost:4000/jekyll/update/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/welcome-to-jekyll/">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-05T22:10:06+08:00</updated><id>http://localhost:4000/</id><title type="html">东平的博客</title><subtitle>一只成长中的程序猿</subtitle><author><name>&gt;&gt;&gt;程东平&lt;&lt;&lt;</name><email>dpchengx@gmail.com</email></author><entry><title type="html">Github pages + Minimal-Mistakes + Disqus建立个人博客记录</title><link href="http://localhost:4000/jekyll/update/build-github-pages/" rel="alternate" type="text/html" title="Github pages + Minimal-Mistakes + Disqus建立个人博客记录" /><published>2018-05-05T10:10:10+08:00</published><updated>2018-05-05T10:10:10+08:00</updated><id>http://localhost:4000/jekyll/update/build-github-pages</id><content type="html" xml:base="http://localhost:4000/jekyll/update/build-github-pages/">&lt;p&gt;本文详细记录了利用Github pages建立个人博客的步骤。&lt;/p&gt;
+
+&lt;p&gt;github pages官方推荐使用Jekyll生成静态网页，jekyll支持各种不同的主题，Minimal-Mistakes是一个功能比较齐全的主题，除了外观设置外，还支持文章评论、文章搜索、文章标签、文章分类。&lt;/p&gt;
+
+&lt;h3 id=&quot;安装github-pages--jekyll&quot;&gt;安装Github pages + Jekyll&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;参考&lt;a href=&quot;https://pages.github.com/&quot;&gt;github pages主页&lt;/a&gt;在github建立名为{username}.github.io的repository&lt;/li&gt;
+  &lt;li&gt;clone &lt;code class=&quot;highlighter-rouge&quot;&gt;{username}.github.io&lt;/code&gt;到本地&lt;/li&gt;
+  &lt;li&gt;本地安装jekyll并建立博客
+    &lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; //安装jekyll
+ gem install jekyll bundler
+ //建立myblog并复制内容到根目录后删除myblog
+ //如果直接在根目录建立，github在编译时可能会软连接错误，暂不知原因
+ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;username&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;.github.io
+ jekyll new myblog
+ &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;myblog
+ cp &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; ../
+ &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ..
+ rm &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; myblog
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;使用minimal-mistakes主题&quot;&gt;使用Minimal-Mistakes主题&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;修改Gemfile:&lt;br /&gt;
+ 替换&lt;code class=&quot;highlighter-rouge&quot;&gt;gem &quot;jekyll&quot;&lt;/code&gt;为&lt;code class=&quot;highlighter-rouge&quot;&gt;gem &quot;github-pages&quot;， group: :jekyll_plugins&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;修改_config.yml:&lt;br /&gt;
+ 中替换&lt;code class=&quot;highlighter-rouge&quot;&gt;theme&lt;/code&gt;为&lt;code class=&quot;highlighter-rouge&quot;&gt;remote_theme: &quot;mmistakes/minimal-mistakes&quot;&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;运行&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle update&lt;/code&gt;更新主题&lt;/li&gt;
+  &lt;li&gt;更改&lt;code class=&quot;highlighter-rouge&quot;&gt;about.md&lt;/code&gt;和 &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts/0000-00-00-welcome-to-jekyll.markdown&lt;/code&gt; 中 &lt;code class=&quot;highlighter-rouge&quot;&gt;layout&lt;/code&gt;为&lt;code class=&quot;highlighter-rouge&quot;&gt; single&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;在根目录下删除&lt;code class=&quot;highlighter-rouge&quot;&gt;index.md&lt;/code&gt;，添加&lt;code class=&quot;highlighter-rouge&quot;&gt;index.html&lt;/code&gt;，内容如下：
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ---
+ layout: home
+ author_profile: true
+ ---
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;运行&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle exec jekyll serve&lt;/code&gt;&lt;br /&gt;
+ 如果碰到&lt;code class=&quot;highlighter-rouge&quot;&gt;No GitHub API authentication could be found.&lt;/code&gt;的问题，参考&lt;a href=&quot;http://idratherbewriting.com/documentation-theme-jekyll/mydoc_install_jekyll_on_mac.html#githuberror&quot;&gt;Resolve ERRORS&lt;/a&gt;。&lt;/li&gt;
+  &lt;li&gt;访问&lt;code class=&quot;highlighter-rouge&quot;&gt;127.0.0.1:4000&lt;/code&gt;查看页面&lt;/li&gt;
+  &lt;li&gt;push到github，访问commits页面查看部署状态。&lt;/li&gt;
+  &lt;li&gt;访问&lt;code class=&quot;highlighter-rouge&quot;&gt;{username}.github.io&lt;/code&gt;查看博客主页。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;配置相关选项&quot;&gt;配置相关选项&lt;/h3&gt;
+&lt;p&gt;在_config.yml中可以对主题进行配置。参考&lt;a href=&quot;https://mmistakes.github.io/minimal-mistakes/docs/configuration/&quot;&gt;Configurations&lt;/a&gt;:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;minimal_mistakes_skin 配置主题皮肤&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;locale: zh-CN&lt;/code&gt; 配置语言&lt;/li&gt;
+  &lt;li&gt;title， name， bio等个人信息&lt;/li&gt;
+  &lt;li&gt;添加tags和category页面，_config.yml中配置：
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; category_archive:
+   type: liquid
+   path: /categories/
+ tag_archive:
+   type: liquid
+   path: /tags/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;建立文件&lt;strong&gt;tags/tag-archive.md&lt;/strong&gt;:&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ---
+ title: &quot;文章标签&quot;
+ permalink: /tags/
+ layout: tags
+ author_profile: true
+ ---
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;建立文件&lt;strong&gt;categories/category-archive.md&lt;/strong&gt;:&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; ---
+ title: &quot;文章分类&quot;
+ layout: categories
+ permalink: /categories/
+ author_profile: true
+ ---
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;打开搜索
+ search : true&lt;/li&gt;
+  &lt;li&gt;建立导航栏&lt;br /&gt;
+a. 运行&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle show jekyll&lt;/code&gt;找到gem的安装位置，我本机在&lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/local/lib/ruby/gems/2.4.0/gems/jekyll-3.7.3&lt;/code&gt;。  &lt;br /&gt;
+b. 进入&lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/local/lib/ruby/gems/2.4.0/gems&lt;/code&gt;，进入 &lt;strong&gt;minimal-mistakes-jekyll-{version}&lt;/strong&gt; 文件夹，复制 &lt;strong&gt;_data&lt;/strong&gt; 到博客根目录。&lt;br /&gt;
+c. 进入复制得到的_data文件夹，修改navigation.yml文件。添加&lt;strong&gt;分类&lt;/strong&gt;及&lt;strong&gt;标签&lt;/strong&gt;导航栏。
+ ```
+ # main links
+ main:
+    &lt;ul&gt;
+      &lt;li&gt;title: “分类”
+  url: /categories/&lt;/li&gt;
+      &lt;li&gt;title: “标签”
+  url: /tags/
+ ```&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;修改markdown-高亮配色&quot;&gt;修改Markdown 高亮配色&lt;/h3&gt;
+&lt;p&gt;Jekyll使用rough作为代码高亮工具，不同的皮肤设置(minimal_mistakes_skin)有不同的高亮配色，这里我使用&lt;strong&gt;contrast&lt;/strong&gt;皮肤，但代码高亮希望将背景从深色改为白色。&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;在gems目录&lt;code class=&quot;highlighter-rouge&quot;&gt;/usr/local/lib/ruby/gems/2.4.0/gems/minimal-mistakes-jekyll-{version}&lt;/code&gt;下复制 &lt;strong&gt;_sass&lt;/strong&gt; 到博客根目录。&lt;/li&gt;
+  &lt;li&gt;修改&lt;code class=&quot;highlighter-rouge&quot;&gt;_sass/minimal-mistakes/skins/_contrast.scss&lt;/code&gt;，替换 &lt;strong&gt;syntax highlighting (base16)&lt;/strong&gt; 设置，参考&lt;a href=&quot;https://mmistakes.github.io/minimal-mistakes/docs/stylesheets/#colors&quot;&gt;Sylesheet/Color&lt;/a&gt;。
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; /* solarized light syntax highlighting (base16) */
+ $base00: #fafafa !default;
+ $base01: #073642 !default;
+ $base02: #586e75 !default;
+ $base03: #657b83 !default;
+ $base04: #839496 !default;
+ $base05: #586e75 !default;
+ $base06: #eee8d5 !default;
+ $base07: #fdf6e3 !default;
+ $base08: #dc322f !default;
+ $base09: #cb4b16 !default;
+ $base0a: #b58900 !default;
+ $base0b: #859900 !default;
+ $base0c: #2aa198 !default;
+ $base0d: #268bd2 !default;
+ $base0e: #6c71c4 !default;
+ $base0f: #d33682 !default;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;运行&lt;code class=&quot;highlighter-rouge&quot;&gt;bundle update&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;添加disqus评论支持&quot;&gt;添加Disqus评论支持&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;参考&lt;a href=&quot;https://disqus.com/profile/signup/intent/&quot;&gt;I want to install disqus on my site&lt;/a&gt;注册，添加网站并得到shortname。&lt;/li&gt;
+  &lt;li&gt;设置_config.yml
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; comments:
+ provider: &quot;disqus&quot;
+ disqus:
+     shortname: &quot;your-disqus-shortname&quot;
+ //......
+ default:
+     comments: true
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;设置文字大小&quot;&gt;设置文字大小&lt;/h3&gt;
+&lt;p&gt;修改 &lt;code class=&quot;highlighter-rouge&quot;&gt;_sass/minimal-mistakes/_variables.scss&lt;/code&gt; 对应font-size。&lt;/p&gt;
+
+&lt;h3 id=&quot;参考&quot;&gt;参考&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/docs/quickstart/&quot;&gt;Jekyll&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/&quot;&gt;Minimal-Mistakes&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://disqus.com/profile/signup/intent/&quot;&gt;Disqus&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>&gt;&gt;&gt;程东平&lt;&lt;&lt;</name><email>dpchengx@gmail.com</email></author><summary type="html">本文详细记录了利用Github pages建立个人博客的步骤。</summary></entry><entry><title type="html">Welcome to Jekyll!</title><link href="http://localhost:4000/jekyll/update/welcome-to-jekyll/" rel="alternate" type="text/html" title="Welcome to Jekyll!" /><published>2018-05-04T22:13:38+08:00</published><updated>2018-05-04T22:13:38+08:00</updated><id>http://localhost:4000/jekyll/update/welcome-to-jekyll</id><content type="html" xml:base="http://localhost:4000/jekyll/update/welcome-to-jekyll/">&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
 
 &lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
 
