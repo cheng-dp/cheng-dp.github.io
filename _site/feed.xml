@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-05T22:26:27+08:00</updated><id>http://localhost:4000/</id><title type="html">东平的博客</title><subtitle>一只成长中的程序猿</subtitle><author><name>&gt;&gt;&gt;程东平&lt;&lt;&lt;</name><email>dpchengx@gmail.com</email></author><entry><title type="html">Github pages + Minimal-Mistakes + Disqus建立个人博客</title><link href="http://localhost:4000/tools/build-github-pages/" rel="alternate" type="text/html" title="Github pages + Minimal-Mistakes + Disqus建立个人博客" /><published>2018-05-05T10:10:10+08:00</published><updated>2018-05-05T10:10:10+08:00</updated><id>http://localhost:4000/tools/build-github-pages</id><content type="html" xml:base="http://localhost:4000/tools/build-github-pages/">&lt;p&gt;本文详细记录了利用Github pages建立个人博客的步骤。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-05T22:32:43+08:00</updated><id>http://localhost:4000/</id><title type="html">东平的博客</title><subtitle>一只成长中的程序猿</subtitle><author><name>&gt;&gt;&gt;程东平&lt;&lt;&lt;</name><email>dpchengx@gmail.com</email></author><entry><title type="html">Github pages + Minimal-Mistakes + Disqus建立个人博客</title><link href="http://localhost:4000/tools/build-github-pages/" rel="alternate" type="text/html" title="Github pages + Minimal-Mistakes + Disqus建立个人博客" /><published>2018-05-05T10:10:10+08:00</published><updated>2018-05-05T10:10:10+08:00</updated><id>http://localhost:4000/tools/build-github-pages</id><content type="html" xml:base="http://localhost:4000/tools/build-github-pages/">&lt;p&gt;本文详细记录了利用Github pages建立个人博客的步骤。&lt;/p&gt;
 
 &lt;p&gt;github pages官方推荐使用Jekyll生成静态网页，jekyll支持各种不同的主题，Minimal-Mistakes是一个功能比较齐全的主题，除了外观设置外，还支持文章评论、文章搜索、文章标签、文章分类。&lt;/p&gt;
 
@@ -145,4 +145,36 @@ c. 进入复制得到的_data文件夹，修改navigation.yml文件。添加&lt;
   &lt;li&gt;&lt;a href=&quot;https://jekyllrb.com/docs/quickstart/&quot;&gt;Jekyll&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/&quot;&gt;Minimal-Mistakes&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://disqus.com/profile/signup/intent/&quot;&gt;Disqus&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>&gt;&gt;&gt;程东平&lt;&lt;&lt;</name><email>dpchengx@gmail.com</email></author><category term="github-pages" /><summary type="html">本文详细记录了利用Github pages建立个人博客的步骤。</summary></entry></feed>
+&lt;/ul&gt;</content><author><name>&gt;&gt;&gt;程东平&lt;&lt;&lt;</name><email>dpchengx@gmail.com</email></author><category term="github-pages" /><summary type="html">本文详细记录了利用Github pages建立个人博客的步骤。</summary></entry><entry><title type="html">Commitizen + cz-customizable配置git commit message</title><link href="http://localhost:4000/tools/commitizen/" rel="alternate" type="text/html" title="Commitizen + cz-customizable配置git commit message" /><published>2018-05-01T10:10:10+08:00</published><updated>2018-05-01T10:10:10+08:00</updated><id>http://localhost:4000/tools/commitizen</id><content type="html" xml:base="http://localhost:4000/tools/commitizen/">&lt;h3 id=&quot;起因&quot;&gt;起因&lt;/h3&gt;
+&lt;p&gt;团队对提交的commit message格式有约定俗称的要求，但是没有一个统一的规范，导致大家提交的commit message或多或少不太一样。因此，需要一个工具来帮助大家统一commit message的格式，也方便后续的分析和拓展。&lt;/p&gt;
+&lt;h3 id=&quot;commitizen&quot;&gt;commitizen&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/commitizen/cz-cli&quot;&gt;commitizen&lt;/a&gt; 是一个帮助规范commit message的工具。安装后的效果如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://pictures-1255802956.cos.ap-chengdu.myqcloud.com/BLOG/commitizen-gif.gif&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;安装commitizen&quot;&gt;安装commitizen&lt;/h5&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; commitizen
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h5 id=&quot;安装adapter&quot;&gt;安装adapter&lt;/h5&gt;
+&lt;p&gt;commitizen根据不同的&lt;code class=&quot;highlighter-rouge&quot;&gt;adapter&lt;/code&gt;配置commit message。例如，要使用Angular的commit message格式，可以安装&lt;code class=&quot;highlighter-rouge&quot;&gt;cz-conventional-changelog&lt;/code&gt;。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install -g cz-conventional-changelog
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;echo '{ &quot;path&quot;: &quot;cz-conventional-changelog&quot; }' &amp;gt; ~/.czrc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;现在，进入任何git repository, 使用git cz代替git commit提交commit。&lt;/p&gt;
+
+&lt;h3 id=&quot;cz-customizable&quot;&gt;cz-customizable&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/leonardoanalista/cz-customizable&quot;&gt;&lt;strong&gt;cz-customizable&lt;/strong&gt;&lt;/a&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;cz-conventional-changelog&lt;/code&gt;一样，也是commitizen的adapter，不过支持一定程度上的自定义。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm install -g cz-customizable
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;echo '{ &quot;path&quot;: &quot;cz-customizable&quot; }' &amp;gt; ~/.czrc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;接着，在home目录下创建 &lt;strong&gt;.cz-config.js&lt;/strong&gt; 文件,根据&lt;code class=&quot;highlighter-rouge&quot;&gt;node_modules/cz-customizable/cz-config-EXAMPLE.js&lt;/code&gt;配置git cz时弹出的message和对应的输入或者选项。&lt;/p&gt;
+
+&lt;p&gt;如果想要进一步进行配置，直接修改&lt;code class=&quot;highlighter-rouge&quot;&gt;node_modules/cz-customizable&lt;/code&gt;下的&lt;strong&gt;questions.js&lt;/strong&gt;和&lt;strong&gt;buildCommit.js&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;buildCommit.js中生成最终commit message：
+&lt;img src=&quot;https://pictures-1255802956.cos.ap-chengdu.myqcloud.com/BLOG/buildCommit.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;questions.js中message配置部分：
+&lt;img src=&quot;https://pictures-1255802956.cos.ap-chengdu.myqcloud.com/BLOG/questions.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;</content><author><name>&gt;&gt;&gt;程东平&lt;&lt;&lt;</name><email>dpchengx@gmail.com</email></author><category term="commit-message" /><summary type="html">起因 团队对提交的commit message格式有约定俗称的要求，但是没有一个统一的规范，导致大家提交的commit message或多或少不太一样。因此，需要一个工具来帮助大家统一commit message的格式，也方便后续的分析和拓展。 commitizen commitizen 是一个帮助规范commit message的工具。安装后的效果如下图：</summary></entry></feed>
