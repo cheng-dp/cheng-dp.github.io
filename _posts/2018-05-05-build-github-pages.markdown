@@ -82,7 +82,7 @@ github pages官方推荐使用Jekyll生成静态网页，jekyll支持各种不�
     search : true
 6. 建立导航栏  
 a. 运行`bundle show jekyll`找到gem的安装位置，我本机在`/usr/local/lib/ruby/gems/2.4.0/gems/jekyll-3.7.3`。    
-b. 进入`/usr/local/lib/ruby/gems/2.4.0/gems`，进入 **minimal-mistakes-jekyll-{version}** 文件夹，复制 **_data** 到博客根目录。  
+b. 进入`/usr/local/lib/ruby/gems/2.4.0/gems`，进入 `minimal-mistakes-jekyll-{version}` 文件夹，复制 *_data* 到博客根目录。  
 c. 进入复制得到的\_data文件夹，修改navigation.yml文件。添加**分类**及**标签**导航栏。
     ```
     # main links
@@ -94,9 +94,9 @@ c. 进入复制得到的\_data文件夹，修改navigation.yml文件。添加**�
     ```
     
 ### 修改Markdown 高亮配色
-Jekyll使用rough作为代码高亮工具，不同的皮肤设置(minimal\_mistakes\_skin)有不同的高亮配色，这里我使用**contrast**皮肤，但代码高亮希望将背景从深色改为白色。
+Jekyll使用rough作为代码高亮工具，不同的皮肤设置(minimal\_mistakes\_skin)有不同的高亮配色，这里我使用*contrast*皮肤，但代码高亮希望将背景从深色改为白色。
 1. 在gems目录`/usr/local/lib/ruby/gems/2.4.0/gems/minimal-mistakes-jekyll-{version}`下复制 **_sass** 到博客根目录。
-2. 修改`_sass/minimal-mistakes/skins/_contrast.scss`，替换 **syntax highlighting (base16)** 设置，参考[Sylesheet/Color](https://mmistakes.github.io/minimal-mistakes/docs/stylesheets/#colors)。
+2. 修改`_sass/minimal-mistakes/skins/_contrast.scss`，替换 *syntax highlighting (base16)* 设置，参考[Sylesheet/Color](https://mmistakes.github.io/minimal-mistakes/docs/stylesheets/#colors)。
     ```
     /* solarized light syntax highlighting (base16) */
     $base00: #fafafa !default;
