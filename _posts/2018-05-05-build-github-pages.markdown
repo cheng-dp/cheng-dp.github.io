@@ -2,7 +2,7 @@
 layout: single
 title:  "Github pages + Minimal-Mistakes + Disqus建立个人博客记录"
 date:   2018-05-05 10:10:10 +0800
-categories: jekyll update
+categories: github-pages
 ---
 本文详细记录了利用Github pages建立个人博客的步骤。
 
