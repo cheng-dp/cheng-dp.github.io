@@ -1,0 +1,730 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.11.2 by Michael Rose
+  Copyright 2013-2018 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="zh" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Java内存区域及内存溢出 - 东平的博客</title>
+<meta name="description" content="堆溢出Java堆用于存储对象实例，只要不断地创建对象，并且保证GC Roots到对象之间有可达路径避免垃圾回收，当到达最大堆的容量限制后就会产生Java.lang.OutOfMemoryError./** * VM Options: * -Xms20M * -Xmx20M * -XX:+HeapDumpOnOutOfMemoryError */public class HeapOOM{    static class OOMObject{}        public static void main(String[] args){        List&lt;OOMObject&gt; list = new ArrayList&lt;OOMObject&gt;();        while(true){            list.add(new OOMObject());        }    }}结果：GC多次执行后触发OutOfMemoryError.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="东平的博客">
+<meta property="og:title" content="Java内存区域及内存溢出">
+<meta property="og:url" content="http://localhost:4000/java/java-memory-exception/">
+
+
+  <meta property="og:description" content="堆溢出Java堆用于存储对象实例，只要不断地创建对象，并且保证GC Roots到对象之间有可达路径避免垃圾回收，当到达最大堆的容量限制后就会产生Java.lang.OutOfMemoryError./** * VM Options: * -Xms20M * -Xmx20M * -XX:+HeapDumpOnOutOfMemoryError */public class HeapOOM{    static class OOMObject{}        public static void main(String[] args){        List&lt;OOMObject&gt; list = new ArrayList&lt;OOMObject&gt;();        while(true){            list.add(new OOMObject());        }    }}结果：GC多次执行后触发OutOfMemoryError.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2018-05-16T10:10:10+08:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/java/java-memory-exception/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": ">>>程东平<<<",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="东平的博客 Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="/">东平的博客</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://localhost:4000/categories/" >分类</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://localhost:4000/tags/" >标签</a>
+            </li>
+          
+        </ul>
+        
+        <button class="search__toggle" type="button">
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">切换菜单</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="http://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">首页</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+          <a href="/categories/#java" itemprop="item"><span itemprop="name">Java</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">Java内存区域及内存溢出</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">>>>程东平<<<</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        一只成长中的程序猿
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">关注</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">上海,中国</span>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:dpchengx@gmail.com">
+            <meta itemprop="email" content="dpchengx@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> 电子邮箱
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/cheng-dp" itemprop="sameAs">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Java内存区域及内存溢出">
+    <meta itemprop="description" content="堆溢出Java堆用于存储对象实例，只要不断地创建对象，并且保证GC Roots到对象之间有可达路径避免垃圾回收，当到达最大堆的容量限制后就会产生Java.lang.OutOfMemoryError./** * VM Options: * -Xms20M * -Xmx20M * -XX:+HeapDumpOnOutOfMemoryError */public class HeapOOM{    static class OOMObject{}        public static void main(String[] args){        List&lt;OOMObject&gt; list = new ArrayList&lt;OOMObject&gt;();        while(true){            list.add(new OOMObject());        }    }}结果：GC多次执行后触发OutOfMemoryError.">
+    <meta itemprop="datePublished" content="May 16, 2018">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Java内存区域及内存溢出
+</h1>
+          
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  3 分钟读完
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <h3 id="堆溢出">堆溢出</h3>
+<p>Java堆用于存储对象实例，只要不断地创建对象，并且保证GC Roots到对象之间有可达路径避免垃圾回收，当到达最大堆的容量限制后就会产生Java.lang.OutOfMemoryError.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * VM Options:
+ * -Xms20M
+ * -Xmx20M
+ * -XX:+HeapDumpOnOutOfMemoryError
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HeapOOM</span><span class="o">{</span>
+    <span class="kd">static</span> <span class="kd">class</span> <span class="nc">OOMObject</span><span class="o">{}</span>
+    
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">OOMObject</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">OOMObject</span><span class="o">&gt;();</span>
+        <span class="k">while</span><span class="o">(</span><span class="kc">true</span><span class="o">){</span>
+            <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">OOMObject</span><span class="o">());</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>结果：
+GC多次执行后触发OutOfMemoryError.</p>
+
+<p><img src="https://pictures-1255802956.cos.ap-chengdu.myqcloud.com/BLOG/HeapOutOfMemory.png" alt="image" /></p>
+
+<h3 id="栈溢出">栈溢出</h3>
+<p>关于虚拟机栈，在Java规范中描述了两种异常：</p>
+<ol>
+  <li>如果线程请求的栈深度大于虚拟机所允许的最大深度，将抛出StackOverflowError异常。</li>
+  <li>如果虚拟机在扩展栈时无法申请到足够的内存空间，则抛出OutOfMemoryError异常。</li>
+</ol>
+
+<p>然而，在单线程下，虚拟机在栈空间不足时会尝试扩展栈空间，因此，当无法继续分配时，到底是内存太小，还是已使用的栈空间太大，其实是一回事。在实验中，单线程环境下，只会抛出StackOverflowError异常。</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * VM Option:
+ * -Xss160K
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">JavaVMStackSOF</span><span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">stackLength</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">stackLeak</span><span class="o">(){</span>
+        <span class="n">stackLength</span><span class="o">++;</span>
+        <span class="n">stackLeak</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span><span class="o">{</span>
+        <span class="n">JavaVMStackSOF</span> <span class="n">oom</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JavaVMStackSOF</span><span class="o">();</span>
+        <span class="k">try</span><span class="o">{</span>
+            <span class="n">oom</span><span class="o">.</span><span class="na">stackLeak</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">catch</span><span class="o">(</span><span class="n">Throwable</span> <span class="n">e</span><span class="o">){</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Stack length:"</span> <span class="o">+</span> <span class="n">oom</span><span class="o">.</span><span class="na">stackLength</span><span class="o">);</span>
+            <span class="k">throw</span> <span class="n">e</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>结果：
+<img src="https://pictures-1255802956.cos.ap-chengdu.myqcloud.com/BLOG/Multi-threadOutOfMemory.png" alt="image" /></p>
+
+<p>操作系统分配给每个进程的内存是有限制的，通常为<code class="highlighter-rouge">操作系统限制总内存-最大堆容量(Xmx)-最大方法区容量(MaxPermSize)-程序计数器消耗</code>。每个线程分配到的栈容量越大，可以建立的线程数目越小。</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * VM Options:
+ * -Xss2M
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">JavaVMStackOOM</span><span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">dontStop</span><span class="o">(){</span>
+        <span class="k">while</span><span class="o">(</span><span class="kc">true</span><span class="o">){}</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">stackLeakByThread</span><span class="o">(){</span>
+        <span class="k">while</span><span class="o">(</span><span class="kc">true</span><span class="o">){</span>
+            <span class="n">Thread</span> <span class="n">thread</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="k">new</span> <span class="n">Runnable</span><span class="o">(){</span>
+                <span class="nd">@Override</span>
+                <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">(){</span>
+                    <span class="n">dontStop</span><span class="o">();</span>
+                <span class="o">}</span>
+            <span class="o">});</span>
+            <span class="n">thread</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">Throwable</span><span class="o">{</span>
+        <span class="n">JavaVMStackOOM</span> <span class="n">oom</span> <span class="o">=</span> <span class="k">new</span> <span class="n">JavaVMStackOOM</span><span class="o">();</span>
+        <span class="n">oom</span><span class="o">.</span><span class="na">stackLeakByThread</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>结果：
+<code class="highlighter-rouge">Exception in thread "main" java.lang.outOfMemoryError: unable to create new native thread</code></p>
+
+<h3 id="运行时常量池溢出">运行时常量池溢出</h3>
+<p><strong>运行时常量池在JDK 1.6及之前版本中在方法区中，在1.7及之后转移至堆空间</strong>。在JDK 1.6及之前版本中可以通过限制方法区大小，从而间接限制运行时常量池大小。</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">/**</span>
+ <span class="o">*</span> <span class="n">ONLY</span> <span class="n">WORKS</span> <span class="n">BEFORE</span> <span class="n">JDK</span> <span class="mf">1.7</span>
+ <span class="o">*</span> <span class="n">VM</span> <span class="nl">Options:</span>
+ <span class="o">*</span> <span class="o">-</span><span class="nl">XX:</span><span class="n">PermSize</span><span class="o">=</span><span class="mi">10</span><span class="n">M</span>
+ <span class="o">*</span> <span class="o">-</span><span class="nl">XX:</span><span class="n">MaxPermSize</span><span class="o">=</span><span class="mi">10</span><span class="n">M</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RuntimeConstantPoolOOM</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;();</span>
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="k">while</span><span class="o">(</span><span class="kc">true</span><span class="o">){</span>
+            <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">valueof</span><span class="o">(</span><span class="n">i</span><span class="o">++).</span><span class="na">intern</span><span class="o">());</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>结果：
+<code class="highlighter-rouge">Exception in thread "main" java.lang.OutOfMemoryError:PermGen space</code></p>
+
+<h3 id="方法区溢出">方法区溢出</h3>
+<p>方法区用于存放Class相关信息，因此要使得方法区溢出，除了在JDK 1.7之前使运行时常量池溢出外，基本的思路是运行时生成大量的类去填满方法区。
+结果
+<code class="highlighter-rouge">Exception in thread "main" java.lang.OutOfMemoryError:PermGen space</code></p>
+
+<h3 id="直接内存directmemory溢出">直接内存(DirectMemory)溢出</h3>
+<p>直接内存不是虚拟机运行时数据区的一部分。在JDK 1.4中新加入了NIO(New Input/Output)类，引入了一种基于通道(Channel)与缓冲区(Buffer)的I/O方式，使用Native函数库直接分配堆外内存。<br />
+DirectMemory容量可通过<code class="highlighter-rouge">-XX: MaxDirectMemorySize</code>指定，如果不指定，则默认与Java堆最大值一样(-Xmx)。直接通过allocateMemory可以造成本机内存溢出。</p>
+
+<p>结果：<br />
+<code class="highlighter-rouge">Exception in thread "main" java.lang.OutOfMemoryError</code><br />
+直接内存溢出的一个特征是Heap Dump文件中不会看先明显的异常指示。如果OOM之后Dump文件很小，而程序中又直接或间接使用了DIO，就应该检查是否直接内存溢出。</p>
+
+<h3 id="stringintern">String.intern()</h3>
+<p>String.intern()是一个Native方法，作用是：如果字符串常量池中已经包含一个等于此String对象的字符串，则返回代表池中这个字符串的String对象，否则，将此String对象包含的字符串添加到常量池中，并且返回此String对象的引用。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RuntimeConstantPoolOOM</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="n">String</span> <span class="n">str1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">(</span><span class="s">"计算机"</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"软件"</span><span class="o">).</span><span class="na">toString</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">str1</span><span class="o">.</span><span class="na">intern</span><span class="o">()</span> <span class="o">==</span> <span class="n">str1</span><span class="o">);</span><span class="c1">//JDK 1.6 false JDK 1.7 true</span>
+        
+        <span class="n">String</span> <span class="n">str2</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">(</span><span class="s">"ja"</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"va"</span><span class="o">).</span><span class="na">toString</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">str2</span><span class="o">.</span><span class="na">intern</span><span class="o">()</span> <span class="o">==</span> <span class="n">str2</span><span class="o">);</span><span class="c1">//JDK 1.6 false JDK 1.7 true</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>在JDK 1.6中，intern()方法会把首次遇到的字符串实例复制到永久代(方法区运行时常量池)，返回的是这个永久代中这个字符串实例的引用，而由StringBuilder创建的字符串实例在Java堆上，所以必然不是同一个引用。<br />
+在JDK 1.7中，intern()实现不会再复制，只是在常量池中记录首次出现的实例引用，因此intern()返回的引用和由StringBuilder创建的那个字符串实例是同一个。</p>
+
+<h3 id="小节">小节</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">内存区域</th>
+      <th style="text-align: center">描述</th>
+      <th style="text-align: center">VM Option</th>
+      <th style="text-align: center">异常</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">程序计数器</td>
+      <td style="text-align: center">略</td>
+      <td style="text-align: center">略</td>
+      <td style="text-align: center">略</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">虚拟机栈</td>
+      <td style="text-align: center">存放编译器可知的各种基本类型，对象引用和returnAddress类型</td>
+      <td style="text-align: center">-Xss160K 每个线程的栈大小</td>
+      <td style="text-align: center">StackOverflowError/OutOfMemoryError</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Java堆</td>
+      <td style="text-align: center">存放对象实例</td>
+      <td style="text-align: center">-Xms10M 最大值<br /> -Xmx20M 最小值</td>
+      <td style="text-align: center">OutOfMemory: Java heap space</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">运行时常亮池</td>
+      <td style="text-align: center">存放编译期生成的字面量和符号引用，运行期也能放入常量池(string.intern())。JDK 1.7之前在方法区中，JDK 1.7及之后移至堆中</td>
+      <td style="text-align: center">随方法区或堆设置</td>
+      <td style="text-align: center">OutOfMemoryError</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">方法区</td>
+      <td style="text-align: center">存储虚拟机加载的类信息、常亮、静态变量、即时编译器编译后的代码等数据，<strong>又称为永久代(Permanent Generation)</strong></td>
+      <td style="text-align: center">-XX:PermSize=10M 初始值<br /> -XX:MaxPermSize=20M 最大值</td>
+      <td style="text-align: center">OutOfMemoryError: PermGen space</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">直接内存</td>
+      <td style="text-align: center">在JDK 1.4中加入NIO类，直接分配堆外内存</td>
+      <td style="text-align: center">-XX:MaxDirectMemorySize=10M,<br /> 如果不指定默认与-Xmx一样</td>
+      <td style="text-align: center">OutOfMemoryError</td>
+    </tr>
+  </tbody>
+</table>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 标签: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#java" class="page__taxonomy-item" rel="tag">java</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> 分类: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#java" class="page__taxonomy-item" rel="tag">Java</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 更新时间:</strong> <time datetime="2018-05-16T10:10:10+08:00">May 16, 2018</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">分享</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E5%8F%8A%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%20http%3A%2F%2Flocalhost%3A4000%2Fjava%2Fjava-memory-exception%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2Fjava%2Fjava-memory-exception%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://plus.google.com/share?url=http%3A%2F%2Flocalhost%3A4000%2Fjava%2Fjava-memory-exception%2F" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2Fjava%2Fjava-memory-exception%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/tools/build-github-pages/" class="pagination--pager" title="Github pages + Minimal-Mistakes + Disqus建立个人博客
+">向前</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">向后</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">猜您还喜欢</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/tools/build-github-pages/" rel="permalink">Github pages + Minimal-Mistakes + Disqus建立个人博客
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  2 分钟读完
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">本文详细记录了利用Github pages建立个人博客的步骤。
+
+</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/tools/commitizen/" rel="permalink">Commitizen + cz-customizable配置git commit message
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  少于 1 分钟读完
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">起因
+团队对提交的commit message格式有约定俗称的要求，但是没有一个统一的规范，导致大家提交的commit message或多或少不太一样。因此，需要一个工具来帮助大家统一commit message的格式，也方便后续的分析和拓展。
+commitizen
+commitizen 是一个帮助规范commi...</p>
+  </article>
+</div>
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><input type="text" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+    <div id="results" class="results"></div></div>
+      </div>
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>关注:</strong></li>
+    
+    
+    
+    
+      <li><a href="https://github.com/cheng-dp"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2018 >>>程东平<<<. 技术来自于 <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.13/js/all.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:4000/java/java-memory-exception/";  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = "/java/java-memory-exception"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://dpchengblog.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+  </body>
+</html>

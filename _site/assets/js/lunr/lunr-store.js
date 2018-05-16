@@ -8,4 +8,9 @@ var store = [{
         "excerpt":"本文详细记录了利用Github pages建立个人博客的步骤。 github pages官方推荐使用Jekyll生成静态网页，jekyll支持各种不同的主题，Minimal-Mistakes是一个功能比较齐全的主题，除了外观设置外，还支持文章评论、文章搜索、文章标签、文章分类。 安装Github pages + Jekyll 参考github pages主页在github建立名为{username}.github.io的repository clone {username}.github.io到本地 本地安装jekyll并建立博客 //安装jekyll gem install jekyll bundler //建立myblog并复制内容到根目录后删除myblog //如果直接在根目录建立，github在编译时可能会软连接错误，暂不知原因 cd {username}.github.io jekyll new myblog cd myblog cp -r * ../ cd .. rm -rf myblog 使用Minimal-Mistakes主题 修改Gemfile: 替换gem \"jekyll\"为gem \"github-pages\"， group: :jekyll_plugins 修改_config.yml: 中替换theme为remote_theme: \"mmistakes/minimal-mistakes\"。 运行bundle update更新主题 更改about.md和 _posts/0000-00-00-welcome-to-jekyll.markdown...","categories": ["Tools"],
         "tags": ["github-pages"],
         "url": "http://localhost:4000/tools/build-github-pages/",
+        "teaser":null},{
+        "title": "Java内存区域及内存溢出",
+        "excerpt":"堆溢出 Java堆用于存储对象实例，只要不断地创建对象，并且保证GC Roots到对象之间有可达路径避免垃圾回收，当到达最大堆的容量限制后就会产生Java.lang.OutOfMemoryError. /** * VM Options: * -Xms20M * -Xmx20M * -XX:+HeapDumpOnOutOfMemoryError */public class HeapOOM{ static class OOMObject{} public static void main(String[] args){ List&lt;OOMObject&gt; list = new ArrayList&lt;OOMObject&gt;(); while(true){ list.add(new OOMObject()); } }}结果：GC多次执行后触发OutOfMemoryError. 栈溢出 关于虚拟机栈，在Java规范中描述了两种异常： 如果线程请求的栈深度大于虚拟机所允许的最大深度，将抛出StackOverflowError异常。 如果虚拟机在扩展栈时无法申请到足够的内存空间，则抛出OutOfMemoryError异常。然而，在单线程下，虚拟机在栈空间不足时会尝试扩展栈空间，因此，当无法继续分配时，到底是内存太小，还是已使用的栈空间太大，其实是一回事。在实验中，单线程环境下，只会抛出StackOverflowError异常。 /** * VM Option: * -Xss160K */public class JavaVMStackSOF{ private int stackLength...","categories": ["Java"],
+        "tags": ["java"],
+        "url": "http://localhost:4000/java/java-memory-exception/",
         "teaser":null}]
