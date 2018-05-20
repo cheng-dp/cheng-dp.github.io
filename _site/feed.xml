@@ -1,4 +1,104 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-16T20:53:43+08:00</updated><id>http://localhost:4000/</id><title type="html">东平的博客</title><subtitle>一只成长中的程序猿</subtitle><author><name>&gt;&gt;&gt;程东平&lt;&lt;&lt;</name><email>dpchengx@gmail.com</email></author><entry><title type="html">Java内存区域及内存溢出</title><link href="http://localhost:4000/java/java-memory-exception/" rel="alternate" type="text/html" title="Java内存区域及内存溢出" /><published>2018-05-16T10:10:10+08:00</published><updated>2018-05-16T10:10:10+08:00</updated><id>http://localhost:4000/java/java-memory-exception</id><content type="html" xml:base="http://localhost:4000/java/java-memory-exception/">&lt;h3 id=&quot;堆溢出&quot;&gt;堆溢出&lt;/h3&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-05-20T22:00:41+08:00</updated><id>http://localhost:4000/</id><title type="html">东平的博客</title><subtitle>一只成长中的程序猿</subtitle><author><name>&gt;&gt;&gt;程东平&lt;&lt;&lt;</name><email>dpchengx@gmail.com</email></author><entry><title type="html">Java堆内存分配与回收策略</title><link href="http://localhost:4000/java/java-memory-allocate/" rel="alternate" type="text/html" title="Java堆内存分配与回收策略" /><published>2018-05-20T10:10:10+08:00</published><updated>2018-05-20T10:10:10+08:00</updated><id>http://localhost:4000/java/java-memory-allocate</id><content type="html" xml:base="http://localhost:4000/java/java-memory-allocate/">&lt;p&gt;java主要在堆上分配内存，而Java堆又分为新生代(YoungGen)和老年代(OldGen)两个部分，新生代又再分为Eden区和Survivor区两部分，本文根据java堆的划分，描述hotspot的内存分配策略。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://pictures-1255802956.cos.ap-chengdu.myqcloud.com/BLOG/memory-jvm.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;gc垃圾收集分类&quot;&gt;GC垃圾收集分类&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Minor GC: 发生在新生代中的垃圾收集，采用复制算法。&lt;/li&gt;
+  &lt;li&gt;Major GC/Full GC: 发生在老年代的垃圾收集动作，所采用的是&lt;strong&gt;标记-清除&lt;/strong&gt;或者&lt;strong&gt;标记-整理&lt;/strong&gt;算法。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;eden区和survivor区&quot;&gt;Eden区和Survivor区&lt;/h3&gt;
+&lt;p&gt;对于采用&lt;strong&gt;复制算法&lt;/strong&gt;的虚拟机，新生代通常有一个Eden区和两个Survivor区。
+对象优先在Eden区分配，当Eden区没有足够的空间进行分配时，虚拟机讲发起一次Minor GC，Eden中存活的对象将被移动到第一块Survivor区S1，Eden被清空。
+当Eden区再次填满，再次触发Minor GC，Eden区和S1中的存活对象被复制送入第二块Survivor区S2中，S1和Eden被清空，下一轮交换S1和S2的角色。
+使用两个Survivor区能够简化复制算法的过程，并且避免复制过程中&lt;strong&gt;内存碎片&lt;/strong&gt;的产生。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://pictures-1255802956.cos.ap-chengdu.myqcloud.com/BLOG/minor_gc.jpg&quot; alt=&quot;image&quot; /&gt;
+当对象的复制次数达到&lt;code class=&quot;highlighter-rouge&quot;&gt;-XX:MaxTenuringThreshold&lt;/code&gt;设置的值(默认-XX:MaxTenuringThreshold=15)时，将被移至老年代。&lt;/p&gt;
+
+&lt;h3 id=&quot;实验&quot;&gt;实验&lt;/h3&gt;
+&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/**
+ * VM Options:
+ * -Xmx20M 堆最大20M
+ * -Xms20M 堆最小20M
+ * -Xmn10M 新生代为10M
+ * -XX:SurvivorRatio=8 Eden区和Survivor区的比值为8:1
+ * -XX:+PrintGCDetails 输出回收日志及退出时内存各区域情况
+ */&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_1MB&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1024&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;testAllocation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(){&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;allocation1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;allocation2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;allocation3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;allocation4&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;allocation1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_1MB&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;allocation2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_1MB&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;allocation3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_1MB&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;allocation4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;byte&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_1MB&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;结果：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; PSYoungGen      total 9216K, used 7479K [0x00000007bf600000, 0x00000007c0000000, 0x00000007c0000000)
+  eden space 8192K, 91% used [0x00000007bf600000,0x00000007bfd4df10,0x00000007bfe00000)
+  from space 1024K, 0% used [0x00000007bff00000,0x00000007bff00000,0x00000007c0000000)
+  to   space 1024K, 0% used [0x00000007bfe00000,0x00000007bfe00000,0x00000007bff00000)
+ ParOldGen       total 10240K, used 4096K [0x00000007bec00000, 0x00000007bf600000, 0x00000007bf600000)
+  object space 10240K, 40% used [0x00000007bec00000,0x00000007bf000010,0x00000007bf600000)
+ Metaspace       used 2692K, capacity 4486K, committed 4864K, reserved 1056768K
+  class space    used 288K, capacity 386K, committed 512K, reserved 1048576K
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;在退出时各个区域结果如上, PSYoungGen的&lt;code class=&quot;highlighter-rouge&quot;&gt;PS&lt;/code&gt;指的是&lt;code class=&quot;highlighter-rouge&quot;&gt;Parallel Scavenge&lt;/code&gt;垃圾回收器，ParOldGen中的&lt;code class=&quot;highlighter-rouge&quot;&gt;Par&lt;/code&gt;指的是&lt;code class=&quot;highlighter-rouge&quot;&gt;Parallel Old&lt;/code&gt;垃圾回收器。&lt;br /&gt;
+设置中堆为10M，新生代为10M，因此老年代为10M。设置SurvivorRatio为8:1，因此Eden区大小为8M，Survivor区大小为1M。因为Survivor区同一时刻只有一个能用于分配，因此PSYoungGen区域总可用大小为9M。&lt;br /&gt;
+在allocation4进行分配时，新生代eden区已经用了6M，只剩2M，无法进行分配，触发MinorGC。新生代中3个2M大小的对象全部无法放入1M的Survivor区中，所以只能通过分配担保机制将两个2M的对象放入老年代中，再将allocation4的4M对象放入Eden区中。
+最终Eden区分配6M，survivor区中没有对象，老年代分配4M。&lt;/p&gt;
+
+&lt;h3 id=&quot;大对象直接进入老年代&quot;&gt;大对象直接进入老年代&lt;/h3&gt;
+&lt;p&gt;大对象是指需要大量连续内存空间的Java对象。为了避免在Eden区及两个Survivor区之间发生大量的内存复制，虚拟机提供了&lt;code class=&quot;highlighter-rouge&quot;&gt;-XX:PretenureSizeThreshold&lt;/code&gt;参数。大于该参数设置值的对象将直接分配在老年代。&lt;/p&gt;
+
+&lt;h3 id=&quot;长期存活对象直接进入老年代&quot;&gt;长期存活对象直接进入老年代&lt;/h3&gt;
+&lt;p&gt;虚拟机给每个对象定义了一个对象年龄计数器，对象每经过一个MinorGC仍然存活，则年龄加一，当年龄增加到超过&lt;code class=&quot;highlighter-rouge&quot;&gt;-XX:MaxTenuringThreshold&lt;/code&gt;设置的值(默认为16)时，将被移至老年代。&lt;/p&gt;
+
+&lt;h3 id=&quot;空间分配担保&quot;&gt;空间分配担保&lt;/h3&gt;
+&lt;p&gt;如文章开头的例子中，当出现大量对象在MinorGC后仍然存活的情况，Survivor区无法容纳多余的对象，此时，需要老年代进行分配担保，把Survivor无法容纳的对象直接进入老年代。JDk 6 Update 24之后，担保的规则是，只要老年代的连续空间大于新生代对象总大小或者历次晋升的平均大小就会进行MinorGC，否则将进行Full GC。&lt;/p&gt;
+
+&lt;h3 id=&quot;参数设置小结&quot;&gt;参数设置小结&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;参数&lt;/th&gt;
+      &lt;th&gt;描述&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-Xms20M&lt;/td&gt;
+      &lt;td&gt;堆最小值&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-Xmx20M&lt;/td&gt;
+      &lt;td&gt;堆最大值&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-Xmn10M&lt;/td&gt;
+      &lt;td&gt;新生代大小&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-XX:SurvivorRatio=8&lt;/td&gt;
+      &lt;td&gt;Eden区比Survivor区的大小&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-XX:+PrintGCDetails&lt;/td&gt;
+      &lt;td&gt;输出回收日志和退出时各内存区域情况&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-XX:PretenureSizeThreshold=10M&lt;/td&gt;
+      &lt;td&gt;大于该参数设置值的对象直接分配在老年代&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;-XX:MaxTenuringThreshold=15&lt;/td&gt;
+      &lt;td&gt;新生代对象年龄增加到超过该值时，将被移至老年代&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</content><author><name>&gt;&gt;&gt;程东平&lt;&lt;&lt;</name><email>dpchengx@gmail.com</email></author><category term="Java" /><summary type="html">java主要在堆上分配内存，而Java堆又分为新生代(YoungGen)和老年代(OldGen)两个部分，新生代又再分为Eden区和Survivor区两部分，本文根据java堆的划分，描述hotspot的内存分配策略。</summary></entry><entry><title type="html">Java内存区域及内存溢出</title><link href="http://localhost:4000/java/java-memory-exception/" rel="alternate" type="text/html" title="Java内存区域及内存溢出" /><published>2018-05-16T10:10:10+08:00</published><updated>2018-05-16T10:10:10+08:00</updated><id>http://localhost:4000/java/java-memory-exception</id><content type="html" xml:base="http://localhost:4000/java/java-memory-exception/">&lt;h3 id=&quot;堆溢出&quot;&gt;堆溢出&lt;/h3&gt;
 &lt;p&gt;Java堆用于存储对象实例，只要不断地创建对象，并且保证GC Roots到对象之间有可达路径避免垃圾回收，当到达最大堆的容量限制后就会产生Java.lang.OutOfMemoryError.&lt;/p&gt;
 &lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cm&quot;&gt;/**
  * VM Options:
