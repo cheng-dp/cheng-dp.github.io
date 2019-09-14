@@ -8,15 +8,7 @@ menu: 关于
 permalink: /about/
 ---
 
-一个天真的程序员
-
-## 联系
-
-{% for website in site.data.social %}
-* {{ website.sitename }}：[@{{ website.name }}]({{ website.url }})
-{% endfor %}
-
-## Skill Keywords
+## *一个天真的程序员，没事喜欢瞎折腾*
 
 {% for category in site.data.skills %}
 ### {{ category.name }}

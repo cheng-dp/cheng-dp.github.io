@@ -4,7 +4,7 @@
 baseurl:
 url: cheng-dp.github.io
 date_format: "ordinal"
-title: 东平的博客
+title: 东平的笔记仓库
 subtitle: 
 description: 
 keywords: 东平, Cheng Donpging, dongping
@@ -38,9 +38,9 @@ navs:
 #     href: /archives/
 #     label: 归档
 
-  -
-    href: /wiki/
-    label: 维基
+#   -
+    # href: /wiki/
+    # label: 维基
 
     #  -
     #    href: /links/
@@ -67,7 +67,7 @@ lsi: false
 quiet: false
 excerpt_separator: "\n\n"
 permalink: /:year/:month/:day/:title/
-gems:
+plugins:
     - jekyll-github-metadata
     - rouge
 #     - jekyll-html-pipeline

@@ -1,19 +1,25 @@
-- name: Software Engineer Keywords
+- name: Develop Language
   keywords:
       - Java
-      - C++
+      - Shell
       - Python
-      - Design Patterns
+      - C++
+      - JavaScript
+      - TypeScript
 
-- name: Mobile Developer Keywords
+- name: Framework and Middleware
   keywords:
-      - Android
-      - Reverse Engineering
+      - Spring
+      - ZooKeeper
+      - Redis
+      - MySQL
+      - Kafka
+      - Cassandra
+      - Angular
 
-- name: Windows Developer Keywords
+- name: Develop
   keywords:
-      - Win32 SDK
-      - DuiLib
-      - WTL
-      - COM
-      - WinDbg
+      - Design Pattern
+      - Git
+      - Maven
+      - Vim
