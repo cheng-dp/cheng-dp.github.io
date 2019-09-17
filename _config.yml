@@ -2,7 +2,7 @@
 #   Main Configs   #
 # ---------------- #
 baseurl:
-url:
+url: https://cheng-dp.github.io
 date_format: "ordinal"
 title: 东平的笔记仓库
 subtitle: 
