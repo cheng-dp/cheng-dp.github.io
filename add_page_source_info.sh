@@ -21,13 +21,15 @@ do
       echo name=$name
       date=`echo $date | tr - /`
       echo date=$date
-      final_url=$host_url/$date/$name/
+      final_url="<$host_url/$date/$name/>"
       echo finalUrl=$final_url
       final_sentence=$prefix_sentence$final_url
       echo finalSentence=$final_sentence
-      sed -i "${target_line_num}i \ " $file_path
-      sed -i "${target_line_num}i $final_sentence" $file_path
-      sed -i "${target_line_num}i \ " $file_path
+      sed -i "\$a\ " $file_path
+      sed -i "\$a\`\`\`" $file_path
+      sed -i "\$a$final_sentence" $file_path
+      sed -i "\$a\`\`\`" $file_path
+      sed -i "\$a\ " $file_path
       echo "Inserted sentence: $final_sentence"
     fi
 done
