@@ -25,9 +25,9 @@ do
       echo finalUrl=$final_url
       final_sentence=$prefix_sentence$final_url
       echo finalSentence=$final_sentence
-      gsed -i "${target_line_num}i \ " $file_path
-      gsed -i "${target_line_num}i $final_sentence" $file_path
-      gsed -i "${target_line_num}i \ " $file_path
+      sed -i "${target_line_num}i \ " $file_path
+      sed -i "${target_line_num}i $final_sentence" $file_path
+      sed -i "${target_line_num}i \ " $file_path
       echo "Inserted sentence: $final_sentence"
     fi
 done
