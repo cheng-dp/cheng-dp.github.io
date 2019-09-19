@@ -296,3 +296,8 @@ mysql> select * from test where name > 1;
 ## REFS
 
 - http://seanlook.com/2016/04/28/mysql-char-varchar-set/
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/05/21/mysql-data-type/
+```
+ 

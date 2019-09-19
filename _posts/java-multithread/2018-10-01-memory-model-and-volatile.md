@@ -258,3 +258,8 @@ volatile应用
 单例模式、double check和volatile
 - https://blog.csdn.net/fan2012huan/article/details/53454724
 - http://www.infoq.com/cn/articles/double-checked-locking-with-delay-initialization
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/10/01/memory-model-and-volatile/
+```
+ 

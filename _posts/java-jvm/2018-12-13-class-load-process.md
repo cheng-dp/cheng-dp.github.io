@@ -184,3 +184,8 @@ refs:
 静态绑定VS动态绑定
 4. https://blog.csdn.net/luckykapok918/article/details/50556047
 5. https://www.jianshu.com/p/4277bbcab647
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/12/13/class-load-process/
+```
+ 

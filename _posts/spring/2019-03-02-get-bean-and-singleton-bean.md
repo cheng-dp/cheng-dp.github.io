@@ -119,3 +119,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 1. 在Aspect中利用@annotation join-point.
 2. 使用反射获取注册method.getAnnotation()
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/02/get-bean-and-singleton-bean/
+```
+ 

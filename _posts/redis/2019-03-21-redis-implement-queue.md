@@ -23,3 +23,8 @@ SortedSet的value存储任务描述、score存储时间戳。
 只需开一个或多个线程，每隔一段时间轮询检查SortedSet中score小于或等于当前时间戳的元素即可。
 
 如果是多个线程去轮询这个Sorted Set，必须保证只有一个线程能执行这个任务，通过zrem命令来实现，==只有删除成功了，才能执行任务==，这样就能保证任务不被多个任务重复执行了。
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/21/redis-implement-queue/
+```
+ 

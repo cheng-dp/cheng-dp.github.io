@@ -83,3 +83,8 @@ RetentionPolicy.CLASS在日常开发中不常用，主要用于需要处理Class
 注解处理器
 - https://blog.csdn.net/HaveFerrair/article/details/52182927
 - https://blog.csdn.net/xfxyy_sxfancy/article/details/44275549
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/10/24/annotation/
+```
+ 

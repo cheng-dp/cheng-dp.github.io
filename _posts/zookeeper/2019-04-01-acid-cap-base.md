@@ -162,3 +162,8 @@ BASE = Basically Available(基本可用) + Soft state(弱状态) + Eventually co
 
 
 BASE理论适用于大型高可用可扩展的分布式系统，完全不同于传统事务的ACID强一致性模型，而是提出通过牺牲强一致性来获得可用性，并允许数据在一段时间内不一致，但最终达到一致状态。是对大型高可用可扩展分布式系统基于CAP定理的权衡。
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/04/01/acid-cap-base/
+```
+ 

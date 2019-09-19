@@ -230,3 +230,8 @@ Adapter/Wrapper
 
 TemplatePattern
 - https://blog.csdn.net/z69183787/article/details/65628166
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/04/design-pattern-in-spring/
+```
+ 

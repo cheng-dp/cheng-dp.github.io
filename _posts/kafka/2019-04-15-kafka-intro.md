@@ -63,3 +63,8 @@ broker是集群的组成部分，每个集群都由一个broker同时充当了**
 ![image](https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/kafka_partition_copy.png)
 
 
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/04/15/kafka-intro/
+```
+ 

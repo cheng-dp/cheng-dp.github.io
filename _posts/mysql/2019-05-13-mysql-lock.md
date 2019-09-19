@@ -219,3 +219,8 @@ mysql> show status like 'table_locks%';
 - https://zhuanlan.zhihu.com/p/29150809
 - https://segmentfault.com/a/1190000014133576#articleHeader4
 - https://juejin.im/post/5b82e0196fb9a019f47d1823#heading-20
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/05/13/mysql-lock/
+```
+ 

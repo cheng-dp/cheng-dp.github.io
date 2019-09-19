@@ -189,3 +189,8 @@ public class Main {
 
 ### REFS
 - https://blog.csdn.net/moakun/article/details/80563804
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/12/12/parent-delegation-model-and-classloader/
+```
+ 

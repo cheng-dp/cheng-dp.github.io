@@ -71,3 +71,8 @@ take thread end
 ### REFS
 
 - https://blog.csdn.net/yanyan19880509/article/details/52562039
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/11/27/synchronous-queue/
+```
+ 

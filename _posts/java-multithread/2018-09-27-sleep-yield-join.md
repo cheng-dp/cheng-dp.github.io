@@ -152,3 +152,8 @@ thread->clear_pending_exception();
 
 - https://segmentfault.com/q/1010000005052854
 - https://www.zhihu.com/question/44621343
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/09/27/sleep-yield-join/
+```
+ 

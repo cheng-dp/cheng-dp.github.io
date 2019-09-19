@@ -171,3 +171,8 @@ recvset.put(n.sid, new Vote(n.leader, n.zxid, n.electionEpoch, n.peerEpoch));
 - https://juejin.im/post/5cd06b7c51882544da500e36
 - http://www.chilangedu.com/blog/1000001325937566.html
 - https://www.jianshu.com/p/763a5ae127a7
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/04/10/zookeeper-leader-election/
+```
+ 

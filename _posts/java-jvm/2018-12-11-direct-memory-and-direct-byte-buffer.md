@@ -79,3 +79,8 @@ HotSpot虚拟机中，GC除了CMS算法之外，都需要移动对象。
 ## REFS
 
 - https://www.kancloud.cn/zhangchio/springboot/806316
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/12/11/direct-memory-and-direct-byte-buffer/
+```
+ 

@@ -48,3 +48,8 @@ HotSpot中，永久代的回收依赖于老年代的FullGC，给垃圾回收带�
 `-XX:MaxMetaspaceSize` : 超过该值将抛出OutOfMemoryError异常。
 
 元空间的分配和回收由专门的元空间虚拟机(C++实现)管理，当元空间使用量超过MetaspaceSize的值时，元空间虚拟机将在MaxMetaspaceSize内自动增加元空间大小。
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/12/10/method-area-permenent-generation-metaspace/
+```
+ 

@@ -347,3 +347,8 @@ private final Object arenaExchange(Object item, boolean timed, long ns) {
 
 - https://www.jianshu.com/p/c523826b2c94
 - https://blog.csdn.net/u014634338/article/details/78385521
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/11/12/exchanger/
+```
+ 

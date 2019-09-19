@@ -316,3 +316,8 @@ class FillAndEmpty {
    }
 }
 ```
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/11/26/sync-classes/
+```
+ 

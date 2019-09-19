@@ -294,3 +294,8 @@ FinalRequestProcessor处理器将检查请求的有效性并**完成事务在内
 在Follower和Observer中，第一个请求处理器FollowerRequestProcessor和ObserverRequestProcessor，都会检查当前请求是否是事务请求。
 
 如果是事务请求，**以REQUEST消息形式转发给Leader服务器**。Leader服务器接受到消息后，解析出客户端的原始请求，提交到自己的请求处理链中进行事务请求处理。
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/04/12/zookeeper-server-role-and-communication/
+```
+ 

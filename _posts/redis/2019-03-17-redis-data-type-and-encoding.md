@@ -531,3 +531,8 @@ typedef struct redisObect {
 空转时长就是通过当前时间减去*键的值对象*的lru时间计算得到。`OBJECT IDLETIME`命令打印出空转时长。
 
 空转时长被用于实现内存回收。
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/17/redis-data-type-and-encoding/
+```
+ 

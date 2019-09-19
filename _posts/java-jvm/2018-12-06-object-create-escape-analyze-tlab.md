@@ -164,3 +164,8 @@ https://blog.csdn.net/yangzl2008/article/details/43202969
 http://www.importnew.com/23150.html  
 http://blog.stormma.me/2017/04/21/java%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/  
 
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/12/06/object-create-escape-analyze-tlab/
+```
+ 

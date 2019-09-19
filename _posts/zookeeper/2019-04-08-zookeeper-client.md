@@ -158,3 +158,8 @@ SendThread是客户端ClientCnxn的核心I/O调度线程。
 
 1. 维护watingEvents队列，包括客户端注册的Watcher和异步接口中注册的AsyncCallback。
 2. 不断从watingEvents队列中取出Object，根据类型(Watcher/AsyncCallback)执行回调。
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/04/08/zookeeper-client/
+```
+ 

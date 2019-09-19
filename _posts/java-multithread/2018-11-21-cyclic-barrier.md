@@ -260,3 +260,8 @@ private static class Generation {
 ### REFS
 
 - http://www.cnblogs.com/skywang12345/p/3533995.html
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/11/21/cyclic-barrier/
+```
+ 

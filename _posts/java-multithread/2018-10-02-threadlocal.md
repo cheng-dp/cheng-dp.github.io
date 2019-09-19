@@ -199,3 +199,8 @@ ThreadLocal.ThreadLocalMap的实现中已经考虑了这种情况，为了防止
 - https://blog.csdn.net/wzy_1988/article/details/72625482
 - https://blog.csdn.net/levena/article/details/78027136
 - http://blog.xiaohansong.com/2016/08/06/ThreadLocal-memory-leak/
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/10/02/threadlocal/
+```
+ 

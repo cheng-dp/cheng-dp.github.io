@@ -283,3 +283,8 @@ ApplicationContext继承了BeanFactory，也是IoC容器，此外还继承了Mes
 - http://www.cnblogs.com/ITtangtang/p/3978349.html
 - https://juejin.im/post/5abe75f351882577b45f2336
 - https://www.jianshu.com/p/17b66e6390fd
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/07/bean-factory-basic-implement/
+```
+ 

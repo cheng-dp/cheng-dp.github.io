@@ -99,3 +99,8 @@ void uncaughtException(Thread t, Throwable e);
 }
 ```
 `Thread.setDefaultExceptionHandler(Thread.UncaughtExceptionHandler eh);`能够为所有线程设置默认的UncaughtExceptionHandler。
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/10/28/thread-class/
+```
+ 

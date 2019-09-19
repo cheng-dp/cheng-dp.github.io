@@ -86,3 +86,8 @@ evalsha 脚本SHA1值 key个数 key列表 参数列表
 通过SHA1校验和值，调用script load加载的脚本并原子地执行。
 
 ![image](https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/redis_lua_evalsha_code.png)
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/27/redis-pipeline-transaction-lua/
+```
+ 

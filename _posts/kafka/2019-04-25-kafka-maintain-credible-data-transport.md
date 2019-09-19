@@ -209,3 +209,8 @@ public void resume(Collection<TopicPartition> partitions)
 消费者如果要支持仅一次处理语义(及每个消息只被写到外部系统一次，不处理重复消息)。
 
 最简单的办法是把结果写到一个支持唯一键的系统里，如键值存储引擎、关系型数据库、ElasticSearch或其他数据引擎，可以在消息里直接包含一个唯一的键，也可以使用主题 + 分区 + 偏移量的组合创建唯一键。
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/04/25/kafka-maintain-credible-data-transport/
+```
+ 

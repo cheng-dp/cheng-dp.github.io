@@ -196,3 +196,8 @@ Rollback Segment管理参数：
 当事务没有提交时，InnoDB必须保留该事务对应的Undo Log。但是当事务提交时，依然不能删除Undo Log，因为要支持MVCC，可能有其他处于Repeatable Read隔离级别下的事务，正在读取对应版本的数据。
 
 事务提交时，虽然不会立即删除Undo Log，但是会将对应的Undo Log放入一个删除列表中，未来通过purge线程来进行判断并删除。
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/05/09/mysql-tx-redo-undo/
+```
+ 

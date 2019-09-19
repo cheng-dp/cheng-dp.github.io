@@ -47,3 +47,8 @@ Core的重要组成部分之一是Resource，Resource中定义了Spring对资源
 ### REFS
 
 - https://segmentfault.com/a/1190000007356573
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/10/spring-core-component/
+```
+ 

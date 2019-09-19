@@ -267,3 +267,8 @@ compact策略只适合对每个key的旧值不关心的特殊场景，如key是�
 compact策略下的删除：
 
 ==如果需要删除key最新的值，可以向broker发送值为null的消息(墓碑消息)，broker首先会进行常规清理，删除null之前的消息，之后，null值消息会被保存一段时间后删除。==
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/04/22/kafka-broker-manager-and-data-manager/
+```
+ 

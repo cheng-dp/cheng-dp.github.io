@@ -157,3 +157,8 @@ Java堆 | 存放对象实例 | -Xms10M 最大值<br> -Xmx20M 最小值 | OutOfMe
 运行时常亮池 | 存放编译期生成的字面量和符号引用，运行期也能放入常量池(string.intern())。JDK 1.7之前在方法区中，JDK 1.7及之后移至堆中，jdk1.8放在元空间里面，和堆相独立。 | 随方法区或堆设置 | OutOfMemoryError
 方法区 | 存储虚拟机加载的类信息、常亮、静态变量、即时编译器编译后的代码等数据，**又称为永久代(Permanent Generation)** | -XX:PermSize=10M 初始值<br> -XX:MaxPermSize=20M 最大值 | OutOfMemoryError: PermGen space
 直接内存 | 在JDK 1.4中加入NIO类，直接分配堆外内存 | -XX:MaxDirectMemorySize=10M,<br> 如果不指定默认与-Xmx一样| OutOfMemoryError
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/12/15/memory-allocate-and-memory-overflow/
+```
+ 

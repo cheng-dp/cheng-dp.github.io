@@ -22,3 +22,8 @@ Users.CommonInnerClass common = new Users().new CommonInnerClass(); // need oute
 ```
 
 在定义一些内部辅助类时，为了使用方便、结构清晰，可以定义为private static Class, 如LinkedList或Tree中的Node类。
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/07/17/private-static-class/
+```
+ 

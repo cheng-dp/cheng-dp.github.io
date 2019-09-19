@@ -294,3 +294,8 @@ public class UtilDatePropertyEditor extends PropertyEditorSupport {
 - https://stackoverflow.com/questions/13409332/difference-between-call-back-method-and-bean-post-processor-in-spring-framework
 - https://stackoverflow.com/questions/9761839/beanpostprocessor-confusion
 - https://blog.csdn.net/caihaijiang/article/details/35552859
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/06/bean-post-processor-and-bean-factory-post-processor/
+```
+ 

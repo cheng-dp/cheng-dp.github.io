@@ -171,3 +171,8 @@ RedLock(Redis Distribution Lock)算法基于多个(通常设置为5)完全独立
 - https://juejin.im/post/5bf3f15851882526a643e207
 - http://zhangtielei.com/posts/blog-redlock-reasoning.html
 - http://zhangtielei.com/posts/blog-redlock-reasoning-part2.html
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/13/redis-implement-distri-lock/
+```
+ 

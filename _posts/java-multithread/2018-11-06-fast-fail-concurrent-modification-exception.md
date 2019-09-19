@@ -198,3 +198,8 @@ public void remove() {
 ### REFS
 
 - https://www.cnblogs.com/dolphin0520/p/3933551.html
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/11/06/fast-fail-concurrent-modification-exception/
+```
+ 

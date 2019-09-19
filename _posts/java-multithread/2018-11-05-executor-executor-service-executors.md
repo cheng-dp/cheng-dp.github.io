@@ -476,3 +476,8 @@ DelayQueue
 Future的生命周期，在Future规范中包含的含义是任务的声明周期只能前进，不能后退。
 
 CompletionService:Executor+BlockingQueue
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/11/05/executor-executor-service-executors/
+```
+ 

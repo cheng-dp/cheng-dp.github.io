@@ -521,3 +521,8 @@ notifyAll/notify/wait:
 - https://www.jianshu.com/p/f4454164c017
 - https://www.journaldev.com/1037/java-thread-wait-notify-and-notifyall-example
 - https://www.cnblogs.com/stateis0/p/9061611.html
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/07/26/synchronized-and-monitor/
+```
+ 

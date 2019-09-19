@@ -29,3 +29,8 @@ void add(AnyType x);
 void set(AnyType newVal);
 }
 ```
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/07/15/Collections/
+```
+ 

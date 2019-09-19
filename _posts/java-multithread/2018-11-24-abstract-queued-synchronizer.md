@@ -735,3 +735,8 @@ signal方法执行完毕，线程2调用reentrantLock.unLock()方法，释放锁
 - http://ifeve.com/introduce-abstractqueuedsynchronizer/
 - https://liuzhengyang.github.io/2017/05/12/aqs/
 - https://stackoverflow.com/questions/207946/why-does-abstractqueuedsynchronizer-interrupt-on-acquring-lock
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/11/24/abstract-queued-synchronizer/
+```
+ 

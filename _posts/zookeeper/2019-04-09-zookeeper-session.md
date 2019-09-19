@@ -162,3 +162,8 @@ ZooKeeper内存数据库中维护了“会话ID -- 临时节点集合”的表�
 应对策略：
 
 服务端在处理客户端请求的时候，会首先检查会话所有者，如果所有者不是当前服务器，则向客户端发出SessionMovedException。
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/04/09/zookeeper-session/
+```
+ 

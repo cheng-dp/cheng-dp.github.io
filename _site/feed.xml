@@ -1,4 +1,1948 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-09-17T09:41:09+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">东平的笔记仓库</title><subtitle>我的博客，主要是笔记归档。</subtitle><author><name>Cheng Dongping</name></author><entry><title type="html">Kafka之保证可靠的数据传递</title><link href="http://localhost:4000/2019/04/25/kafka-maintain-credible-data-transport/" rel="alternate" type="text/html" title="Kafka之保证可靠的数据传递" /><published>2019-04-25T00:00:00+08:00</published><updated>2019-04-25T00:00:00+08:00</updated><id>http://localhost:4000/2019/04/25/kafka-maintain-credible-data-transport</id><content type="html" xml:base="http://localhost:4000/2019/04/25/kafka-maintain-credible-data-transport/">&lt;h2 id=&quot;可靠性保证&quot;&gt;可靠性保证&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-09-19T09:12:34+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">东平的笔记仓库</title><subtitle>我的博客，主要是笔记归档。</subtitle><author><name>Cheng Dongping</name></author><entry><title type="html">详解MySQL中的数据类型</title><link href="http://localhost:4000/2019/05/21/mysql-data-type/" rel="alternate" type="text/html" title="详解MySQL中的数据类型" /><published>2019-05-21T00:00:00+08:00</published><updated>2019-05-21T00:00:00+08:00</updated><id>http://localhost:4000/2019/05/21/mysql-data-type</id><content type="html" xml:base="http://localhost:4000/2019/05/21/mysql-data-type/">&lt;h2 id=&quot;整型&quot;&gt;整型&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;TINYINT&lt;/li&gt;
+  &lt;li&gt;SMALLINT&lt;/li&gt;
+  &lt;li&gt;MEDIUMINT&lt;/li&gt;
+  &lt;li&gt;INT&lt;/li&gt;
+  &lt;li&gt;BIGINT&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_int_types.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;MySQL可以为整型指定宽度，&lt;code class=&quot;highlighter-rouge&quot;&gt;int(5) zerofill&lt;/code&gt;表示当数值宽度小于5位时在前面用0填满宽度，此命令对存储层无影响，只是影响客户端的显示方式。&lt;/li&gt;
+  &lt;li&gt;UNSIGNED 指定为无符号数，只针对整型。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;浮点型&quot;&gt;浮点型&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_float_double_types.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;FLOAT和DOUBLE都是非精确类型，无法保证运算正确性。&lt;/li&gt;
+  &lt;li&gt;FLOAT(M,D)和DOUBLE(M,D)，M：总位数，&lt;code class=&quot;highlighter-rouge&quot;&gt;1 &amp;lt;= M &amp;lt;= 255&lt;/code&gt;。D：小数点后位数，&lt;code class=&quot;highlighter-rouge&quot;&gt;0 &amp;lt;= D &amp;lt;= 30&lt;/code&gt;。如设置(M,D)后插入数据超过限制将报错。&lt;/li&gt;
+  &lt;li&gt;FLOAT和DOUBLE不指定精度时，默认按照实际精度显示。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;定点型&quot;&gt;定点型&lt;/h2&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;类型&lt;/th&gt;
+      &lt;th&gt;字节&lt;/th&gt;
+      &lt;th&gt;范围&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;DECIMAL(M,D)&lt;/td&gt;
+      &lt;td&gt;如果M &amp;gt; D，为M + 2&amp;lt;\b&amp;gt; 如果M &amp;lt;= D，为D + 2&lt;/td&gt;
+      &lt;td&gt;依赖于M和D的值&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;DECIMAL(M,D)为高精度数据类型，是精确类型，在MySQL内部以字符串形式存放。&lt;/li&gt;
+  &lt;li&gt;最大取值范围与DOUBLE相同，给定DECIMAL的有效取值范围由M和D决定。1 &amp;lt; M &amp;lt; 254，0 &amp;lt; D &amp;lt; 60。&lt;/li&gt;
+  &lt;li&gt;DECIMAL不指定时，默认M = 10, D = 0。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;日期时间类型&quot;&gt;日期时间类型&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;DATE&lt;/li&gt;
+  &lt;li&gt;TIME&lt;/li&gt;
+  &lt;li&gt;YEAR&lt;/li&gt;
+  &lt;li&gt;DATETIME&lt;/li&gt;
+  &lt;li&gt;TIMESTAMP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_datetime_type.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;timestamp&quot;&gt;TIMESTAMP&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;TIMESTAMP和DATETIME显示的结果相同，只是TIMESTAMP保存的是时间戳，为&lt;code class=&quot;highlighter-rouge&quot;&gt;1970-01-01 00:00:00&lt;/code&gt;到当前时间的毫秒数。&lt;/li&gt;
+  &lt;li&gt;TIMESTAMP存储范[&lt;code class=&quot;highlighter-rouge&quot;&gt;1970-01-01 00:00:01&lt;/code&gt;,&lt;code class=&quot;highlighter-rouge&quot;&gt;2038-01-19 03:14:07&lt;/code&gt;]，DATETIME存储范围[&lt;code class=&quot;highlighter-rouge&quot;&gt;1000-01-01 00:00:00&lt;/code&gt;,&lt;code class=&quot;highlighter-rouge&quot;&gt;9999-12-31 23:59:59&lt;/code&gt;]。&lt;/li&gt;
+  &lt;li&gt;TIMSTAMP显示时会考虑时区。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在MySQL中，由于TIMESTAMP经常用于记录操作时间，因此做了一些特殊处理：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;没有显示设置为NULL的TIMESTAMP将被加上NOT NULL属性。(其他类型没有显示设为NULL默认是NULL)。&lt;/li&gt;
+  &lt;li&gt;table中的第一个TIMESTAMP列，如果没有显示设置为NULL且没有DEFAULT和ON UPDATE语句，将被自动添加：DEFAULT CURRENT_TIMESTAMP和ON UPDATE CURRENT_TIMESTAMP。&lt;/li&gt;
+  &lt;li&gt;table中非第一个TIMESTAMP列，如果没有显示设置为NULl且没有DEFAULT子句，将自动添加：DEFAULT ‘0000-00-00 00:00:00’&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;设置ON UPDATE CURRENT_TIMESTAMP的TIMESTAMP:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;必须同时设置DEFAULT。&lt;/li&gt;
+  &lt;li&gt;当更新操作更新了该行数据，自动更新该TIMESTAMP的值。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;上述特殊处理由&lt;code class=&quot;highlighter-rouge&quot;&gt;explicit_defaults_for_timestamp&lt;/code&gt;参数配置，当&lt;code class=&quot;highlighter-rouge&quot;&gt;explicit_defaults_for_timestamp=off&lt;/code&gt;时遵循上述配置，当该值为&lt;code class=&quot;highlighter-rouge&quot;&gt;on&lt;/code&gt;时，timestamp和其他类型一样配置。默认值为&lt;code class=&quot;highlighter-rouge&quot;&gt;on&lt;/code&gt;，即与其他类型一样配置。&lt;/p&gt;
+
+&lt;h3 id=&quot;获取当前时间&quot;&gt;获取当前时间&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CURRENT_TIMESTAMP&lt;/li&gt;
+  &lt;li&gt;CURRENT_TIMESTAMP()&lt;/li&gt;
+  &lt;li&gt;NOW()&lt;/li&gt;
+  &lt;li&gt;LOCALTIME&lt;/li&gt;
+  &lt;li&gt;LOCALTIME()&lt;/li&gt;
+  &lt;li&gt;LOCALTIMESTAMP&lt;/li&gt;
+  &lt;li&gt;LOCALTIMESTAMP()&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;帮助函数&quot;&gt;帮助函数&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;FROM_UNIXTIME() ： 把UNIX时间戳转换为日期。&lt;/li&gt;
+  &lt;li&gt;UNIX_TIMESTAMP()：把日期转换为UNIX时间戳。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;字符串类型&quot;&gt;字符串类型&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CHAR&lt;/li&gt;
+  &lt;li&gt;VARCHAR&lt;/li&gt;
+  &lt;li&gt;BIT&lt;/li&gt;
+  &lt;li&gt;BINARY&lt;/li&gt;
+  &lt;li&gt;VARBINARY&lt;/li&gt;
+  &lt;li&gt;BLOB&lt;/li&gt;
+  &lt;li&gt;TEXT&lt;/li&gt;
+  &lt;li&gt;ENUM&lt;/li&gt;
+  &lt;li&gt;SET&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_string_type.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;2*24 = 16 777 216 (占3字节)
+2*32 = 4 294 967 296 (占4字节)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;char-和-varchar&quot;&gt;CHAR 和 VARCHAR&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CHAR类型使用固定长度空间进行存储，范围0-255个字符。
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;字符长度不是字节长度(字节长度由`字符长度 * 编码字节数`可得)，例如CHAR(30)能放30个字符，存放`abcd`时，在uft-8编码下，实际占用30 * 3 bytes，==尾部会以空格补齐==，但检索时尾部空格会被去除。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;VARCHAR类型保存可变长字符串，长度范围0-65535个字符(受到单行最大64kb的限制)。
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;VARCHAR(30)存放`abcd`，实际使用4 + 1 = 5个字节，额外的1个字节用来表示字符串长度(0-255使用1个字节，超过255使用2个字节)。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;char-和-varchar-使用情况&quot;&gt;CHAR 和 VARCHAR 使用情况&lt;/h4&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;根据字符长度判断&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;对于短字符长度的字段，CHAR类型不会浪费太多空间，且VARCHAR类型在修改时需要重新分配空间、并且还需要字节维护字节长度，因此，建议直接使用CHAR类型。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;考虑长度是否相近&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;如果字段的长度总是相同或相近的，则考虑使用CHAR类型。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;从碎片角度考虑&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;CHAR类型存储空间是一次性分配的，字段内容存储在一起，因此不会出现空间碎片。而VARCHAR类型当修改前后数据长度不一致时，由于新的空间分配，会出现碎片问题。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;VARCHAR字符设定不能太慷慨&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;VARCHAR类型虽然在硬盘上的存储空间时根据实际字符长度分配的，但是在内存中依然时按照字符类型定义的长度分配。&lt;/p&gt;
+
+&lt;h4 id=&quot;char_length和length&quot;&gt;char_length()和length()&lt;/h4&gt;
+
+&lt;p&gt;char_length(‘‘)计算字符串字符数。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;select char_length('abcd中文中文');
+
+8
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;length(‘‘)计算字符串的字节数，和使用的编码有关。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;select length('abcd中文中文');
+
+16
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;binary-和-varbinary&quot;&gt;BINARY 和 VARBINARY&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;BINARY&lt;/strong&gt;和CHAR类型类似，只是存储的是二进制数据，二进制长度为0-255字节，且不足最大长度的，将在右边填充’0x00’补齐。SQL操作时基于二进制数值进行比较和排序。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;VARBINARY&lt;/strong&gt;和VARCHAR类似，只是存储的是二进制数据，二进制长度为0-65535字节，存储的是可变长度数据，不足最大长度不会填充。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;，BINARY的值在查询和取出时，不会删除填充的’0x00’，所有字节在比较时都有意义，因此在使用BINARY存储二进制数据时，要注意填充和删除的特性。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; CREATE TABLE t (c BINARY(3));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql&amp;gt; INSERT INTO t SET c = 'a';
+Query OK, 1 row affected (0.01 sec)
+
+mysql&amp;gt; SELECT HEX(c), c = 'a', c = 'a\0\0' from t;
++--------+---------+-------------+
+| HEX(c) | c = 'a' | c = 'a\0\0' |
++--------+---------+-------------+
+| 610000 |       0 |           1 |
++--------+---------+-------------+
+1 row in set (0.09 sec)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;如果检索的值必须和没有填充存储的值一样，那么可能用varbinary或者blob数据类型的一种比较合适。&lt;/p&gt;
+
+&lt;h3 id=&quot;bit&quot;&gt;BIT&lt;/h3&gt;
+
+&lt;p&gt;位字段类型，BIT(M)中表示二进制位数。范围为1 &amp;lt;= M &amp;lt;= 64，默认值为1。如果值的长度小于M位，在值的左边用0填充。&lt;/p&gt;
+
+&lt;h3 id=&quot;blob-和-text&quot;&gt;BLOB 和 TEXT&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;BLOB(Binary Large Object)&lt;/strong&gt;，二进制大对象，是一个可以存储二进制文件的容器。典型的BLOB是一张图片或多媒体文件。在SQL处理时，BLOB数据被视作二进制字符串进行比较和排序。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;类型&lt;/th&gt;
+      &lt;th&gt;大小(字节)&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TINYBLOB&lt;/td&gt;
+      &lt;td&gt;最大255B 2*8&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BLOB&lt;/td&gt;
+      &lt;td&gt;最大64KB 2*16&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;MEDIUMBLOB&lt;/td&gt;
+      &lt;td&gt;最大16MB 2*24&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;LONGBLOB&lt;/td&gt;
+      &lt;td&gt;最大4GB 2*32&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;当插入的数据超过BLOB的限制大小时，多出的二进制字符会被截断，并返回WARNNING。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;TEXT&lt;/strong&gt;保存大文本数据，存储的是字符。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;类型&lt;/th&gt;
+      &lt;th&gt;大小(字符)&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TINYTEXT&lt;/td&gt;
+      &lt;td&gt;最大255 2*8&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TEXT&lt;/td&gt;
+      &lt;td&gt;最大64KB 2*16&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;MEDIUMTEXT&lt;/td&gt;
+      &lt;td&gt;最大16MB 2*24&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;LONGTEXT&lt;/td&gt;
+      &lt;td&gt;最大4GB 2*32&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;在SQL处理时，TEXT中的字符数据不区分大小写。&lt;/p&gt;
+
+&lt;p&gt;在MySQL中，BLOB/TEXT都不直接存储在数据页中，而是在数据页中存储一个指向BLOB/TEXT数据位置的指针，因此==BLOB/TEXT无法直接成为PRIMARY KEY==。并且==如果要在BLOB/TEXT列上加上索引KEY，需要指明建立索引的前缀数。==&lt;/p&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;create&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;table&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;doc&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;primary&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;doc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;ERROR&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1170&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;42000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;BLOB&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TEXT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;column&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'doc'&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;used&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;specification&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;without&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;length&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;create&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;table&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;doc&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;primary&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;doc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;InnoDB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Query&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OK&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;rows&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;affected&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;01&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;set和enum&quot;&gt;SET和ENUM&lt;/h3&gt;
+
+&lt;p&gt;由于MySQL不支持传统的CHECK约束，因此通过ENUM和SET类型可以对插入数据进行简单约束。&lt;/p&gt;
+
+&lt;h4 id=&quot;set&quot;&gt;SET&lt;/h4&gt;
+
+&lt;p&gt;&lt;strong&gt;SET&lt;/strong&gt;是一个字符串对象，一个可以有0个或多个值。其值必须来自于列创建时定义的允许范围。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; create table test (name set('jack','green','james','tim'));
+Query OK, 0 rows affected (0.02 sec)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; insert into test (name) values ('jack,green,tim');
+Query OK, 1 row affected (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;==SET插入数据时，是以一个字符串的格式同时插入，数据之间以逗号隔开，所以SET定义的数据本身不能含有逗号。==&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;SET最多只能存储64个元素&lt;/strong&gt;，且存储方式为：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1～8成员的集合，占1个字节。
+9～16成员的集合，占2个字节。
+17～24成员的集合，占3个字节。
+25～32成员的集合，占4个字节。
+33～64成员的集合，占8个字节。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;==SET在数据库中存储的并不是元素本身，而是元素序号==，且MySQL在存储时会按照定义的顺序存储元素。&lt;/p&gt;
+
+&lt;p&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;find_in_set()&lt;/code&gt;方法或LIKE修饰符查找SET。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; select * from test where find_in_set('jack',name);
++----------------+
+| name           |
++----------------+
+| jack,green,tim |
++----------------+
+1 row in set (0.00 sec)
+
+mysql&amp;gt; select * from test where name like '%ja%gr%';
++----------------+
+| name           |
++----------------+
+| jack,green,tim |
++----------------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;enum&quot;&gt;ENUM&lt;/h4&gt;
+
+&lt;p&gt;ENUM和SET一样也是一个字符串对象，并且在列定义时给出所有允许值列表。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;ENUM允许同时定义最多65535个允许值。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;MySQL对ENUM的存储同样是存储元素编号。除了插入数据时，除了插入预定义字符串，也可以直接用定义时的枚举顺序。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; create table test (name enum('jack','green','james','tim'));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql&amp;gt; insert into test (name) values ('jack');
+Query OK, 1 row affected (0.00 sec)
+
+mysql&amp;gt; insert into test (name) values (2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql&amp;gt; select * from test;
++-------+
+| name  |
++-------+
+| jack  |
+| green |
++-------+
+2 rows in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;由于枚举成员在MySQL存储中映射到枚举顺序，因此可以使用运算符来进行查询：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; select * from test where name &amp;gt; 1;
++-------+
+| name  |
++-------+
+| green |
++-------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;refs&quot;&gt;REFS&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;http://seanlook.com/2016/04/28/mysql-char-varchar-set/&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">整型</summary></entry><entry><title type="html">详解MySQL中的索引机制</title><link href="http://localhost:4000/2019/05/20/mysql-index/" rel="alternate" type="text/html" title="详解MySQL中的索引机制" /><published>2019-05-20T00:00:00+08:00</published><updated>2019-05-20T00:00:00+08:00</updated><id>http://localhost:4000/2019/05/20/mysql-index</id><content type="html" xml:base="http://localhost:4000/2019/05/20/mysql-index/">&lt;h2 id=&quot;索引分类&quot;&gt;索引分类&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;INDEX 普通索引&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;最基本索引，允许出现相同的索引值，可以有NULL值。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;UNIQUE 唯一索引&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;不可以出现相同的值，可以有NULL值。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;PRIMARY KEY 主键索引&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;不允许出现相同的值，且不能为NULL值，一个表只能有一个primary_key索引。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;fulltext index 全文索引&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;上述三种索引都是针对列的值发挥作用，但全文索引，可以针对值中的某个单词，比如一篇文章中的某个词，然而只有myisam以及英文支持，并且效率较低，但是可以用coreseek和xunsearch等第三方应用来完成这个需求。&lt;/p&gt;
+
+&lt;h2 id=&quot;索引crud&quot;&gt;索引CRUD&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;索引创建&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;ALTER TABLE&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ALTER TABLE `table_name` ADD INDEX `index_name` (`column_list`) --索引名，可要可不要；如果不要，当前的索引名就是该字段名。 
+ALTER TABLE `table_name` ADD UNIQUE (`column_list`) 
+ALTER TABLE `table_name` ADD PRIMARY KEY (`column_list`) 
+ALTER TABLE `table_name` ADD FULLTEXT KEY (`column_list`)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;CREATE TABLE&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;CREATE TABLE `test1` ( 
+  `id` smallint(5) UNSIGNED AUTO_INCREMENT NOT NULL, -- 注意，下面创建了主键索引，这里就不用创建了 
+  `username` varchar(64) NOT NULL COMMENT '用户名', 
+  `nickname` varchar(50) NOT NULL COMMENT '昵称/姓名', 
+  `intro` text, 
+  PRIMARY KEY (`id`),  
+  UNIQUE KEY `unique1` (`username`), -- 索引名称，可要可不要，不要就是和列名一样 
+  KEY `index1` (`nickname`), 
+  FULLTEXT KEY `intro` (`intro`) 
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='后台用户表';
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;CREATE INDEX&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;--例：只能添加这两种索引 
+CREATE INDEX index_name ON table_name (column_list) 
+CREATE UNIQUE INDEX index_name ON table_name (column_list)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ol&gt;
+  &lt;li&gt;索引删除
+```
+DROP INDEX &lt;code class=&quot;highlighter-rouge&quot;&gt;index_name&lt;/code&gt; ON &lt;code class=&quot;highlighter-rouge&quot;&gt;talbe_name&lt;/code&gt;&lt;br /&gt;
+ALTER TABLE &lt;code class=&quot;highlighter-rouge&quot;&gt;table_name&lt;/code&gt; DROP INDEX &lt;code class=&quot;highlighter-rouge&quot;&gt;index_name&lt;/code&gt; 
+– 这两句都是等价的,都是删除掉table_name中的索引index_name;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;ALTER TABLE &lt;code class=&quot;highlighter-rouge&quot;&gt;table_name&lt;/code&gt; DROP PRIMARY KEY – 删除主键索引，注意主键索引只能用这种方式删除&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;3. 索引更改
+
+直接删除索引后重建。
+
+4. 查看table中的所有索引
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;show index from tablename;&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;![image](https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_show_index_from_table.png)
+
+## 索引限制
+1. 一张表最多建立64个索引。
+
+
+2. 组合索引最多包括16个列。
+
+3. 单列索引长度
+
+当`INNODB_LARGE_PREFIX=OFF`时，单列索引长度最大为767字节。
+
+当`INNODB_LARGE_PREFIX=ON`时，单列索引长度最大为3072字节(1024*3)。
+
+**为什么是767字节？**
+
+256*3 - 1 = 767字节。3为utf-8字符最大占用空间。
+
+4. 组合索引长度
+
+组合索引长度最大为3072字节。
+
+**为什么是3072字节？**
+
+InnoDB一个Page默认16KB，由于是B+Tree，叶子节点上一个页至少包含两条记录(否则退化为链表)，因此一条记录最大为8KB。
+
+InnoDB的聚簇索引结构，一个二级索引要包含主键索引，因此单个索引最大为4KB。
+
+单个索引空间再减去一些辅助空间，最大为3500字节，取整数为1024×3 = 3072字节。
+
+## 索引实现
+
+### 磁盘预读与页
+
+由于磁盘存储介质的特性，磁盘本身存储比主存慢很多，为了提高效率，磁盘利用数据的局部性原理，每次进行I/O读取时，不仅仅只是读取数据字节，而是将数所在的页都读取进磁盘。及磁盘存储是以页(Page)为单位的。
+
+### 为什么使用B+树
+
+**B树**中一次检索最多需要h-1次I/O（根节点常驻内存），渐进复杂度为O(h)=O(log_dN)。一般实际应用中，出度d是非常大的数字，通常超过100，因此h非常小（通常不超过3），用**B树**作为索引结构效率是非常高的。
+
+而**红黑树**这种结构，h明显要深的多。由于逻辑上很近的节点（父子）物理上可能很远，无法利用局部性，所以红黑树的I/O渐进复杂度也为O(h)，效率明显比**B树**差很多。
+
+从上面分析可以看到，d越大索引的性能越好，而出度的上限取决于节点内key和data的大小：
+
+```math
+(d_{max}=floor(pagesize / (keysize + datasize + pointsize)))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;floor表示向下取整。&lt;strong&gt;由于B+Tree内节点去掉了data域，因此可以拥有更大的出度，拥有更好的性能。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;myisam索引实现&quot;&gt;MyISAM索引实现&lt;/h3&gt;
+
+&lt;p&gt;MyISAM引擎B+树中，叶子节点的data域存放的是数据记录的地址。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_myISAM_index.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;辅助索引&lt;/strong&gt;和&lt;strong&gt;主索引&lt;/strong&gt;结构上没有任何区别，只是&lt;strong&gt;主索引&lt;/strong&gt;要求Key是唯一的，而&lt;strong&gt;辅助索引&lt;/strong&gt;的Key可以重复。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_myISAM_secondary_index.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;MyISAM中索引检索的算法为首先按照B+Tree搜索算法搜索索引，如果指定的Key存在，则取出其data域的值，然后以data域的值为地址，读取相应数据记录。&lt;/p&gt;
+
+&lt;p&gt;MyISAM索引实现的方式称为&lt;strong&gt;非聚集索引&lt;/strong&gt;，以此与InnoDB的&lt;strong&gt;聚集索引&lt;/strong&gt;区分。&lt;/p&gt;
+
+&lt;h3 id=&quot;innodb索引实现&quot;&gt;InnoDB索引实现&lt;/h3&gt;
+
+&lt;p&gt;MyISAM引擎索引文件和数据文件分离，而在InnoDB中，表数据文件本身就是按B+树组织的一个索引结构，这棵树的叶节点data域保存了完整的数据记录。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_innoDB_index.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;InnoDB中B+树叶节点按照主键聚集，包含了完整的数据记录，这种索引叫做&lt;strong&gt;聚集索引&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;InnoDB要求表必须有主键（MyISAM可以没有）&lt;/strong&gt;，如果没有显式指定，则MySQL系统会自动选择一个可以唯一标识数据记录的列作为主键，如果不存在这种列，则MySQL自动为InnoDB表生成一个隐含字段作为主键，这个字段长度为6个字节，类型为长整形。&lt;/p&gt;
+
+&lt;p&gt;==InnoDB的辅助索引data域存储相应记录主键的值而不是地址。==&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_innoDB_secondary_index.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;聚集索引这种实现方式使得按主键的搜索十分高效，但是辅助索引搜索需要检索两遍索引：首先检索辅助索引获得主键，然后用主键到主索引中检索获得记录。&lt;/p&gt;
+
+&lt;h2 id=&quot;组合索引前缀索引和最左前缀原理&quot;&gt;组合索引、前缀索引和最左前缀原理&lt;/h2&gt;
+
+&lt;h3 id=&quot;组合索引&quot;&gt;组合索引&lt;/h3&gt;
+
+&lt;p&gt;多个列共同组合成一个索引，MySQL查询时对组合索引执行&lt;strong&gt;最左前缀查询&lt;/strong&gt;。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ALTER TABLE `myIndex` ADD INDEX `name_city_age` (vc_Name(10),vc_City,i_Age);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;会用到组合索引：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SELECT * FROM myIndex WHREE vc_Name=”erquan” AND vc_City=”郑州”
+SELECT * FROM myIndex WHREE vc_Name=”erquan”
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;不会用到组合索引：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SELECT * FROM myIndex WHREE i_Age=20 AND vc_City=”郑州”
+SELECT * FROM myIndex WHREE vc_City=”郑州”
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h3 id=&quot;前缀索引&quot;&gt;前缀索引&lt;/h3&gt;
+
+&lt;p&gt;如果索引列的长度过长，索引时将产生很大的索引文件，同时索引速度降低。&lt;/p&gt;
+
+&lt;p&gt;前缀索引通过限制字符列索引的长度，减少索引文件大小，加快索引查询长度。&lt;/p&gt;
+
+&lt;h3 id=&quot;最左前缀原理&quot;&gt;最左前缀原理&lt;/h3&gt;
+
+&lt;p&gt;MySQL查询按照索引定义从左到右的方式使用索引。&lt;/p&gt;
+
+&lt;p&gt;假设有组合索引：&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;emp_no,title,from_date&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;全列匹配&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;当按照索引中所有列进行精确匹配（这里&lt;strong&gt;精确匹配指“=”或“IN”匹配&lt;/strong&gt;）时，索引可以被用到。这里有一点需要注意，理论上索引对顺序是敏感的，但是==MySQL的查询优化器会自动调整where子句的条件顺序以使用适合的索引。==&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;最左前缀匹配&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;当查询条件精确匹配索引的左边连续一个或几个列时，如&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;emp_no&amp;gt;&lt;/code&gt;或&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;emp_no,title&amp;gt;&lt;/code&gt;，索引可以被用到，但是只能用到一部分，即条件所组成的最左前缀。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;查询条件用到了索引中列的精确匹配，但是中间某个条件未提供。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SELECT * FROM employees.titles WHERE emp_no='10001' AND from_date='1986-06-26';
+
+查询只用到了索引的第一列，而后面的from_date虽然也在索引中，但是由于title不存在而无法和左前缀连接，因此需要对结果进行扫描过滤from_date。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;在Title列数据较少时，可以使用填坑法让mySql使用索引查询：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SELECT * FROM employees.titles
+WHERE emp_no='10001'
+AND title IN ('Senior Engineer', 'Staff', 'Engineer', 'Senior Staff', 'Assistant Engineer', 'Technique Leader', 'Manager')
+AND from_date='1986-06-26';
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;LIKE和REGEXP&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;LIKE匹配时，只有&lt;code class=&quot;highlighter-rouge&quot;&gt;%&lt;/code&gt;不出现在开头，才会用到索引。&lt;/p&gt;
+
+&lt;p&gt;REGEXP匹配，不会用到索引。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;范围查询&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;范围列可以用到索引（必须是最左前缀），但是范围列后面的列无法用到索引。&lt;/p&gt;
+
+&lt;p&gt;索引最多用于一个范围列，因此如果查询条件中有两个范围列则无法全用到索引。&lt;/p&gt;
+
+&lt;p&gt;有时，==MySQL会将&lt;code class=&quot;highlighter-rouge&quot;&gt;BETWEEN&lt;/code&gt;优化为&lt;code class=&quot;highlighter-rouge&quot;&gt;IN&lt;/code&gt;，从而使用索引匹配。==&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;查询条件含有函数或表达式&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;如果查询条件含有函数或表达式，MySQL不使用索引。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;字符串与数字比较时不走索引
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-- 字符串与数字比较不使用索引; 
+CREATE TABLE `a` (`a` char(10)); 
+EXPLAIN SELECT * FROM `a` WHERE `a`=&quot;1&quot; -- 走索引 
+EXPLAIN SELECT * FROM `a` WHERE `a`=1 -- 不走索引 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;==如果条件中有or，除非所有or字段都有索引，否则不走索引。==
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;select * from dept where dname='xxx' or loc='xx' or deptno=45 --如果条件中有or，即使其中有条件带索引也不会使用。换言之，就是要求使用的所有字段，都必须建立索引，我们建议大家尽量避免使用or 关键字 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;==如果MySQL估计使用全表扫描比使用索引快，不走索引。==
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-- 如果mysql估计使用全表扫描要比使用索引快，则不使用索引
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;索引选择性和索引前缀优化&quot;&gt;索引选择性和索引前缀优化&lt;/h2&gt;
+
+&lt;h3 id=&quot;索引选择性selectivity&quot;&gt;索引选择性(Selectivity)&lt;/h3&gt;
+
+&lt;p&gt;两种情况不建议为列添加索引：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;表记录较少，通常表记录2000条以上才考虑需要添加索引。&lt;/li&gt;
+  &lt;li&gt;索引选择性(Selectivity)较低。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;索引选择性(Selectivity)是指不重复的索引值(Cardinality，基数)与表记录数的比值：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Selectivity(Title) = count(DISTINCT(title))/count(*);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;前缀索引优化&quot;&gt;前缀索引优化&lt;/h3&gt;
+
+&lt;p&gt;基于&lt;strong&gt;索引选择性&lt;/strong&gt;，可以对索引做&lt;strong&gt;前缀索引优化&lt;/strong&gt;，根据&lt;strong&gt;索引选择性&lt;/strong&gt;的值，选择&lt;strong&gt;合适&lt;/strong&gt;的前缀建立索引，而不是对列的全值建立索引，大大减少索引大小，提高索引查询速度。&lt;/p&gt;
+
+&lt;p&gt;例子：对&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;first_name, last_name&amp;gt;&lt;/code&gt;，计算不同的前缀索引选择性大小：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SELECT count(DISTINCT(concat(first_name, last_name)))/count(*) AS Selectivity FROM employees.employees;
++-------------+
+| Selectivity |
++-------------+
+|      0.9313 |
++-------------+
+
+SELECT count(DISTINCT(concat(first_name, left(last_name, 3))))/count(*) AS Selectivity FROM employees.employees;
++-------------+
+| Selectivity |
++-------------+
+|      0.7879 |
++-------------+
+
+SELECT count(DISTINCT(concat(first_name, left(last_name, 4))))/count(*) AS Selectivity FROM employees.employees;
++-------------+
+| Selectivity |
++-------------+
+|      0.9007 |
++-------------+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;可知，相对于直接使用&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;first_name, last_name&amp;gt;&lt;/code&gt;，对&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;first_name, left(last_name,4)&amp;gt;&lt;/code&gt;建立索引：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;选择性减少不多，几乎相同。&lt;/li&gt;
+  &lt;li&gt;索引长度大大减少。
+因此，可以对&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;first_name, left(last_name,4)&amp;gt;&lt;/code&gt;建立索引，替代&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;first_name, last_name&amp;gt;&lt;/code&gt;:
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ALTER TABLE employees.employees
+ADD INDEX `first_name_last_name4` (first_name, last_name(4));
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;索引主键选择&quot;&gt;索引主键选择&lt;/h2&gt;
+
+&lt;p&gt;在使用InnoDB存储引擎时，由于InnoDB使用聚集索引，数据记录本身被存于主索引（一颗B+Tree）的叶子节点上。因此，==使用与业务无关的自增主键(id primary key auto_increment)作为索引要好于使用数据中的唯一字段。==&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;如果表使用自增主键&lt;/strong&gt;，那么每次插入新的记录，记录就会顺序添加到当前索引节点的后续位置，当一页写满，就会自动开辟一个新的页。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_use_auto_increment_id.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这样就会形成一个紧凑的索引结构，近似顺序填满。由于每次插入时也不需要移动已有数据，因此效率很高，也不会增加很多开销在维护索引上。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;如果使用非自增主键（如果身份证号或学号等）&lt;/strong&gt;，由于每次插入主键的值近似于随机，因此每次新纪录都要被插到现有索引页得中间某个位置：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_use_distinct_col_primary_key.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;此时MySQL不得不为了将新记录插到合适位置而移动数据，甚至目标页面可能已经被回写到磁盘上而从缓存中清掉，此时又要从磁盘上读回来，这增加了很多开销，同时频繁的移动、分页操作造成了大量的碎片，得到了不够紧凑的索引结构，后续不得不通过OPTIMIZE TABLE来重建表并优化填充页面。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;因此，只要可以，请尽量在InnoDB上采用自增字段做主键。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;refs&quot;&gt;REFS&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;https://blog.codinglabs.org/articles/theory-of-mysql-index.html&lt;/li&gt;
+  &lt;li&gt;http://www.runoob.com/w3cnote/mysql-index.html&lt;/li&gt;
+  &lt;li&gt;https://tech.meituan.com/2014/06/30/mysql-index.html&lt;/li&gt;
+  &lt;li&gt;https://dev.mysql.com/doc/refman/5.7/en/innodb-restrictions.html&lt;/li&gt;
+  &lt;li&gt;https://www.xuebuyuan.com/3241057.html&lt;/li&gt;
+  &lt;li&gt;https://segmentfault.com/a/1190000008131735&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">索引分类</summary></entry><entry><title type="html">详解MySQL中得锁机制及实现</title><link href="http://localhost:4000/2019/05/13/mysql-lock/" rel="alternate" type="text/html" title="详解MySQL中得锁机制及实现" /><published>2019-05-13T00:00:00+08:00</published><updated>2019-05-13T00:00:00+08:00</updated><id>http://localhost:4000/2019/05/13/mysql-lock</id><content type="html" xml:base="http://localhost:4000/2019/05/13/mysql-lock/">&lt;h2 id=&quot;mysql锁分类&quot;&gt;MySQL锁分类&lt;/h2&gt;
+
+&lt;p&gt;MySQL的锁实现在存储引擎层，服务器层完全不了解存储引擎中的锁实现。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;行锁 (row-level lock)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;加在数据行(row)上的锁，行级锁是粒度最低的锁，发生锁冲突的概率也最低、并发度最高。但是加锁慢、开销大，容易发生死锁现象。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;InnoDB支持行锁。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;表锁 (table-level lock)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;加在表(table)上的锁，粒度最高，发生锁冲突的概率大，并发度较低。一次将整个表锁定，加锁块、开销小。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;InnoDB和MyISAM支持表锁。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;页锁 (page-level lock)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;页级锁是MySQL中锁定粒度介于行级锁和表级锁中间的一种锁。表级锁速度快，但冲突多，行级冲突少，但速度慢。所以取了折衷的页级，一次锁定相邻的一组记录。&lt;strong&gt;只有BDB引擎支持页级锁&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;InnoDB&lt;/strong&gt;支持表锁和行锁。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;MyISAM&lt;/strong&gt;仅支持表锁。&lt;/p&gt;
+
+&lt;h2 id=&quot;innodb锁实现&quot;&gt;InnoDB锁实现&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;InnoDB的行锁(row-level lock)是通过&lt;strong&gt;在索引项上加锁实现的&lt;/strong&gt;，不是在记录上加锁。&lt;/p&gt;
+
+    &lt;p&gt;不论是使用主键索引(primary key)、唯一索引(key)或普通索引(index)，InnoDB都使用行锁。&lt;/p&gt;
+
+    &lt;p&gt;即使不同session事务访问不同行的数据，如果这些数据使用了相同的索引键，依旧会出现冲突。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;只有引擎最终&lt;strong&gt;通过索引&lt;/strong&gt;检索数据，InnoDB才会使用行锁(row-level lock)，否则都使用表锁(table-level lock)。&lt;/p&gt;
+
+    &lt;p&gt;只有MySQL执行时真正使用了索引，才会使用行锁。即使在条件中使用了索引字段，但如果MySQL判断执行时没有使用该索引(如，当MySQL认为全表扫描效率更高时)，使用的依然是表锁。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;innodb锁模式&quot;&gt;InnoDB锁模式&lt;/h3&gt;
+
+&lt;p&gt;表锁和行锁都有的：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;共享锁(S)：允许一个事务读数据，阻止其他事务获得相同数据行的排他锁。&lt;/li&gt;
+  &lt;li&gt;排他锁(X)：允许一个事务更新数据，阻止其他事务取得相同数据集的共享锁和排他锁。
+为了允许行锁和表锁共存，实现多粒度锁机制，InnoDB还使用意向锁(Intention Locks)，意向锁为表锁：&lt;/li&gt;
+  &lt;li&gt;意向共享锁(IS)：事务打算给数据行加共享锁(S)，此前必须先取得该表的意向共享锁(IS)。&lt;/li&gt;
+  &lt;li&gt;意向排他锁(IX)：事务打算给数据行加排他锁(X)，此前必须先取得该表的意向排他锁(IX)。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_innodb_lock_compatibility.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;innodb锁算法&quot;&gt;InnoDB锁算法&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;意向锁是InnoDB自动加的，不需用户干预。&lt;/li&gt;
+  &lt;li&gt;对于UPDATE、DELETE和INSERT语句，InnoDB会自动加排他锁(X)。&lt;/li&gt;
+  &lt;li&gt;对于普通SELECT语句，InnoDB不会加任何锁。(事务中SELECT不会主动加读锁)&lt;/li&gt;
+  &lt;li&gt;事务可以通过以下语句显示给记录集加共享锁(S)或排他锁(X)。
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;共享锁（Ｓ）：SELECT * FROM table_name WHERE ... LOCK IN SHARE MODE
+排他锁（X）：SELECT * FROM table_name WHERE ... FOR UPDATE
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;innodb加锁方式&quot;&gt;InnoDB加锁方式&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;加锁方式&lt;/th&gt;
+      &lt;th&gt;锁定内容&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Record Lock&lt;/td&gt;
+      &lt;td&gt;记录锁，锁定一个行记录。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Gap Lock&lt;/td&gt;
+      &lt;td&gt;间隙锁，锁定一个区间。&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Next Lock&lt;/td&gt;
+      &lt;td&gt;记录锁+间隙锁，锁定行记录+区间。&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;strong&gt;记录锁和间隙锁都是在索引项上加锁。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;记录锁&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;记录锁都是基于索引的，只有当MySQL选择使用索引查询时，才会加记录锁，否则加表锁。&lt;/p&gt;
+
+&lt;p&gt;当基于辅助索引查询时，由于InnoDB聚簇索引的特性，也会对主键索引加锁，因此不同事务中对同一行数据不同索引查询依然会互斥。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;间隙锁&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;当我们用范围条件而不是相等条件检索数据，并请求共享或排他锁时，InnoDB会给符合条件的已有数据记录的所有索引项加锁。&lt;/p&gt;
+
+&lt;p&gt;对于键值在条件范围内但并不存在的记录，叫做“间隙（GAP)”，InnoDB也会对这个“间隙”加锁，这种锁机制就是所谓的间隙锁（Gap-Key锁）。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;InnoDB使用间隙锁的目的：
+
+1. 防止幻读，以满足相关隔离级别的要求。
+2. 满足恢复和复制的需要。
+
+MySQL 通过 BINLOG 录入执行成功的 INSERT、UPDATE、DELETE 等更新数据的 SQL 语句，并由此实现 MySQL 数据库的恢复和主从复制。MySQL 的恢复机制（复制其实就是在 Slave Mysql 不断做基于 BINLOG 的恢复）有以下特点：
+
+    - MySQL 的恢复是 SQL 语句级的，也就是重新执行 BINLOG 中的 SQL 语句。
+    - MySQL 的 Binlog 是按照事务提交的先后顺序记录的， 恢复也是按这个顺序进行的。
+
+由此可见，MySQL的恢复机制要求在一个事务未提交前，其他并发事务不能插入满足其锁定条件的任何记录，也就是不允许出现幻读。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;加锁方式举例&quot;&gt;加锁方式举例&lt;/h4&gt;
+
+&lt;p&gt;不同的事务隔离级别、不同的索引类型、是否为等值查询，使用的加锁方式不同。&lt;/p&gt;
+
+&lt;p&gt;当使用InnoDB默认的&lt;strong&gt;Repeatable Read&lt;/strong&gt;隔离级别进行等值查询时：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;等值查询使用的索引类型&lt;/th&gt;
+      &lt;th&gt;锁定内容&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;主键(聚簇索引)&lt;/td&gt;
+      &lt;td&gt;对聚簇索引加Record Lock&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;唯一索引&lt;/td&gt;
+      &lt;td&gt;对辅助索引加Record Lock&amp;lt;/br&amp;gt;对聚簇索引加Record Lock&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;普通索引&lt;/td&gt;
+      &lt;td&gt;对辅助索引加Next-key Lock&amp;lt;/br&amp;gt;对聚簇索引加Record Lock&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;不适用索引&lt;/td&gt;
+      &lt;td&gt;对聚簇索引全表加Next-key Lock&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;主键等值查询使用&lt;strong&gt;聚簇索引&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_innodb_lock_primary_key.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;非主键等值查询使用&lt;strong&gt;辅助唯一索引&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_innodb_lock_secondary_only_key.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;非主键等值查询使用&lt;strong&gt;辅助索引&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_innodb_lock_secondary_key.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;表锁&quot;&gt;表锁&lt;/h3&gt;
+
+&lt;p&gt;当InnoDB不使用索引时，将会自动加表锁。&lt;/p&gt;
+
+&lt;h4 id=&quot;lock-tables&quot;&gt;LOCK TABLES&lt;/h4&gt;
+
+&lt;p&gt;MySQL也支持显示加表锁：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;SET AUTOCOMMIT=0; 
+LOCK TABLES t1 WRITE, t2 READ, ...; 
+[do something with tables t1 and t2 here]; 
+COMMIT; 
+UNLOCK TABLES;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;显示加表锁&lt;code class=&quot;highlighter-rouge&quot;&gt;LOCK TABLES&lt;/code&gt;是在MySQL Server层完成的，仅当&lt;code class=&quot;highlighter-rouge&quot;&gt;autocommit=0&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;innodb_table_lock=1&lt;/code&gt;(默认设置)时，InnoDB层才能知道MySQL加的表锁，ＭySQL Server才能感知InnoDB加的行锁。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;使用&lt;code class=&quot;highlighter-rouge&quot;&gt;LOCK TABLES&lt;/code&gt;前必须设置参数&lt;code class=&quot;highlighter-rouge&quot;&gt;autocommit=0&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;innodb_table_lock=1&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;事务结束前，不要用 UNLOCK TABLES 释放表锁，因为 UNLOCK TABLES会隐含地提交事务。&lt;/li&gt;
+  &lt;li&gt;COMMIT或ROLLBACK并不能释放用LOCK TABLES加的表级锁，必须用UNLOCK TABLES显示释放表锁。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;表锁使用举例：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// 读取两个表的数据并比较数据是否相等。
+Lock tables orders read local, order_detail read local; 
+Select sum(total) from orders; 
+Select sum(subtotal) from order_detail; 
+Unlock tables;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;锁分析和优化&quot;&gt;锁分析和优化&lt;/h2&gt;
+
+&lt;h3 id=&quot;行锁状态&quot;&gt;行锁状态&lt;/h3&gt;
+
+&lt;p&gt;查看&lt;code class=&quot;highlighter-rouge&quot;&gt;Innodb_row_lock_%&lt;/code&gt;状态变量：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; show status like 'innodb_row_lock%';
++-------------------------------+-------+
+| Variable_name                 | Value |
++-------------------------------+-------+
+| Innodb_row_lock_current_waits | 0     |
+| Innodb_row_lock_time          | 0     |
+| Innodb_row_lock_time_avg      | 0     |
+| Innodb_row_lock_time_max      | 0     |
+| Innodb_row_lock_waits         | 0     |
++-------------------------------+-------+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;innodb_row_lock_current_waits&lt;/code&gt;: 当前正在等待锁定的数量&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;innodb_row_lock_time&lt;/code&gt;: 从系统启动到现在锁定总时间长度；非常重要的参数，&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;innodb_row_lock_time_avg&lt;/code&gt;: 每次等待所花平均时间；非常重要的参数，&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;innodb_row_lock_time_max&lt;/code&gt;: 从系统启动到现在等待最常的一次所花的时间；&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;innodb_row_lock_waits&lt;/code&gt;: 系统启动后到现在总共等待的次数；非常重要的参数。直接决定优化的方向和策略。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;行锁优化&quot;&gt;行锁优化&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;尽可能让所有数据检索都通过索引来完成，避免无索引行或索引失效导致行锁升级为表锁。&lt;/li&gt;
+  &lt;li&gt;尽可能避免间隙锁带来的性能下降，减少或使用合理的检索范围。&lt;/li&gt;
+  &lt;li&gt;尽可能减少事务的粒度，比如控制事务大小，而从减少锁定资源量和时间长度，从而减少锁的竞争等，提供性能。&lt;/li&gt;
+  &lt;li&gt;尽可能低级别事务隔离，隔离级别越高，并发的处理能力越低。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;表锁状态&quot;&gt;表锁状态&lt;/h3&gt;
+
+&lt;p&gt;查看加锁表&lt;code class=&quot;highlighter-rouge&quot;&gt;show open tables where in_use &amp;gt; 0&lt;/code&gt;（1表示加锁，0表示未加锁)&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; show open tables where in_use &amp;gt; 0;
++----------+-------------+--------+-------------+
+| Database | Table       | In_use | Name_locked |
++----------+-------------+--------+-------------+
+| lock     | myisam_lock |      1 |           0 |
++----------+-------------+--------+-------------+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;查看加锁状态&lt;code class=&quot;highlighter-rouge&quot;&gt;show status like 'table_locks%'&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; show status like 'table_locks%';
++----------------------------+-------+
+| Variable_name              | Value |
++----------------------------+-------+
+| Table_locks_immediate      | 104   |
+| Table_locks_waited         | 0     |
++----------------------------+-------+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;table_locks_immediate&lt;/code&gt;: 表示立即释放表锁数。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;table_locks_waited&lt;/code&gt;: 表示需要等待的表锁数。此值越高则说明存在着越严重的表级锁争用情况。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;refs&quot;&gt;REFS&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;https://zhuanlan.zhihu.com/p/29150809&lt;/li&gt;
+  &lt;li&gt;https://segmentfault.com/a/1190000014133576#articleHeader4&lt;/li&gt;
+  &lt;li&gt;https://juejin.im/post/5b82e0196fb9a019f47d1823#heading-20&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">MySQL锁分类</summary></entry><entry><title type="html">MySQL事务实现及Redo Log和Undo Log详解</title><link href="http://localhost:4000/2019/05/09/mysql-tx-redo-undo/" rel="alternate" type="text/html" title="MySQL事务实现及Redo Log和Undo Log详解" /><published>2019-05-09T00:00:00+08:00</published><updated>2019-05-09T00:00:00+08:00</updated><id>http://localhost:4000/2019/05/09/mysql-tx-redo-undo</id><content type="html" xml:base="http://localhost:4000/2019/05/09/mysql-tx-redo-undo/">&lt;h2 id=&quot;acid实现&quot;&gt;ACID实现&lt;/h2&gt;
+
+&lt;p&gt;事务(Transaction)实现着重于实现事务的ACID属性，即:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;原子性(Atomic)&lt;/li&gt;
+  &lt;li&gt;一致性(Consistency)&lt;/li&gt;
+  &lt;li&gt;隔离性(Isolation)&lt;/li&gt;
+  &lt;li&gt;持久性(Duration)
+事务的隔离性由锁机制和MVCC实现，原子性(Atomic)由Undo Log实现，持久性由Redo Log实现，一致性由Undo Log和Redo Log共同实现(即：数据库总是从一个一致状态转移到另一个一致状态)。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;redo-log&quot;&gt;Redo Log&lt;/h2&gt;
+
+&lt;p&gt;重做日志(Redo Log)用来实现事务的&lt;strong&gt;持久性(Duration)&lt;/strong&gt;，记录每次操作上页的物理修改。&lt;/p&gt;
+
+&lt;h3 id=&quot;解决问题&quot;&gt;解决问题&lt;/h3&gt;
+
+&lt;p&gt;InnoDB存储引擎的存储数据存放在磁盘中，同时提供内存缓存(Buffer Pool)包含磁盘中部分数据页的映射，作为数据库访问的缓冲。Buffer Pool中修改的脏页数据会定期刷新到磁盘中。&lt;/p&gt;
+
+&lt;p&gt;==&lt;strong&gt;如果MySQL宕机，而Buffer Pool的数据没有完全刷新到磁盘，就会导致数据丢失，无法保证持久性。&lt;/strong&gt; 因此引入Redo Log解决这个问题。==&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;当数据修改时，首先写入Redo Log，再更新到Buffer Pool，保证数据不会因为宕机而丢失，保证持久性。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;当事务提交时会调用fsync将redo log刷至磁盘持久化。MySQL宕机时，通过读取Redo Log中的数据，对数据库进行恢复。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;==Redo Log也是记录在磁盘中，为什么会比直接将Buffer Pool写入磁盘更快？==&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Buffer Pool刷入脏页至磁盘是随机IO，每次修改的数据位置随机，而Redo Log永远在页中追加，属于顺序IO。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Buffer Pool刷入磁盘是以数据页为单位，每次都需要整页写入。而Redo Log只需要写入真正&lt;strong&gt;物理修改&lt;/strong&gt;的部分，IO数据量大大减少。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;redo-log实现&quot;&gt;Redo Log实现&lt;/h3&gt;
+
+&lt;p&gt;redo log由两部分组成：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;内存中的重做日志缓冲(redo log buffer)&lt;/li&gt;
+  &lt;li&gt;重做日志文件(redo log file)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;InnoDB通过&lt;code class=&quot;highlighter-rouge&quot;&gt;Force Log at Commit&lt;/code&gt;机制保证持久性：当事务提交(COMMIT)时，必须先将该事务的所有日志缓冲写入到重做日志文件进行持久化，才能COMMIT成功。&lt;/p&gt;
+
+&lt;p&gt;为了确保每次日志都写入重做日志文件，在每次将重做日志缓冲写入重做日志文件后，InnoDB存储引擎都需要调用一次fsync操作。因此，磁盘的性能决定了事务提交的性能，也就是数据库的性能。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;innodb_flush_log_at_trx_commit&lt;/code&gt;参数控制重做日志刷新到磁盘的策略：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;0，事务提交时不进行写入重做日志操作，仅在master thread每秒进行一次。&lt;/li&gt;
+  &lt;li&gt;1，事务提交时必须调用一次&lt;code class=&quot;highlighter-rouge&quot;&gt;fsync&lt;/code&gt;操作。&lt;/li&gt;
+  &lt;li&gt;2，仅写入文件系统缓存，不进行&lt;code class=&quot;highlighter-rouge&quot;&gt;fsync&lt;/code&gt;操作。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;log buffer根据如下规则写入到磁盘重做日志文件中：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;事务提交时&lt;/li&gt;
+  &lt;li&gt;当log buffer中有一半的内存空间已经被使用&lt;/li&gt;
+  &lt;li&gt;log checkpoint时&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;log-block&quot;&gt;log block&lt;/h4&gt;
+
+&lt;p&gt;重做日志以512字节进行存储，重做日志缓存、重做日志文件都是以块(block)的方式进行保存的，称为重做日志块(redo log block)。&lt;/p&gt;
+
+&lt;p&gt;重做日志块由：日志快头(log block header)、日志、日志快尾(log block tailer)三部分组成。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/innodb_redo_log_block.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;log block header&lt;/code&gt;占用12个字节，&lt;code class=&quot;highlighter-rouge&quot;&gt;log block tailer&lt;/code&gt;占用8个字节，因此重做日志在每个重做日志块中占用512 - 12 - 8 = 492个字节。&lt;/p&gt;
+
+&lt;h4 id=&quot;redo-log-file-重做日志文件&quot;&gt;redo log file 重做日志文件&lt;/h4&gt;
+
+&lt;p&gt;重做日志文件存储在log buffer中保存的log block，因此其也是根据块的方式进行物理存储，每个块的大小同样为512字节。&lt;/p&gt;
+
+&lt;p&gt;写入log block时在redo log file最后进行追加，当一个redo log file被写满时，会接着写入下一个redo log file。&lt;/p&gt;
+
+&lt;p&gt;InnoDB存储引擎的存储管理基于页，因此重做日志格式也是基于页的，对于不同的操作类型，InnoDB有不同的重做日志格式，InnoDB 1.2版本时，总共有51种重做日志类型。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/innodb_redo_log_file_format.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;虽然重做日志格式不同，但是有同样的通用头部格式：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;redo_log_type : 重做日志类型&lt;/li&gt;
+  &lt;li&gt;space : 表空间ID&lt;/li&gt;
+  &lt;li&gt;page_no : 页偏移量&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;log-group&quot;&gt;log group&lt;/h4&gt;
+
+&lt;p&gt;log group是重做日志组，其中有多个重做日志文件，是一个逻辑上的概念。在InnoDB中只有一个log group。&lt;/p&gt;
+
+&lt;h3 id=&quot;通过redo-log恢复&quot;&gt;通过Redo Log恢复&lt;/h3&gt;
+
+&lt;p&gt;InnoDB存储引擎在启动时不管上次数据库是否正常关闭，都会尝试进行恢复操作。&lt;/p&gt;
+
+&lt;p&gt;重做日志记录的是页的物理修改，因此其恢复速度比二进制日志快很多。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;如对table：
+
+CREATE TABLE t ( a INT, b INT, PRIMARY KEY(a), KEY(b) );
+
+执行SQL语句：
+
+INSERT INTO t SELECT 1,2；
+
+其记录的重做日志大致为：
+
+page(2,3), offset 32, value 1,2 # 聚集索引
+page(2,4), offset 54, value 2 # 辅助索引
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;log-sequence-number-lsn&quot;&gt;Log Sequence Number LSN&lt;/h4&gt;
+
+&lt;p&gt;LSN日志序列号占用8字节，记录重做日志当前总字节量，是单调递增的。&lt;/p&gt;
+
+&lt;p&gt;LSN不仅记录在重做日志中，还&lt;strong&gt;存在于每个页中&lt;/strong&gt;，在每个页的头部，值&lt;code class=&quot;highlighter-rouge&quot;&gt;FIL_PAGE_LSN&lt;/code&gt;记录该页的LSN。表示&lt;strong&gt;页最后刷新时LSN的大小&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;数据库启动时，页中的LSN用来判断页是否需要进行恢复操作：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;重做日志LSN &amp;gt; 页中LSN，需要进行恢复操作。&lt;/li&gt;
+  &lt;li&gt;重做日志LSN &amp;lt; 页中LSN，不许进行恢复操作。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;SHOW ENGINE INNODB STATUS可以查看当前数据库LSN情况。&lt;/p&gt;
+
+&lt;h2 id=&quot;undo-log&quot;&gt;Undo Log&lt;/h2&gt;
+
+&lt;p&gt;Undo Log(回滚日志)用来实现事务的原子性(回滚)和隔离性(MVCC)。&lt;/p&gt;
+
+&lt;p&gt;Undo Log和Redo Log正好相反，记录的是数据&lt;strong&gt;被修改前&lt;/strong&gt;的信息，并且只记录&lt;strong&gt;逻辑&lt;/strong&gt;变化，基于Undo Log进行的回滚只是对数据库进行一个相反的操作，而不是直接恢复物理页。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_innodb_undo_log_ex.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;针对每个DELETE操作，生成Insert Log插入Undo Log。&lt;/li&gt;
+  &lt;li&gt;针对每个UPDATE操作，生成相反的Update Log插入Undo Log。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;undo-log生成举例&quot;&gt;Undo Log生成举例&lt;/h3&gt;
+
+&lt;p&gt;Undo Log中基于回滚指针(DB_ROLL_PT)维护数据行的所有历史版本。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;初始数据行&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_mvcc_update_row_ex_1.jpeg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;事务Transaction1更新数据&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;此时Undo Log记录旧版本的数据值，且由于是第一个版本，&lt;code class=&quot;highlighter-rouge&quot;&gt;DB_TRX_ID&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;DB_ROLL_PT&lt;/code&gt;为NULL。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;用排他锁锁定该行。
+记录redo log。
+把该行修改前的值Copy到undo log。
+修改当前行的值，填写事务编号，使回滚指针指向undo log中的修改前的行。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_mvcc_update_row_ex_2.jpeg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;事务Transaction2更新数据&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_mvcc_update_row_ex_3.jpeg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;undo-log实现&quot;&gt;Undo Log实现&lt;/h3&gt;
+
+&lt;h4 id=&quot;undo-log格式&quot;&gt;Undo Log格式&lt;/h4&gt;
+
+&lt;p&gt;InnoDB中，undo log分为：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Insert Undo Log&lt;/li&gt;
+  &lt;li&gt;Update Undo Log&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Insert Undo Log&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Insert Undo Log是INSERT操作产生的undo log。&lt;/p&gt;
+
+&lt;p&gt;INSERT操作的记录由于是该数据的第一个记录，对其他事务不可见，该Undo Log可以在事务提交后直接删除。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/innodb_insert_undo_log.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;type_cmpl：undo的类型&lt;/li&gt;
+  &lt;li&gt;undo_no：事务的ID&lt;/li&gt;
+  &lt;li&gt;table_id：undo log对应的表对象
+接着的部分记录了所有主键的列和值。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Update Undo Log&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Update Undo Log记录对DELETE和UPDATE操作产生的Undo Log。&lt;/p&gt;
+
+&lt;p&gt;Update Undo Log会提供MVCC机制，因此不能在事务提交时就删除，而是放入undo log链表，等待purge线程进行最后的删除。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/innodb_update_undo_log.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;update_vector表示update操作导致发生改变的列，每个修改的列信息都要记录。对于不同的undo log类型，可能还需要记录对索引列所做的修改。&lt;/p&gt;
+
+&lt;h4 id=&quot;undo-log存储管理&quot;&gt;Undo Log存储管理&lt;/h4&gt;
+
+&lt;p&gt;InnoDB基于Rollback Segment管理Undo Log，每个Rollback Segment记录1024个Undo Segment，Rollback Segment默认存储在共享表空间中。&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Rollback Segment管理参数：
+- innod\_undo\_directory：设置Rollback Segment文件所在的路径，默认在共享表空间内。
+- innodb\_undo\_logs：设置Rollback Segment的个数，默认为128，即innoDB默认支持同事在线的事务限制为128 * 1024。
+- innodb\_undo\_tablespaces：构成Rollback Segment的文件数量。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;当事务没有提交时，InnoDB必须保留该事务对应的Undo Log。但是当事务提交时，依然不能删除Undo Log，因为要支持MVCC，可能有其他处于Repeatable Read隔离级别下的事务，正在读取对应版本的数据。&lt;/p&gt;
+
+&lt;p&gt;事务提交时，虽然不会立即删除Undo Log，但是会将对应的Undo Log放入一个删除列表中，未来通过purge线程来进行判断并删除。&lt;/p&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">ACID实现</summary></entry><entry><title type="html">详解MVCC</title><link href="http://localhost:4000/2019/05/07/mysql-mvcc/" rel="alternate" type="text/html" title="详解MVCC" /><published>2019-05-07T00:00:00+08:00</published><updated>2019-05-07T00:00:00+08:00</updated><id>http://localhost:4000/2019/05/07/mysql-mvcc</id><content type="html" xml:base="http://localhost:4000/2019/05/07/mysql-mvcc/">&lt;h2 id=&quot;mvcc概念介绍&quot;&gt;MVCC概念介绍&lt;/h2&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;MVCC(Multi-version Concurrent Control)&lt;/code&gt;：多版本并发控制。基于保存多个数据版本实现的并发控制，当需要更新数据时，实现了MVCC的系统不会立即用新数据覆盖原始数据，而是创建该条记录的一个新版本。&lt;/p&gt;
+
+&lt;p&gt;最早的数据库系统，只有读-读之间可以并发，引入多版本控制之后，读-读、读-写、写-读都可以并行，即&lt;strong&gt;读无需加锁、读写不冲突(InnoDB中RR隔离级别下，普通SELECT不加共享锁)&lt;/strong&gt;，极大增加了系统的并发性。&lt;/p&gt;
+
+&lt;p&gt;在InnoDB中，MVCC只在：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;READ COMMITTED&lt;/li&gt;
+  &lt;li&gt;REPEATABLE READ
+两个隔离级别下工作，因为READ UNCOMMITTED总是读取最新数据行，而SERIALIZABLE会对所有读取的行都加锁。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;mvcc实现原理&quot;&gt;MVCC实现原理&lt;/h2&gt;
+
+&lt;h3 id=&quot;行记录存储格式&quot;&gt;行记录存储格式&lt;/h3&gt;
+
+&lt;p&gt;InnoDB行记录为了支持MVCC，除了基本的数据信息，还有三个额外字段：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;DB_ROW_ID&lt;/code&gt;：InnoDB自动生成的自增&lt;strong&gt;主键id&lt;/strong&gt;。当用户没有显示指定主键、且无非null唯一索引时，InnoDB的聚簇索引会使用&lt;code class=&quot;highlighter-rouge&quot;&gt;DB_ROW_ID&lt;/code&gt;作为主键。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;DB_TRX_ID&lt;/code&gt;：最近更新此行记录的&lt;strong&gt;事务id&lt;/strong&gt;，数据库每开启一个新事务，事务ID自动加一。&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;DATA_ROLL_PTR&lt;/code&gt;：指向Undo Log中当前行旧版数据的指针。支持事务回滚。刚Insert的记录没有旧版本，该值为NULL。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;undo-log&quot;&gt;Undo Log&lt;/h3&gt;
+
+&lt;p&gt;Undo Log用来实现事务回滚和MVCC，原理很简单，进行数据修改之前，首先将当前数据保存到Undo Log中。&lt;/p&gt;
+
+&lt;p&gt;Undo Log是逻辑日志，当执行DELETE操作时，Undo Log中记录一条对应的INSERT。当执行UPDATE操作时，Undo Log记录一条相反的UPDATE。&lt;/p&gt;
+
+&lt;p&gt;当执行RollBack时，或MVCC需要读取旧版本数据时，就可以从Undo Log中的逻辑记录进行数据恢复。&lt;/p&gt;
+
+&lt;p&gt;多个Undo Log数据之间通过链表的方式关联，每个Log中存储上一个版本Log的地址。&lt;/p&gt;
+
+&lt;h3 id=&quot;行更新过程举例&quot;&gt;行更新过程举例&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;初始数据行&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_mvcc_update_row_ex_1.jpeg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;事务Transaction1更新数据&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;此时Undo Log记录旧版本的数据值，且由于是第一个版本，&lt;code class=&quot;highlighter-rouge&quot;&gt;DB_TRX_ID&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;DB_ROLL_PT&lt;/code&gt;为NULL。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;用排他锁锁定该行。
+记录redo log。
+把该行修改前的值Copy到undo log。
+修改当前行的值，填写事务编号，使回滚指针指向undo log中的修改前的行。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_mvcc_update_row_ex_2.jpeg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;事务Transaction2更新数据&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_mvcc_update_row_ex_3.jpeg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;事务链表&quot;&gt;事务链表&lt;/h3&gt;
+
+&lt;p&gt;事务在开始到提交的过程中，会被保存到&lt;code class=&quot;highlighter-rouge&quot;&gt;trx_sys-&amp;gt;trx_list&lt;/code&gt;事务链表，事务一旦被提交，将从事务链表中移除。&lt;/p&gt;
+
+&lt;h3 id=&quot;read-view&quot;&gt;Read View&lt;/h3&gt;
+
+&lt;p&gt;Read View可以认为是一个当前活跃事务的快照，在当前事务&lt;strong&gt;SQL开始&lt;/strong&gt;时，会创建一个Read View，用来判定当前SQL执行时，所有活跃事务哪些改变对当前事务可见、哪些改变对当前事务不可见。&lt;/p&gt;
+
+&lt;h3 id=&quot;版本可见性算法&quot;&gt;版本可见性算法&lt;/h3&gt;
+
+&lt;p&gt;基于行记录、Read View，在SQL开始时能够得到所有活跃事务对当前SQL的可见性。&lt;/p&gt;
+
+&lt;p&gt;记录对当前SQL的可见性算法：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;假设当前行的事务id为 trx_id_current。
+
+假设Read View中最早的事务id为 trx_id_early，Read View中最新的事务id为trx_id_late。
+即当前事务中当前SQL开始时，活跃的事务id介于trx_id_early和trx_id_late之间。Read View中不包括当前事务。
+
+1. 如果 trx_id_current &amp;lt; trx_id_early，即当前行的事务已经结束并提交，该行最新记录对当前SQL可见。跳转步骤5。
+
+2. 如果 trx_id_current &amp;gt; trx_id_late，即该行记录最新的更新是在当前事务之后开启的，该行最新记录对当前SQL不可见。跳转步骤4。
+
+3. 如果 trx_id_early &amp;lt; trx_id_current &amp;lt; trx_id_late，即该行记录更新事务在当前SQL执行时处于活跃状态，未提交，该行最新记录对当前SQL不可见。跳转步骤4。
+
+4. 如果不可见，从该行记录的DB_ROLL_PTR指针指向的Undo Log中取出旧数据和旧trx_id，重新进行算法比较，跳转步骤1。
+
+5. 如果可见，则将该值返回。
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;不同隔离级别的区别&quot;&gt;不同隔离级别的区别&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;READ UNCOMMITTED&lt;/p&gt;
+
+    &lt;p&gt;该级别下永远读取最新行，无需MVCC。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;READ COMMITTED&lt;/p&gt;
+
+    &lt;p&gt;该级别下，每次执行SQL，需要能够读取其他事务COMMIT后的最新值。&lt;/p&gt;
+
+    &lt;p&gt;因此，&lt;strong&gt;每个SQL语句执行时都会创建一个新的READ VIEW&lt;/strong&gt;。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;REPEATABLE READ&lt;/p&gt;
+
+    &lt;p&gt;该级别下，事务未提交时只能读取到旧值。&lt;/p&gt;
+
+    &lt;p&gt;因此，&lt;strong&gt;只在第一个SQL执行时创建READ VIEW，此后不再更新&lt;/strong&gt;。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;SERIALIZABLE&lt;/p&gt;
+
+    &lt;p&gt;每次只能有一个事务正在运行，无需MVCC。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;refs&quot;&gt;REFS&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;https://segmentfault.com/a/1190000012650596&lt;/li&gt;
+  &lt;li&gt;https://sadwxqezc.github.io/HuangHuanBlog/mysql/2018/05/01/MVCC.html&lt;/li&gt;
+  &lt;li&gt;http://mysql.taobao.org/monthly/2018/11/04/&lt;/li&gt;
+  &lt;li&gt;https://www.imooc.com/article/17290&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">MVCC概念介绍</summary></entry><entry><title type="html">MySQL中binlog详解及复制机制</title><link href="http://localhost:4000/2019/05/06/mysql-binlog-replica/" rel="alternate" type="text/html" title="MySQL中binlog详解及复制机制" /><published>2019-05-06T00:00:00+08:00</published><updated>2019-05-06T00:00:00+08:00</updated><id>http://localhost:4000/2019/05/06/mysql-binlog-replica</id><content type="html" xml:base="http://localhost:4000/2019/05/06/mysql-binlog-replica/">&lt;h2 id=&quot;binlog&quot;&gt;binlog&lt;/h2&gt;
+
+&lt;h3 id=&quot;binlog概述&quot;&gt;binlog概述&lt;/h3&gt;
+
+&lt;p&gt;binlog是MySQL Server层维护的&lt;strong&gt;二进制日志&lt;/strong&gt;。binlog记录所有的DDL和DML语句(除了数据查询语句SELECT、SHOW等)，以Event的形式记录，同时记录语句执行时间。&lt;/p&gt;
+
+&lt;p&gt;binlog的作用有：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;复制：Master和Slave之间的主从复制。&lt;/li&gt;
+  &lt;li&gt;数据增量备份和恢复：MySQL提供mysqlbinlog工具从binlog中恢复数据。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;binlog包括两类文件：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;二进制日志索引文件(.index)：记录所有的二进制文件。&lt;/li&gt;
+  &lt;li&gt;二进制日志文件(.00000*)：记录所有DDL和DML语句事件。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;binlog格式&quot;&gt;binlog格式&lt;/h3&gt;
+
+&lt;p&gt;binlog有三种格式：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;STATEMENT：基于SQL语句记录&lt;/li&gt;
+  &lt;li&gt;ROW：基于行的记录&lt;/li&gt;
+  &lt;li&gt;MIXED：混合模式(ROW + STATEMENT)
+可以通过&lt;code class=&quot;highlighter-rouge&quot;&gt;my.cnf&lt;/code&gt;配置&lt;code class=&quot;highlighter-rouge&quot;&gt;binlog-format&lt;/code&gt;修改。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;STATEMENT&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;直接记录造成数据更改的SQL语句。&lt;/p&gt;
+
+&lt;p&gt;优点：&lt;/p&gt;
+
+&lt;p&gt;实现简单，日志紧凑，节省带宽。只需要记录在 master 上所执行的语句的细节，以及执行语句时候的上下文的信息。&lt;/p&gt;
+
+&lt;p&gt;缺点：&lt;/p&gt;
+
+&lt;p&gt;一些SQL语句和当前环境密切相关，无法被正确复制。如CURRENT_USER()、NOW()、UUID()函数等。&lt;/p&gt;
+
+&lt;p&gt;更新必须是串行的，需要更多的锁。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;ROW&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;MySQL 5.1开始支持基于行的复制，将&lt;strong&gt;实际更新的行数据&lt;/strong&gt;直接记录在二进制日志中。&lt;/p&gt;
+
+&lt;p&gt;优点：&lt;/p&gt;
+
+&lt;p&gt;能够精确且正确的复制行数据，从库可以直接应用更新数据。&lt;/p&gt;
+
+&lt;p&gt;缺点：&lt;/p&gt;
+
+&lt;p&gt;大数据量更新(如全表更新)大大增加二进制日志大小，无法判断执行了哪些SQL，占用大量带宽。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;MIXED&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;一般的语句修改使用STATEMENT格式保存binlog，对于STATEMENT无法精确记录的如一些函数，则采用ROW格式。&lt;/p&gt;
+
+&lt;h3 id=&quot;binlog和redo-logundo-log区别&quot;&gt;binlog和redo log/undo log区别&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;层次不同&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;redo log/undo log属于innoDB存储引擎，而binlog属于mySQL Server层，和引擎无关。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;记录内容不同&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;redo log/undo log记录的都是页的修改，redo log属于物理日志， undo log属于逻辑日志。&lt;/p&gt;
+
+&lt;p&gt;binlog记录的是事务操作的内容，是二进制日志。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;记录时机不同&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;redo log/undo log在事务执行中随着SQL的执行不断写入，且在事务COMMIT前同步到磁盘文件。&lt;/p&gt;
+
+&lt;p&gt;binlog只在事务COMMIT前写入binlog文件。且根据&lt;code class=&quot;highlighter-rouge&quot;&gt;sync_binlog&lt;/code&gt;参数配置决定刷新到磁盘时间。&lt;/p&gt;
+
+&lt;h3 id=&quot;binlog参数&quot;&gt;binlog参数&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_binlog_variables.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;log_bin&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;log_bin [=file_name]&lt;/code&gt;如果不为OFF则开启binlog功能，可以设置binlog存放路径。&lt;/p&gt;
+
+&lt;p&gt;要开启binlog，必须设置&lt;code class=&quot;highlighter-rouge&quot;&gt;service-id&lt;/code&gt;。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;binlog_format&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;binlog记录格式，ROW/STATEMENT/MIXED。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;binlog_cache_size&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;控制binlog cache大小。&lt;/p&gt;
+
+&lt;p&gt;未提交的binlog记录会首先记录在binlog cache中，待事务COMMIT前一次性写入binlog文件。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sync_binlog&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;设置binlog fsync刷入文件系统的同步方式。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;- 0：默认值，只写入操作系统缓存，不调用fsync，由操作系统决定什么时候同步磁盘文件。
+- 1：每次写binlog都调用fsync同步磁盘。
+- &amp;gt;1：`sync_binlog=N`，每写N次调用一次fsync。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;max_binlog_size&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;如果超过了该值，就会产生新的日志文件，后缀名+1，并且记录到.index文件里面。&lt;/p&gt;
+
+&lt;h3 id=&quot;binlog控制&quot;&gt;binlog控制&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;查看所有binlog日志&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; show master logs;
++------------------+-----------+
+| Log_name         | File_size |
++------------------+-----------+
+| mysql-bin.000001 |       970 |
++------------------+-----------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;查看binlog最新状态(最后一个binlog编号)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; show master status;
++------------------+----------+--------------+------------------+-------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++------------------+----------+--------------+------------------+-------------------+
+| mysql-bin.000001 |      970 |              |                  |                   |
++------------------+----------+--------------+------------------+-------------------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;刷新binlog日志，产生一个新的binlog file&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; flush logs;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql&amp;gt; show master logs;
++------------------+-----------+
+| Log_name         | File_size |
++------------------+-----------+
+| mysql-bin.000001 |      1017 |
+| mysql-bin.000002 |       154 |
++------------------+-----------+
+2 rows in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;重置所有binlog日志&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; reset master;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql&amp;gt; show master logs;
++------------------+-----------+
+| Log_name         | File_size |
++------------------+-----------+
+| mysql-bin.000001 |       154 |
++------------------+-----------+
+1 row in set (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;查看binlog内容&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;通过mysqlbinlog工具：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;shell&amp;gt; mysqlbinlog -vv mysql-bin.000001
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;通过mysql数据库读取：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; show binlog events [IN 'log_name'] [FROM pos] [LIMIT [offset,] row_count];
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;从binlog中恢复数据&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;shell&amp;gt; mysqlbinlog [选项] mysql-bin.0000xx | mysql -u用户名 -p密码 数据库名
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;复制&quot;&gt;复制&lt;/h1&gt;
+
+&lt;p&gt;MySQL复制指从服务器(Slave)从主服务器(Master)中获取并同步数据。向Master插入数据后，Slave会自动从Master把修改的数据同步过来，保证数据一致性。&lt;/p&gt;
+
+&lt;p&gt;基于复制，MySQL能够实现：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;高可用、故障切换&lt;/li&gt;
+  &lt;li&gt;读写分离、负载均衡&lt;/li&gt;
+  &lt;li&gt;数据备份&lt;/li&gt;
+  &lt;li&gt;业务模块化&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;复制工作原理&quot;&gt;复制工作原理&lt;/h2&gt;
+
+&lt;p&gt;MySQL复制有两种工作模式：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;基于语句的复制&lt;/li&gt;
+  &lt;li&gt;基于行的复制&lt;/li&gt;
+  &lt;li&gt;混合类型的复制&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;对应二进制日志(binlog)也有三种格式：STATEMENT，ROW，MIXED。&lt;/p&gt;
+
+&lt;h3 id=&quot;基于语句的复制&quot;&gt;基于语句的复制&lt;/h3&gt;
+
+&lt;p&gt;主库直接记录造成数据更改的SQL语句，当从库读取并重放操作时，只需重新执行该SQL语句。&lt;/p&gt;
+
+&lt;p&gt;优点：&lt;/p&gt;
+
+&lt;p&gt;实现简单，日志紧凑，节省带宽。&lt;/p&gt;
+
+&lt;p&gt;缺点：&lt;/p&gt;
+
+&lt;p&gt;一些SQL语句和当前环境密切相关，无法被正确复制。如CURRENT_USER()函数、NOW()等。&lt;/p&gt;
+
+&lt;p&gt;更新必须是串行的，需要更多的锁。&lt;/p&gt;
+
+&lt;h3 id=&quot;基于行的复制&quot;&gt;基于行的复制&lt;/h3&gt;
+
+&lt;p&gt;MySQL 5.1开始支持基于行的复制，将实际更新数据直接记录在二进制日志中。&lt;/p&gt;
+
+&lt;p&gt;优点：&lt;/p&gt;
+
+&lt;p&gt;正确复制行数据，从库可以直接应用更新数据，无需重放SQL语句。&lt;/p&gt;
+
+&lt;p&gt;缺点：&lt;/p&gt;
+
+&lt;p&gt;大数据量更新(如全表更新)大大增加二进制日志大小，无法判断执行了哪些SQL，占用大量带宽。&lt;/p&gt;
+
+&lt;h2 id=&quot;复制过程&quot;&gt;复制过程&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;主服务器将数据更改记录到二进制日志(binlog)中。&lt;/p&gt;
+
+    &lt;p&gt;每个更新数据的事务完成前，主服务器会将数据更改记录到二进制日志(binlog)中，即使事务执行时交错的，也会串行地写入二进制日志(binlog)中。&lt;/p&gt;
+
+    &lt;p&gt;在写入二进制日志(binlog)后，存储引擎才能提交事务。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;从服务器拷贝主服务器二进制日志(binlog)到自己的中继日志(relay log)。&lt;/p&gt;
+
+    &lt;p&gt;从服务器中专门的IO线程与主服务器连接，主服务器二进制日志(binlog)中读取数据并转储至本地中继日志(relay log)中。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;从服务器重放中继日志(relay log)事件，逐条在本地执行，应用更改。&lt;/p&gt;
+
+    &lt;p&gt;从服务器中专门的SQL线程读取中级日志(relay log)，并将其中事件重放至本地数据。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_copy_process.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;半同步复制&quot;&gt;半同步复制&lt;/h2&gt;
+
+&lt;p&gt;在异步复制的情况下，从库(Slave)是落后于主库(Master)的，无法保证主从的一致性。因此，在主库(Master)与从库(Slave)之间需要建立同步确认以保证一定的一致性。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;半同步复制&lt;/strong&gt;是相对于&lt;strong&gt;同步复制&lt;/strong&gt;而言的。&lt;/li&gt;
+  &lt;li&gt;同步复制在每次用户操作时，必须要保证Master和Slave都执行成功才返回给用户。&lt;/li&gt;
+  &lt;li&gt;而&lt;strong&gt;半同步复制&lt;/strong&gt;不要求Slave执行成功，而是成功接收Master日志就可以通知Master返回。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;半同步日志有两种实现方式&lt;code class=&quot;highlighter-rouge&quot;&gt;AFTER_COMMIT&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;AFTER_SYNC&lt;/code&gt;两种。&lt;/p&gt;
+
+&lt;h3 id=&quot;after_commit&quot;&gt;AFTER_COMMIT&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_copy_sync_after_commit.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Master将事务的redo log刷入磁盘。&lt;/li&gt;
+  &lt;li&gt;Master将事务的binlog刷入磁盘。&lt;/li&gt;
+  &lt;li&gt;commit，释放锁，标记事务提交。&lt;/li&gt;
+  &lt;li&gt;等待Slave发送的日志同步ACK消息，等到Slave响应后，才返回给用户。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Master在commit前崩溃，Slave未同步&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;binlog未传递给Slave，Slave比Master少一个事务，但是不影响，因为用户接收到异常，该事务将重试并回滚。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Master在commit后崩溃，Slave未同步&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;binlog未传递给Slave，Slave比Master少一个事务，但是Master commit成功，造成主库和备库不一致。&lt;/p&gt;
+
+&lt;h3 id=&quot;after_sync&quot;&gt;AFTER_SYNC&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_copy_sync_after_sync.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;AFTER_SYNC&lt;/code&gt;能够解决&lt;code class=&quot;highlighter-rouge&quot;&gt;AFTER_COMMIT&lt;/code&gt;的问题，即等到slave同步后Master再进行commit操作。&lt;/p&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">binlog</summary></entry><entry><title type="html">InnoDB三大特性(DoubleWrite, InsertBuffer, Adaptive Hash Index)</title><link href="http://localhost:4000/2019/05/05/innodb-three-feature/" rel="alternate" type="text/html" title="InnoDB三大特性(DoubleWrite, InsertBuffer, Adaptive Hash Index)" /><published>2019-05-05T00:00:00+08:00</published><updated>2019-05-05T00:00:00+08:00</updated><id>http://localhost:4000/2019/05/05/innodb-three-feature</id><content type="html" xml:base="http://localhost:4000/2019/05/05/innodb-three-feature/">&lt;h2 id=&quot;innodb关键特性&quot;&gt;InnoDB关键特性&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;插入缓冲(Insert Buffer)&lt;/li&gt;
+  &lt;li&gt;两次写(Double Write)&lt;/li&gt;
+  &lt;li&gt;自适应哈希索引(Adaptive Hash Index)&lt;/li&gt;
+  &lt;li&gt;异步IO(Async IO)&lt;/li&gt;
+  &lt;li&gt;刷新领接页(Flush Neighbor Page)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;double-write-二次写&quot;&gt;Double Write 二次写&lt;/h2&gt;
+
+&lt;h3 id=&quot;解决的问题&quot;&gt;解决的问题&lt;/h3&gt;
+
+&lt;p&gt;InnoDB的最小数据读写单位是数据页(Page)，一般是16KB。&lt;/p&gt;
+
+&lt;p&gt;而操作系统写磁盘是按照扇区为基本单位，一个扇区通常为512B。&lt;/p&gt;
+
+&lt;p&gt;在极端情况下，如16KB数据写入4KB后断电，此时造成页数据错误，即Partial Page Write问题。&lt;/p&gt;
+
+&lt;p&gt;Redo Log根据Page头信息(如LSN)对页数据进行恢复，然而由于Partial Page Write问题，Page数据已经损坏，无法确定Page头信息，因此无法根据Redo Log恢复。&lt;/p&gt;
+
+&lt;h3 id=&quot;double-write流程&quot;&gt;Double Write流程&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/innodb_double_write.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Double Write有两部分组成：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;内存中的Double Write Buffer，大小为2MB。&lt;/li&gt;
+  &lt;li&gt;磁盘上的共享表空间(ibdata)中连续128个页，大小也为2MB。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;为了解决Partial Page Write的问题，在将Buffer Pool中的脏页写回磁盘数据未见时：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;脏页不直接写入磁盘数据文件，而是先拷贝(memcopy)至内存中的Double Write Buffer。&lt;/li&gt;
+  &lt;li&gt;从Double Write Buffer中分两次写入磁盘共享表空间中，每次写1MB (连续存储，顺序写，性能很高)。&lt;/li&gt;
+  &lt;li&gt;2完成后，再将Double Write Buffer中的脏页数据写入实际各个数据文件中。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;在3中，当发生Partial Page Write问题时，可以直接从2中共享表空间中恢复数据。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;1. 为什么 Redo Log/Undo Log不需要Double Write技术？
+
+因为Redo Log/Undo Log每次写入磁盘的单位就是512字节，和磁盘IO最小单位相同，因此没有Partial Page Write问题。
+
+2. 为什么不直接从Double Write Buffer写入数据文件？
+
+double write里面的数据是连续的，如果直接写到data page里面，而data page的页又是离散的，写入会很慢。
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;double-write缺点&quot;&gt;Double Write缺点&lt;/h3&gt;
+
+&lt;p&gt;在共享表空间上的Double Write数据也位于物理文件中，写共享表空间会导致系统有更多的fsync操作，降低MySQL的性能。&lt;/p&gt;
+
+&lt;p&gt;但是性能降低并不会非常明显，因为：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;共享表空间上的Double Write空间是一个连续的空间，在写数据时是顺序添加的，不是随机写，性能很高。&lt;/li&gt;
+  &lt;li&gt;将数据从Double Write写到数据文件时，InnoDB会对数据进行合并，增加每次写入刷新的页数。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;insert-buffer-插入缓冲&quot;&gt;Insert Buffer 插入缓冲&lt;/h2&gt;
+
+&lt;h3 id=&quot;解决的问题-1&quot;&gt;解决的问题&lt;/h3&gt;
+
+&lt;p&gt;为了减少随机读写带来的性能损耗，通过Insert Buffer将辅助非唯一索引(Non-unique Secondary Index)的数据缓存下来，大幅度提高非唯一辅助索引的插入性能。&lt;/p&gt;
+
+&lt;p&gt;InnoDB中，Insert Buffer只适用于辅助非唯一索引，原因如下：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;聚集索引(primary key)一般是按照主键递增的顺序插入的，所以通常是顺序的，不需要随机读取，插入速度很快。&lt;/li&gt;
+  &lt;li&gt;如果是唯一索引，则在插入时需要首先读取辅助索引页，判断插入索引是否唯一，依然要进行随机读取。
+因此，InnoDB中，只有辅助非唯一索引(Non-unique Secondary Index)才会使用Insert Buffer。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;insert-buffer原理&quot;&gt;Insert Buffer原理&lt;/h3&gt;
+
+&lt;p&gt;Insert Buffer插入流程：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;首先判断被修改行所在页是否在内存缓冲池(Buffer Pool)中，如果在缓冲池中则直接插入缓冲池。&lt;/li&gt;
+  &lt;li&gt;如果不在缓冲池中，则将数据插入Insert Buffer。&lt;/li&gt;
+  &lt;li&gt;后台线程按照合并规则将Insert Buffer中的数据Merge回辅助索引页中，Merge会将Insert Buffer中的数据&lt;strong&gt;先进行合并&lt;/strong&gt;，减少磁盘的离散读取，将多次插入合并为一次操作。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Insert Buffer能够缓存的操作可以是INSERT,UPDATE,DELETE(DML)，最初只能缓存insert操作，所以叫Insert Buffer，现在已经改名为Change Buffer。&lt;/p&gt;
+
+&lt;p&gt;Merge合并规则：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;辅助索引页被读取到缓冲池时。&lt;/li&gt;
+  &lt;li&gt;当检测到目标辅助索引页可能空间不够时。&lt;/li&gt;
+  &lt;li&gt;Master Thread线程每秒或每10秒进行一次合并。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Insert Buffer合并举例：
+name字段的插入顺序为：
+('Maria',10), ('David',7), ('Tim', 11), ('Jim', 7), ('Monty', 10), ('Herry', 7), ('Heikki', 7) 
+
+在insert buffer中，记录根据应插入辅助索引的叶子节点page_no进行排序：
+('David',7), ('Jim', 7), ('Herry', 7), ('Heikki', 7) , ('Maria',10), ('Monty', 10), ('Tim', 11)
+
+当要进行合并时，页page_no为7的记录有4条，可以一次性将这4条记录插入到辅助索引中，从而提高数据库的整体性能。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;insert-buffer实现&quot;&gt;Insert Buffer实现&lt;/h3&gt;
+
+&lt;p&gt;Insert Buffer并不是内存缓存，而是物理页，&lt;strong&gt;存在于共享表空间(ibdata)中&lt;/strong&gt;，按照B+树的方式组织数据。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;试图通过独立表空间ibd文件恢复表中数据时，往往会导致check table失败。
+这是因为表的辅助索引中的数据可能还在insert buffer中，也就是共享表空间中。
+所以通过idb文件进行恢复后，还需要进行repair table 操作来重建表上所有的辅助索引。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;InnoDB对Insert Buffer也做了缓冲，因此缓冲池(Buffer Pool)中也有Insert Buffer，按照回写条件回写至磁盘共享表空间。
+因此插入Insert Buffer也可能是插入到缓冲池中。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;在MySQL 4.1之前每张表有一颗Insert Buffer B+树。而目前版本全局只有一颗Insert Buffer B+树，存在于共享表空间(ibdata)中，负责所有表的辅助索引缓存。&lt;/p&gt;
+
+&lt;p&gt;Insert Buffer的B+树也是由叶子节点和非叶子节点组成。非叶子节点存放查询的Search Key:
+&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/innodb_insert_buffer_search_key.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;space：待插入记录所在的表空间id。&lt;/li&gt;
+  &lt;li&gt;marker：用来兼容老版本Insert Buffer。&lt;/li&gt;
+  &lt;li&gt;offset：页所在的偏移量。
+插入辅助索引数据时，首先将构造一个Search Key，再查询B+树，插入到叶子节点中：
+&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/innodb_insert_buffer_data.png&quot; alt=&quot;image&quot; /&gt;
+-metadata：记录一些维护Insert Buffer的元数据，如记录插入的顺序，对应辅助索引页的剩余孔空间等。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;由于Insert Buffer的B+树中，数据按照表空间和页所在偏移量排序，所以在Merge回辅助索引时能够很快地将属于相同页的数据合并一次插入。&lt;/p&gt;
+
+&lt;h3 id=&quot;insert-buffer-缺点&quot;&gt;Insert Buffer 缺点&lt;/h3&gt;
+
+&lt;p&gt;插入缓冲主要带来如下两个坏处：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;可能导致数据库宕机后实例恢复时间变长。如果应用程序执行大量的插入和更新操作，且涉及非唯一的聚集索引，一旦出现宕机，这时就有大量内存中的插入缓冲区数据没有合并至索引页中，导致实例恢复时间会很长。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;在写密集的情况下，插入缓冲会占用过多的缓冲池内存(Buffer Pool)，默认情况下最大可以占用1/2，这在实际应用中会带来一定的问题。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;自适应哈希索引adaptive-hash-index-ahi&quot;&gt;自适应哈希索引(Adaptive Hash Index, AHI)&lt;/h2&gt;
+
+&lt;p&gt;InnoDB通过自使用哈希索引(Adaptive Hash Index)来加速对索引的访问。在InnoDB中，索引默认是一个B+树，InnoDB会对表上各索引页的查询进行监控，并对频繁访问的索引建立哈希索引。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/innodb_adaptive_hash_index_ex.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;自适应哈希索引通过缓冲池的B+树构造而来，建立速度很快。取部分索引值前缀作为Hash key，value为数据页上的位置，大大节省了B+树中Search Path查找的过程。&lt;/p&gt;
+
+&lt;p&gt;建立自适应哈希索引的条件及问题：&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;重复访问某一特定查询模式达到一定数量才会创建，如&lt;code class=&quot;highlighter-rouge&quot;&gt;WHERE a = XXX&lt;/code&gt;,&lt;code class=&quot;highlighter-rouge&quot;&gt;WHERE a = xxx and b = xxx&lt;/code&gt;。&lt;/li&gt;
+  &lt;li&gt;只支持等值查询&lt;code class=&quot;highlighter-rouge&quot;&gt;=&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;IN&lt;/code&gt;，不支持LIKE, REGEXP等。&lt;/li&gt;
+  &lt;li&gt;存在内存中，占用缓冲池资源(Buffer Pool)。&lt;/li&gt;
+  &lt;li&gt;无法人为干预，只能配置开关：&lt;code class=&quot;highlighter-rouge&quot;&gt;set global innodb_adaptive_hash_index=off/on&lt;/code&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;查看当前状态：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; show engine innodb status;
+
+
+-------------------------------------
+INSERT BUFFER AND ADAPTIVE HASH INDEX
+-------------------------------------
+Ibuf: size 1, free list len 0, seg size 2, 0 merges
+merged operations:
+ insert 0, delete mark 0, delete 0
+discarded operations:
+ insert 0, delete mark 0, delete 0
+Hash table size 276671, node heap has 0 buffer(s)
+0.00 hash searches/s, 0.00 non-hash searches/s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;refs&quot;&gt;REFS&lt;/h2&gt;
+
+&lt;p&gt;DOUBLE WRITE:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;https://www.cnblogs.com/chenpingzhao/p/4876282.html&lt;/li&gt;
+  &lt;li&gt;https://www.cnblogs.com/chenpingzhao/p/4883884.html&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;INSERT BUFFER
+https://blog.csdn.net/Linux_ever/article/details/61639730
+https://www.cnblogs.com/yuyue2014/p/3802779.html
+https://www.cnblogs.com/chenpingzhao/p/4883884.html
+https://www.zhihu.com/question/278406940&lt;/p&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">InnoDB关键特性</summary></entry><entry><title type="html">MySQL EXPLAIN命令详解</title><link href="http://localhost:4000/2019/04/28/mysql-explain/" rel="alternate" type="text/html" title="MySQL EXPLAIN命令详解" /><published>2019-04-28T00:00:00+08:00</published><updated>2019-04-28T00:00:00+08:00</updated><id>http://localhost:4000/2019/04/28/mysql-explain</id><content type="html" xml:base="http://localhost:4000/2019/04/28/mysql-explain/">&lt;p&gt;EXPLAIN是MySQL提供的一个命令，可以对SELECT语句进行分析，并输出SELECT执行的详细信息，供开发人员优化。使用方法非常简单，直接在SELECT语句前加上Explain。&lt;/p&gt;
+
+&lt;h2 id=&quot;explain输出格式&quot;&gt;EXPLAIN输出格式&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; explain select * from user_info where id = 2\G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: user_info
+   partitions: NULL
+         type: const
+possible_keys: PRIMARY
+          key: PRIMARY
+      key_len: 8
+          ref: const
+         rows: 1
+     filtered: 100.00
+        Extra: NULL
+1 row in set, 1 warning (0.00 sec)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;id&quot;&gt;id&lt;/h3&gt;
+
+&lt;p&gt;id为SELECT查询标识符，每个SELECT都会自动分配一个唯一的标识符。&lt;/p&gt;
+
+&lt;h3 id=&quot;select_type&quot;&gt;select_type&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;select_type&lt;/code&gt;表示查询类型。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;SIMPLE：查询不包含UNION查询或子查询。&lt;/li&gt;
+  &lt;li&gt;PRIMARY：查询是最外层的查询。&lt;/li&gt;
+  &lt;li&gt;UNION：查询是UNION的第二或随后的查询。&lt;/li&gt;
+  &lt;li&gt;DEPENDENT UNION：UNION中的第二个或后面的查询语句，取决于外面的查询。&lt;/li&gt;
+  &lt;li&gt;UNION RESULT：UNION的结果。&lt;/li&gt;
+  &lt;li&gt;SUBQUERY：子查询中的第一个select。&lt;/li&gt;
+  &lt;li&gt;DEPENDENT SUBQUERY：子查询中得第一个select，取决于外面的查询，即子查询依赖于外层查询的结果。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;table&quot;&gt;table&lt;/h3&gt;
+
+&lt;p&gt;表示查询设计的表或衍生表&lt;/p&gt;
+
+&lt;h3 id=&quot;type&quot;&gt;type&lt;/h3&gt;
+
+&lt;p&gt;查询的类型。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;system：表中只有一条数据，这个类型时特殊的const类型。&lt;/li&gt;
+  &lt;li&gt;const：针对主键或唯一索引的等值查询扫描，最多只返回一行数据。
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;explain select * from user_id where id=2;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;eq_ref：通常出现在多表join查询，表示对于前表的每一个结果，都只匹配后表的一行结果，查询比较操作通常是’=’，效率很高。
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;explain select * from user_info, order_info where user_info.id = order_info.user_id;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;ref：通常出现在夺标join查询，对于非唯一或非主键索引，或者使用了最左前缀规则索引的查询。
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;explain select * from user_info, order_info where user_info.id = order_info.user_id and order_info.user_id = 5;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;range：表示使用索引的范围查询，如比较大小、IS NULL, BETWEEN, IN 操作。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;index：全索引扫描(full index scan)，直接在索引树中扫描查询全部数据。
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;explain select name from user_info;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;ALL：全表扫描(full table scan)，不使用索引。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;type类型性能比较&lt;/strong&gt;：&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ALL &amp;lt; index &amp;lt; range ~ index_merge &amp;lt; ref &amp;lt; eq_ref &amp;lt; const &amp;lt; system
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;possible_keys&quot;&gt;possible_keys&lt;/h3&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;possible_keys&lt;/code&gt;表示在查询时，能够使用到的全部索引。然而，即使有些索引在&lt;code class=&quot;highlighter-rouge&quot;&gt;possible_keys&lt;/code&gt;中出现，但是并不表示此索引会真正被MySQL用到，具体使用了的索引记录在key字段中。&lt;/p&gt;
+
+&lt;h3 id=&quot;key&quot;&gt;key&lt;/h3&gt;
+
+&lt;p&gt;MySQL在当前查询时真正使用到的索引。&lt;/p&gt;
+
+&lt;h3 id=&quot;key_len&quot;&gt;key_len&lt;/h3&gt;
+
+&lt;p&gt;表示查询优化器使用了索引的字节数，根据最左前缀原则，这个字段可以评估组合索引是否完全被使用，或只有最左部分字段被使用到。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;key_len&lt;/code&gt;的计算规则如下：
+&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/mysql_explain_key_len.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;rows&quot;&gt;rows&lt;/h3&gt;
+
+&lt;p&gt;MySQL查询优化器根据统计信息，估算SQL要查找到结果集需要扫描读取的数据行数。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;rows&lt;/code&gt;值非常直观的显示了SQL的效率好坏，原则上&lt;code class=&quot;highlighter-rouge&quot;&gt;rows&lt;/code&gt;越少越好。&lt;/p&gt;
+
+&lt;h3 id=&quot;extra&quot;&gt;extra&lt;/h3&gt;
+
+&lt;p&gt;extra显示一些额外的信息。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Using filesort&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;表示NySQL需要额外的排序操作，不能通过索引顺序达到排序效果，通常建议去掉。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Using index&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;覆盖索引扫描，表示查询在索引树中就可查找所需数据，不需要扫描表数据文件。&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Using temporary&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;查询有使用临时表，一般出现于排序、分组和多表join的情况，查询效率不高，建议优化。&lt;/p&gt;
+
+&lt;h2 id=&quot;refs&quot;&gt;REFS&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;https://segmentfault.com/a/1190000008131735&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">EXPLAIN是MySQL提供的一个命令，可以对SELECT语句进行分析，并输出SELECT执行的详细信息，供开发人员优化。使用方法非常简单，直接在SELECT语句前加上Explain。</summary></entry><entry><title type="html">Kafka之保证可靠的数据传递</title><link href="http://localhost:4000/2019/04/25/kafka-maintain-credible-data-transport/" rel="alternate" type="text/html" title="Kafka之保证可靠的数据传递" /><published>2019-04-25T00:00:00+08:00</published><updated>2019-04-25T00:00:00+08:00</updated><id>http://localhost:4000/2019/04/25/kafka-maintain-credible-data-transport</id><content type="html" xml:base="http://localhost:4000/2019/04/25/kafka-maintain-credible-data-transport/">&lt;h2 id=&quot;可靠性保证&quot;&gt;可靠性保证&lt;/h2&gt;
 
 &lt;p&gt;Kafka的数据可靠性保证：&lt;/p&gt;
 
@@ -548,2143 +2492,4 @@ broker收到生产请求，对请求做验证：
 
 &lt;p&gt;compact策略下的删除：&lt;/p&gt;
 
-&lt;p&gt;==如果需要删除key最新的值，可以向broker发送值为null的消息(墓碑消息)，broker首先会进行常规清理，删除null之前的消息，之后，null值消息会被保存一段时间后删除。==&lt;/p&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">集群成员关系</summary></entry><entry><title type="html">Kafka的消费者创建及配置</title><link href="http://localhost:4000/2019/04/20/Kafka-consumer/" rel="alternate" type="text/html" title="Kafka的消费者创建及配置" /><published>2019-04-20T00:00:00+08:00</published><updated>2019-04-20T00:00:00+08:00</updated><id>http://localhost:4000/2019/04/20/Kafka-consumer</id><content type="html" xml:base="http://localhost:4000/2019/04/20/Kafka-consumer/">&lt;h2 id=&quot;分区分配&quot;&gt;分区分配&lt;/h2&gt;
-
-&lt;p&gt;Kafka消费者从属于&lt;strong&gt;消费者群组&lt;/strong&gt;，一个群组里的消费者订阅的是同一个主题，每个消费者接受主题&lt;strong&gt;一部分分区&lt;/strong&gt;的消息。&lt;/p&gt;
-
-&lt;p&gt;每个消费者群组为内部的消费者自动分配主题的分区。&lt;/p&gt;
-
-&lt;p&gt;如果群组G1中只有一个消费者C1，C1将收到主题T1的全部4个分区。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/kafka_consumer_partition_assign_1.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;如果群组G1中有两个消费者C1、C2，两个消费者将分别接收两个分区的消息。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/kafka_consumer_partition_assign_2.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;如果群组G1有4个消费者，每个消费者分配一个分区。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/kafka_consumer_partition_assign_3.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;如果群组G1有大于4个消费者，只有4个分区，==&lt;strong&gt;多余的消费者将被闲置&lt;/strong&gt;==，不会接收到任何消息。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/kafka_consumer_partition_assign_4.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;分区再均衡&quot;&gt;分区再均衡&lt;/h2&gt;
-
-&lt;p&gt;分区所有权从一个消费者转移到另一个消费者，称为分区再均衡。&lt;/p&gt;
-
-&lt;p&gt;==消费者群组中消费者的加入、退出、崩溃等，都会造成分区再均衡，再均衡期间整个群组将不可用。==&lt;/p&gt;
-
-&lt;h2 id=&quot;群组协调器groupcoordinator&quot;&gt;群组协调器(GroupCoordinator)&lt;/h2&gt;
-
-&lt;p&gt;在 kafka-0.10 版本，Kafka 在服务端引入了组协调器(GroupCoordinator)，每个Kafka Server启动时都会创建一个GroupCoordinator实例，用于管理部分消费者组和该消费者组下的每个消费者的消费偏移量。&lt;/p&gt;
-
-&lt;p&gt;同时在客户端引入了消费者协调器(ConsumerCoordinator)，每个消费者都会实例化一个ConsumerCoordinator，只是负责与该消费者对应的broker上的GroupCoordinator进行通信。&lt;/p&gt;
-
-&lt;p&gt;消费者通过向broker GroupCoordinator发送心跳维持它们和群组的从属关系以及它们对分区的所有权关系。&lt;/p&gt;
-
-&lt;p&gt;如果消费者心跳过期，群组协调器认为它已经死亡，就会触发一次再均衡。&lt;/p&gt;
-
-&lt;h2 id=&quot;分区分配的过程&quot;&gt;分区分配的过程&lt;/h2&gt;
-
-&lt;p&gt;消费者要加入群组时，它会向&lt;strong&gt;群组协调器&lt;/strong&gt;发送一个JoinGroup请求，第一个加入群组的消费者将成为“群主”。&lt;/p&gt;
-
-&lt;p&gt;==群主从协调器那里获得群组的成员列表，并且负责给每一个消费者分配分区。==&lt;/p&gt;
-
-&lt;p&gt;分配完毕后，群组把分配情况列表发给群组协调器，协调器再发送给所有消费者。&lt;/p&gt;
-
-&lt;p&gt;每个消费者只能看到自己的分配信息，只有群主知道群组里所有消费者的分配信息。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/kafka_consumer_join_group.jpeg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;创建kafka消费者&quot;&gt;创建Kafka消费者&lt;/h2&gt;
-
-&lt;h3 id=&quot;对象属性&quot;&gt;对象属性&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;bootstrap.servers&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;配置Kafka broker位置&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;key.deserializer&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;value.deserializer&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;group.id&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Properties props = new Properties();
-pros.put(&quot;bootstrap.servers&quot;, &quot;broker1:9092,broker2:9092&quot;);
-props.put(&quot;group.id&quot;,&quot;CountryCounter&quot;);
-props.put(&quot;key.deserializer&quot;, &quot;org.apache.kafka.common.serialization.StringDeserializer&quot;);
-props.put(&quot;value.deserializer&quot;, &quot;org.apache.kafka.common.serialization.StringDeserializer&quot;);
-
-KafkaConsumer&amp;lt;String, String&amp;gt; consumer = new KafkaConsumer&amp;lt;String, String&amp;gt;(props);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;订阅主题&quot;&gt;订阅主题&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;consumer.subscribe(Collections.singletionList(&quot;customerCountries&quot;));
-consumer.subscribe(&quot;test.*&quot;);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;轮询消息&quot;&gt;轮询消息&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;try {
-    while(true) { // 无线循环轮询
-        ConsumerRecords&amp;lt;String, String&amp;gt; records = consumer.poll(100); // 读取一批数据。
-        for(ConsumerRecord&amp;lt;String, String&amp;gt; record : records) {
-            log.info(
-                &quot;topic={}, partition = {}, offset = {}, customer = {}, contry = {}&quot;, 
-                record.topic(), record.partition(), record.offset(), record.key(), record.value()
-            );
-        }
-    }
-} finally {
-    consumer.close(); // 推出前关闭消费者
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;==消费者必须持续调用&lt;code class=&quot;highlighter-rouge&quot;&gt;poll&lt;/code&gt;方法进行轮询，否则会被认为已经死亡，分区会被移交给群组里的其他消费者。==&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;poll()&lt;/code&gt;方法参数为超时时间，返回值为一个记录列表，包含主题、分区、偏移量、键值对信息。&lt;/li&gt;
-  &lt;li&gt;第一次查找群组协调器(GroupCoordinator)、加入群组、接收分区、接收分区再均衡、发送心跳包都是在&lt;code class=&quot;highlighter-rouge&quot;&gt;poll()&lt;/code&gt;方法中完成的。&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;close()&lt;/code&gt;方法关闭消费者。关闭网络连接和socket，并立即触发一次&lt;strong&gt;分区再均衡&lt;/strong&gt;，而不是等待群组协调器发现它不再发送心跳并认定它已经死亡。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;kafka消费者配置&quot;&gt;Kafka消费者配置&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;client.id&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;表示消费者客户端&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;session.timeout.ms&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;指定消费者被认为死亡前与服务器断开连接的时间，默认为3s。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;hearbeat.interval.ms&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;指定poll()方法向协调器发送心跳的时间间隔。&lt;/p&gt;
-
-&lt;p&gt;必须设置比session.timeout.ms小，通常为session.timeout.ms的三分之一。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;fetch.min.bytes&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;指定消费者从服务器获取记录的最小字节数。&lt;/p&gt;
-
-&lt;p&gt;消费者向broker发送poll请求时，如果可用的数据量小于fetch.min.bytes，将等待。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;fetch.max.wait.ms&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;设定2中可用数据量小于fetch.min.bytes时最大等待时间，默认是500ms。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;max.partition.fetch.bytes&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;设定服务器从每个分区里返回给消费者的最大字节数，默认为1MB。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;max.poll.records&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;控制消费者单词调用poll方法能够返回的最大记录数量。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;receive.buffer.bytes和send.buffer.bytes&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;设置socket在读写数据时用到的TCP缓冲区大小，-1为使用系统默认值。&lt;/p&gt;
-
-&lt;p&gt;如果生产者或消费者与broker不在同一个数据中心，可以适当增大该值。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;auto.offset.reset&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;指定消费者在读取一个没有偏移量的分区或者偏移量无效的情况(由于消费者长时间失效，包含偏移量的记录被删除)下如何处理。&lt;/p&gt;
-
-&lt;p&gt;latest：即从目前的最新记录开始读取。默认为latest。&lt;/p&gt;
-
-&lt;p&gt;earliest：从分区起始位置读取。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;enable.auto.commit&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;指定消费者是否自动提交偏移量。默认为true。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;auto.commit.interval.ms&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;自动提交偏移量的频率。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;partition.assiginment.strategy&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;设置消费者分区分配策略，值为Range或RoundRobin。&lt;/p&gt;
-
-&lt;h3 id=&quot;消费者分区分配策略&quot;&gt;消费者分区分配策略&lt;/h3&gt;
-
-&lt;h4 id=&quot;range-strategy&quot;&gt;Range Strategy&lt;/h4&gt;
-
-&lt;p&gt;Range策略对 ==&lt;strong&gt;每个主题&lt;/strong&gt;== 中的分区为消费者平均分配。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;对同一个主题的所有分区按照序号排序。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;对消费者按照字母序排序。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;将分区的个数除以消费者线程的总数决定每个消费者线程消费几个分区。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如果除不尽，那么前面几个消费者线程将会多分配一个分区。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;例子：&lt;/p&gt;
-
-&lt;p&gt;某个主题有11个分区，3个消费者C1, C2, C3.&lt;/p&gt;
-
-&lt;p&gt;C1将消费 0,1,2,3分区。&lt;/p&gt;
-
-&lt;p&gt;C2将消费 4,5,6,7分区。&lt;/p&gt;
-
-&lt;p&gt;c3将消费 8,9,10分区。&lt;/p&gt;
-
-&lt;h4 id=&quot;roundrobin-strategy&quot;&gt;RoundRobin Strategy&lt;/h4&gt;
-
-&lt;p&gt;RoundRobin对==所有主题的所有分区==按照HashCode的值排序，并按照RoundRobin风格为每个消费者线程逐个分配。&lt;/p&gt;
-
-&lt;p&gt;使用RoundRobin必须满足的条件：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;同一个消费者群组中所有消费者的num.streams必须相等。&lt;/li&gt;
-  &lt;li&gt;所有消费者订阅相同的主题。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;例子：&lt;/p&gt;
-
-&lt;p&gt;有T1和T2两个主题，每个主题有3个分区，分区排序为T1-1, T1-2, T2-1, T2-2, T1-3, T2-3，消费者线程排序为C1-0, C1-1, C2-0，则分配结果为：&lt;/p&gt;
-
-&lt;p&gt;C1-0分配：T1-1, T1-3&lt;/p&gt;
-
-&lt;p&gt;C1-1分配：T1-2, T2-3&lt;/p&gt;
-
-&lt;p&gt;C2-0分配：T2-1&lt;/p&gt;
-
-&lt;h2 id=&quot;提交commit和偏移量offset&quot;&gt;提交(Commit)和偏移量(Offset)&lt;/h2&gt;
-
-&lt;p&gt;我们把更新分区当前位置的操作叫做&lt;strong&gt;提交&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;消费者通过群组协调器(Group Coordinator)往Kafka中一个叫做&lt;code class=&quot;highlighter-rouge&quot;&gt;_consumer_offset&lt;/code&gt;的特殊主题发送消息，消息里包含每个分区的偏移量。&lt;/p&gt;
-
-&lt;p&gt;当发生再均衡时，每个消费者可能分配到新的分区，为了能够继续之前的工作，消费者需要读取每个分区最后一次提交的偏移量，然后从偏移量指定的地方继续处理。&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;提交的偏移量 小于 客户端处理的最后一个消息的偏移量，消息会被重复处理。&lt;/li&gt;
-  &lt;li&gt;提交的偏移量 大于 客户端处理的最后一个消息的偏移量，消息会被丢失。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;因此，提交偏移量的方式非常重要。&lt;/p&gt;
-
-&lt;h3 id=&quot;自动提交偏移量auto-commit-offset&quot;&gt;自动提交偏移量(Auto Commit Offset)&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;设定enable.auto.commit = true。&lt;/li&gt;
-  &lt;li&gt;auto.commit.interval.ms = 5s，设置自动提交的时间间隔，单位为秒，默认为5秒。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;自动提交虽然方便，当时无法进行精确控制，容易造成重复处理和丢失的情况。&lt;/p&gt;
-
-&lt;h3 id=&quot;同步提交当前偏移量commitsync&quot;&gt;同步提交当前偏移量(CommitSync)&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;commitSync()&lt;/code&gt;方法：&lt;/p&gt;
-
-&lt;p&gt;提交由poll()方法返回的最新偏移量，提交成功后马上返回，提交失败抛出异常，只要没有发生不可恢复的错误，commitSync()方法会一直尝试直至成功。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;while(true) {
-    ConsumerRecords&amp;lt;String, String&amp;gt; records = comsumer.poll(100);
-    for(ConsumerREcord&amp;lt;String, String&amp;gt; record : records) {
-        // handle the records
-    }
-    try {
-        consumer.commitSync(); // 提交最新偏移量
-    } catch (CommitFailedException e) {
-        log.error(&quot;commit fail&quot;, e);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;手动提交在处理records的循环中加入提交偏移量的请求，提交偏移量时需要阻塞等待broker返回，降低了程序的吞吐量。&lt;/p&gt;
-
-&lt;h3 id=&quot;异步提交当前偏移量&quot;&gt;异步提交当前偏移量&lt;/h3&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;commitAsync()&lt;/code&gt;方法，异步发送偏移量提交请求，无需阻塞等到broker返回，支持回调。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;while(true) {
-    ComsumerRecords&amp;lt;String ,String&amp;gt; records = consumer.poll(100);
-    for(ConsumerRecord&amp;lt;String, String&amp;gt; record : records) {
-        // handle the record.
-    }
-    comsumer.commitAsync(new OffsetCommitCallback() { // 异步提交
-        public void onComplete(Map&amp;lt;TopicPartition, OffsetAndMetadata&amp;gt; offsets, Exception e) {
-            if (e != null) {
-                log.error(&quot;Commit failed for offsets {}&quot;, offsets, e);
-            }
-        }
-    });
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;==异步提交在失败后不会主动重试，因为此时可能有一个更大的偏移量已经完成提交。==&lt;/p&gt;
-
-&lt;h3 id=&quot;同步和异步组合提交&quot;&gt;同步和异步组合提交&lt;/h3&gt;
-
-&lt;p&gt;如果提交发生在关闭消费者时，或是再均衡时的最后一次提交，必须要保证提交成功，此时无法使用异步提交。&lt;/p&gt;
-
-&lt;p&gt;因此，通常会组合使用同步提交和异步提交，==对于正常处理循环中使用异步提交、在关闭和再均衡前使用同步提交。==&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;try {
-    while (true) {
-        ConsumerRecords&amp;lt;String ,String&amp;gt; records = consumer.poll(100);
-        for(ConsumerRecord&amp;lt;String ,String&amp;gt; record : records) {
-            // handle the records
-        }
-        consumer.commitAsync(); // 异步提交
-    }
-} catch (Exception e) {
-    log.error(&quot;Exception&quot;, e);
-} finally {
-    try {
-        consumer.commitSync(); // 在关闭前尝试同步提交。
-    } finally {
-        consumer.close();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;提交给定的偏移量&quot;&gt;提交给定的偏移量&lt;/h3&gt;
-
-&lt;p&gt;如果poll()方法返回一大批数据，需要处理很长时间，希望在处理每个数据时马上记录当前处理数据的偏移量，而不是处理完这批数据后再记录整批数据的偏移量。&lt;/p&gt;
-
-&lt;p&gt;commitSync()和commitAsync()允许添加&lt;code class=&quot;highlighter-rouge&quot;&gt;Map&amp;lt;TopicPartition, OffsetAndMetadata&amp;gt; map&lt;/code&gt;作为参数，将分区的偏移量设置为给定的value值。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;private Map&amp;lt;TopicPartion, OffsetAndMetadata&amp;gt; currentOffsets = new HashMap&amp;lt;&amp;gt;();
-
-// 再均衡监听器，subscribe时注册，在发生再均衡时被回调。
-private class HandleRebalance implements ConsumerRebalanceListener {
-    
-    // 在重新分配分区之后 和 消费者开始读取消息之前被调用。
-    public void onPartitionsAssigned(Collection&amp;lt;TopicPartition&amp;gt; partitions) {}
-    
-    // 在再均衡开始之前和消费者停止读取消息之后被调用。
-    public void onPartitionsRevoked(Collection&amp;lt;TopicPartion&amp;gt; partitions) {
-        log.info(&quot;Lost partitions in rebalance, Committing current offsets:&quot; + currentOffsets);
-        consumer.commitSync(currentOffsets);
-    }
-}
-
-int count = 0;
-
-try {
-    consumer.subscribe(topics, new HandleRebalance());
-    while(true) {
-        ConsumerRecords&amp;lt;String ,String&amp;gt; records = consumer.poll(100);
-        for(ConsumerRecord&amp;lt;String ,String&amp;gt; record : records) {
-            // handle the records
-            
-            currentOffsets.put(new TopicPartition(record.topic(), record.partition()), new OffsetAndMetadata(record.offset() + 1, &quot;no metadata&quot;));
-            if(count % 1000 == 0) { // 每处理1000个records提交一次偏移量。
-                consumer.commitAsync(currentOffsets, null);
-                currentOffsets.clear();
-            }
-            count++;
-            
-        }
-    }
-} catch(WakeupException e) {
-    
-} catch (Exception e) {
-    log.error(&quot;Unexcepted error&quot;, e);
-} finally{
-    try {
-        consumer.commitSync(currentOffsets);
-    } finally {
-        consumer.close();
-    }
-}
-
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;从特定偏移量开始读取&quot;&gt;从特定偏移量开始读取&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;KafkaConsumer:
-
-public void seek(TopicPartition partition, long offset); // 为指定分区设置当前偏移量。
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;退出&quot;&gt;退出&lt;/h3&gt;
-
-&lt;p&gt;==如果确定要退出循环，需要通过另一个线程调用consumer.wakeup()方法。== 如果循环运行在主线程里，可以在ShutdownHook里调用该方法。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;consumer.wakeup()
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;方法是消费者唯一一个可以从其他线程里安全调用的方法，调用consumer.wakeup()可以使得主线程退出poll()并抛出WakeupException异常。&lt;/p&gt;
-
-&lt;h2 id=&quot;独立消费者--没有群组的消费者&quot;&gt;独立消费者 – 没有群组的消费者&lt;/h2&gt;
-
-&lt;p&gt;有时可能只需要一个消费者从一个主题的所有分区或者某个特定的分区读取数据，无需消费者群组和再均衡，只需要把主题或者分区分配给消费者，然后开始读取消息并提交偏移量。&lt;/p&gt;
-
-&lt;p&gt;==不需要订阅主题，而是为自己直接分配分区。==&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;List&amp;lt;PartitionInfo&amp;gt; partitionInfos = null;
-partitionInfos = consumer.partitionsFor(&quot;TheTopic&quot;); // 得到主题的所有分区。
-
-if(partitionInfos != null) {
-    for(PartitionInfo partition : partitionInfos) {
-        partitions.add(new TopicPartition(partition.topic(), partition.partition()));
-    }
-    consumer.assign(partitions); // 将分区全部分配给消费者。
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">分区分配</summary></entry><entry><title type="html">Kafka的生产者创建及配置</title><link href="http://localhost:4000/2019/04/18/kafka-producer/" rel="alternate" type="text/html" title="Kafka的生产者创建及配置" /><published>2019-04-18T00:00:00+08:00</published><updated>2019-04-18T00:00:00+08:00</updated><id>http://localhost:4000/2019/04/18/kafka-producer</id><content type="html" xml:base="http://localhost:4000/2019/04/18/kafka-producer/">&lt;h3 id=&quot;生产者消息发送流程&quot;&gt;生产者消息发送流程&lt;/h3&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/kafka_producer_produce_message_processes.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;创建ProducerRecord对象，包含目标主题和要发送的内容。可以指定键或分区。&lt;/li&gt;
-  &lt;li&gt;生产者把键和值对象序列化成字节数组。&lt;/li&gt;
-  &lt;li&gt;如果ProducerRecord指定了分区，分区器直接返回该分区，如果没有指定分区，分区器根据ProducerRecord对象的键选择一个分区。&lt;/li&gt;
-  &lt;li&gt;记录被添加到对应主题和分区的记录批次中，有一个独立的线程负责把记录批次发送到相应broker上。&lt;/li&gt;
-  &lt;li&gt;服务器收到消息返回响应。如果成功写入Kafka，返回一个RecordMetaData对象，包含主题和分区信息、以及记录在分区中的偏移量。失败则返回错误。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;创建生产者&quot;&gt;创建生产者&lt;/h3&gt;
-
-&lt;p&gt;创建Kafka生产者对象，设置3个必选属性：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;bootstrap.servers&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;指定Kafka broker地址清单，地址的格式为host:port，不需要包含所有broker地址，生产者会从给定broker里查找到其他broker的信息。&lt;/p&gt;
-
-&lt;p&gt;建议至少提供两个broker的信息，一旦其中一个宕机，生产者仍然能够连接到集群上。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;key.serializer&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;数据需要被序列化为字节数组，key.serializer必须被设置为一个实现了&lt;code class=&quot;highlighter-rouge&quot;&gt;org.apache.kafka.common.serialization.Serializer&lt;/code&gt;接口的类。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;value.serializer&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;与key.serializer相同。&lt;/p&gt;
-
-&lt;p&gt;发送消息举例：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;private class DemoProducerCallback implements Callback {
-    @Override
-    public void onCompletion(REcordMetadata recordMetadata, Exception e) {
-        if (e != null) {
-            e.printStackTrace();
-        }
-    }
-}
-
-ProducerRecord&amp;lt;String, String&amp;gt; record = enw ProducerRecord&amp;lt;&amp;gt;(&quot;TestTopic&quot;, &quot;TestKey&quot;, &quot;TestValue&quot;);
-producer.send(record, new DemoProducerCallback());
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;生产者的配置&quot;&gt;生产者的配置&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;acks&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;指定必须要有多少个&lt;strong&gt;分区副本&lt;/strong&gt;收到消息，生产者才会认为消息写入是成功的。&lt;/p&gt;
-
-&lt;p&gt;acks=0, 生产者不等待任何服务器响应，不关心发送结果，吞吐量最大。&lt;/p&gt;
-
-&lt;p&gt;acks=1, 只要&lt;strong&gt;集群首领&lt;/strong&gt;收到消息，生产者就会收到来自服务器的成功响应。&lt;/p&gt;
-
-&lt;p&gt;acks=all，只有当全部&lt;strong&gt;参与复制的节点&lt;/strong&gt;收到消息时，生产者才会收到来自服务器的成功响应。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;buffer.memory&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;设置生产者内存缓冲区的大小。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;compression.type&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;设置消息发送时压缩方式(snappy/gzip/lz4)，默认不压缩。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;retries&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;生产者从服务器收到临时性错误(如分区找不到首领)时，重试的次数。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;batch.size&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;多个消息需要被发送到同一个分区时，生产者会把他们放在同一个批次里。&lt;/p&gt;
-
-&lt;p&gt;指定批次可以使用的最大内存大小(字节数)。当批次被填满时，批次里所有消息会被发送出去。&lt;/p&gt;
-
-&lt;p&gt;生产者并不一定都会等到批次被填满才发送，见linger.ms。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;linger.ms&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;设置生产者在发送批次之前等待更多消息加入批次的时间。&lt;/p&gt;
-
-&lt;p&gt;当&lt;strong&gt;批次填满&lt;/strong&gt;或&lt;strong&gt;linger.ms达到上限&lt;/strong&gt;时，Kafka会发送批次。&lt;/p&gt;
-
-&lt;p&gt;linger.ms默认为0，即不等待，就算批次里只有一个消息也立即发送。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;client.id&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;生产者客户端id。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;max.in.flight.requests.per.connection&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;指定了生产者在收到服务器响应之前可以发送多少个消息。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;timtout.ms、request.timeout.ms、metadata.fetch.timtout.ms&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;指定了生产者等待服务器返回响应的时间。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;max.block.ms&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;设置在调用send()方法或partitionsFor()方法时生产者的阻塞时间。当生产者发现缓冲区已满，方法会阻塞，阻塞达到max.block.ms时，生产者会抛出异常。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;max.request.size&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;控制生产者发送的请求大小。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;receive.buffer.bytes 和 send.buffer.bytes&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;设置TCP socket接收和发送数据包的缓冲区大小，-1为使用操作系统默认值。&lt;/p&gt;
-
-&lt;h3 id=&quot;生产者消息的顺序&quot;&gt;生产者消息的顺序&lt;/h3&gt;
-
-&lt;p&gt;Kafka可以保证&lt;strong&gt;同一个分区&lt;/strong&gt;里&lt;strong&gt;成功发送的&lt;/strong&gt;消息是有序的。即如果生产者按照一定的顺序成功发送消息，broker就会按照这个顺序把他们写入分区，消费者也会按照同样的顺序读取它们。&lt;/p&gt;
-
-&lt;p&gt;如果retries大于零，同时max.in.flight.requests.per.connection设为比1大的数，那么，如果前一个批次消息写入失败，后一个批次写入成功，接着broker重试写入第一个批次，如果重试成功，则两个批次顺序倒转。&lt;/p&gt;
-
-&lt;p&gt;==所以，如果对消息顺序性有严格要求，可以把max.in.flight.requests.per.connection设为1。==&lt;/p&gt;
-
-&lt;h3 id=&quot;键的分区&quot;&gt;键的分区&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;拥有相同键的消息将被写到同一个分区。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;==如果键值为null，并且使用了默认的分区器，分区器将使用轮询(Round Robin)算法将消息均衡地分布到各个分区上。==&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;如果键不为空，并且使用了==默认的分区器，Kafka会对键进行散列==，根据散列值将消息映射到特定的分区上。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;==Kafka使用自己的散列算法，只有在不改变主题分区数量的情况下，键与分区之前的映射才能保持不变。==&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;可以实现Partitioner接口，实现自己定义的分区策略，将特定key映射到特定分区上。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">生产者消息发送流程</summary></entry><entry><title type="html">Kafka的基本概念</title><link href="http://localhost:4000/2019/04/15/kafka-intro/" rel="alternate" type="text/html" title="Kafka的基本概念" /><published>2019-04-15T00:00:00+08:00</published><updated>2019-04-15T00:00:00+08:00</updated><id>http://localhost:4000/2019/04/15/kafka-intro</id><content type="html" xml:base="http://localhost:4000/2019/04/15/kafka-intro/">&lt;h3 id=&quot;kafka登场&quot;&gt;Kafka登场&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;消息(Message)和批次(Batch)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;消息：Kafka的数据单元。&lt;/p&gt;
-
-&lt;p&gt;键：一个字节数组，是消息的一个可选的元数据。&lt;/p&gt;
-
-&lt;p&gt;批次：一组消息，属于同一个主题，消息被分批写入Kafka。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;模式(Schema)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Kafka默认使用Apache Avro作为序列化框架。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;主题(Topic)和分区(Partition)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Kafka的消息通过主题进行分类。==主题被分为若干个分区，一个分区就是一个提交日志。==&lt;/p&gt;
-
-&lt;p&gt;消息以追加的方式写入分区，以先入先出的顺序读取，由于一个主题一般包含几个分区，因此无法在整个主题范围内保证消息的顺序，但可以保证消息在单个分区内的顺序。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/kafka_topic_patition_message_write_sample.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;生产者(Producer)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;生产者在默认情况下把消息均衡地分布到主题的所有分区上，并不关心特定消息会被写入到哪个分区。&lt;/p&gt;
-
-&lt;p&gt;在某些情况下，生产者会把消息直接写到指定的分区，这通常是通过消息键(Key)和分区器实现的，分区器为键生成一个散列值，并将其映射到指定的分区上。这样可以保证包含同一个键的消息会被写到同一个分区上。&lt;/p&gt;
-
-&lt;p&gt;生产者也可以使用自定义的分区器，根据不同的业务规则将消息映射到分区。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;消费者(Consumer)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;消费者订阅一个或多个&lt;strong&gt;主题&lt;/strong&gt;，并按照消息生成的顺序读取它们。消费者通过检查消息的&lt;strong&gt;偏移量&lt;/strong&gt;来区分已经读取过的消息。&lt;/p&gt;
-
-&lt;p&gt;偏移量：是一个不断递增的整数值，在创建消息时，Kafka会把它添加到消息里。在给定的分区里，每个消息的偏移量都是唯一的。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;消费者群组(Consumer Group)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;消费者是消费者群组的一部分，也就是说，会有一个或多个消费者共同读取一个主题。&lt;/p&gt;
-
-&lt;p&gt;群组保证 &lt;strong&gt;每个分区只能被一个消费者使用。&lt;/strong&gt; 消费者与分区之间的映射通常被称为消费者对分区的所有权关系。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/kafka_consumer_group.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;broker&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;一个独立的Kafka服务器被称为broker。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;集群(Cluster)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;broker是集群的组成部分，每个集群都由一个broker同时充当了&lt;strong&gt;集群控制器&lt;/strong&gt;的角色。&lt;/p&gt;
-
-&lt;p&gt;在集群中，一个分区从属于一个broker，该broker被称为分区的&lt;strong&gt;首领&lt;/strong&gt;，一个分区可以分配给多个broker，这个时候会发生&lt;strong&gt;分区复制&lt;/strong&gt;，这种复制机制为分区提供了消息冗余，如果有一个broker失效，其他broker可以接管领导权。不过，相关的消费者和生产者都要重新连接到新的首领。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/kafka_partition_copy.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">Kafka登场</summary></entry><entry><title type="html">ZooKeeper数据存储与数据同步机制</title><link href="http://localhost:4000/2019/04/13/zookeeper-data-storage-and-data-sync/" rel="alternate" type="text/html" title="ZooKeeper数据存储与数据同步机制" /><published>2019-04-13T00:00:00+08:00</published><updated>2019-04-13T00:00:00+08:00</updated><id>http://localhost:4000/2019/04/13/zookeeper-data-storage-and-data-sync</id><content type="html" xml:base="http://localhost:4000/2019/04/13/zookeeper-data-storage-and-data-sync/">&lt;p&gt;ZooKeeper中，数据存储分为两部分，内存数据(ZKDatabase)与磁盘数据(事务日志 + 事务快照)。&lt;/p&gt;
-
-&lt;h2 id=&quot;zkdatabase&quot;&gt;ZKDatabase&lt;/h2&gt;
-
-&lt;p&gt;ZooKeeper的数据模型是一棵树。&lt;/p&gt;
-
-&lt;p&gt;而从使用角度看，ZooKeeper就像一个内存数据库一样，在内存数据库中，存储了整棵树的内容，包括所有的节点路径、节点数据以及ACL信息等。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;ZKDatabase&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;ZKDatabase是ZooKeeper的内存数据库，负责管理ZooKeeper的所有会话、DataTree存储和事务日志。&lt;/p&gt;
-
-&lt;p&gt;==ZKDatabase会定时向磁盘dump快照数据，同时在ZooKeeper服务器启动的时候，会通过磁盘上的事务日志和快照数据文件恢复成一个完整的内存数据库。==&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;DateTree&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;DateTree是ZooKeeper内存数据存储的核心。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;DataTree:
-- nodes: ConcurrentHashMap&amp;lt;String, DataNode&amp;gt;
-- ephemerals: ConcurrentHashMap&amp;lt;Long, HashSet&amp;lt;String&amp;gt;&amp;gt;
-- dataWatches: WatchManager
-- childWatches: WatchManager
------------------------------------------------------
-+ convertAcls(List&amp;lt;ACL&amp;gt;): Long
-+ convertLong(Long): List&amp;lt;ACL&amp;gt;
-+ addDataNode(String, DataNode): void
-+ createNode(String, byte, List&amp;lt;ACL&amp;gt;, long, int, long, long): String
-+ deleteNode(String, long)
-+ setData(String, byte, int, long, long)
-+ getData(String, Stat, Watcher)
-+ ......
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ConcurrentHashMap&amp;lt;String, DataNode&amp;gt; nodes&lt;/code&gt;存储所有ZooKeeper节点信息，Key为节点路径，Value为DataNode。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ConcurrentHashMap&amp;lt;Long, HashSet&amp;lt;String&amp;gt;&amp;gt; ephemerals&lt;/code&gt;存储所有临时节点的信息，便于实时访问和及时清理。Key为客户端SessionID，Value为该客户端创建的所有临时节点路径集合。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;DataNode&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;DataNode 是数据存储的最小单元，内部保存节点的数据内容(data[])、ACL列表(acl)和节点状态(stat)，同时记录父节点(parent)的引用和子节点列表(children)。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;DataTree:
-- parent: DataNode
-- data: byte[]
-- acl: Long
-- stat: StatPersisted
-- children: Set&amp;lt;String&amp;gt;
------------------------
-+ addChild(): boolean
-+ removeChild(): boolean
-+ setChildren(): void
-+ getChildren(): Set&amp;lt;String&amp;gt;
-+ copyStat(Stat): void
-+ deserialize(InputArchive, String)
-+ Serialize(OutputArchive, String)
-+ ......
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;事务日志&quot;&gt;事务日志&lt;/h2&gt;
-
-&lt;h3 id=&quot;文件存储&quot;&gt;文件存储&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;配置目录&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;事务日志文件默认存储于&lt;code class=&quot;highlighter-rouge&quot;&gt;dataDir&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;也可以为事务日志单独配置文件存储目录&lt;code class=&quot;highlighter-rouge&quot;&gt;dataLogDir&lt;/code&gt;。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;存储文件&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;ZooKeeper运行一段时间后，在配置的目录中将创建子目录version-2：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{dataLogDir配置目录}/version-2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;version-2是当前ZooKeeper使用的事务日志格式版本号。&lt;/p&gt;
-
-&lt;p&gt;version-2中生成日志文件如下图：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/zookeeper_tx_file_format.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;文件名&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;==事务日志文件的文件名是一个十六进制数字，高32位为Leader选举周期(epoch)，低32为是事务ZXID。==&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;日志格式&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;日志文件是二进制格式存储，ZooKeeper提供了解码工具：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Java LogFormatter 日志文件
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;第一行：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ZooKeeper Transactional Log File with dbid 0 txnlog format version 2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;事务日志文件头信息。&lt;/p&gt;
-
-&lt;p&gt;第二行：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;..11:07:41 session 0x144699552020000 cxid 0x0 zxid 0x300000002 createSession 3000
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;一次客户端会话创建的事务操作日志。&lt;br /&gt;
-事务操作时间 + 客户端会话ID + CXID + ZXID + 操作类型 + 会话超时时间&lt;/p&gt;
-
-&lt;p&gt;第三行：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;..11:08:40 session 0x144699552020000 cxid 0x2 zxid 0x300000003 create `/test_log,#7631,v{s{31,s{'world',anyone}}},F,2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;节点创建操作的事务操作日志。&lt;br /&gt;
-事务操作时间 + 客户端会话ID + CXID + ZXID + 操作类型 + 节点路径 + 节点数据内容&lt;/p&gt;
-
-&lt;p&gt;以后几行都类似。&lt;/p&gt;
-
-&lt;h3 id=&quot;日志写入&quot;&gt;日志写入&lt;/h3&gt;
-
-&lt;p&gt;事务写入事务日志的操作由&lt;code class=&quot;highlighter-rouge&quot;&gt;FileTxnLog&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;append&lt;/code&gt;方法完成：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public synchronized boolean append(TxnHeader hdr, Record txn)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;ol&gt;
-  &lt;li&gt;确定是否有事务日志可写&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;ZooKeeper第一次写入事务日志，或者上一个事务日志写满时，服务器没有和任何日志文件关联，
-此时需要使用&lt;strong&gt;当前待写入事务的ZXID作为后缀创建新的事务日志文件&lt;/strong&gt;，并写入。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;确定事务日志文件是否需要扩容&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;为了避免开辟新磁盘块的开销，==ZooKeeper使用&lt;strong&gt;事务文件预分配&lt;/strong&gt;的方式。==&lt;/p&gt;
-
-&lt;p&gt;文件初创建时，会预分配64MB磁盘块，并且当检测到当前事务文件剩余空间不足4KB时，文件大小将被增加64MB，并使用0填充被扩容的文件空间。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;zookeeper.preAllocSize&lt;/code&gt;设置预分配大小。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;写入文件&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;事务序列化、计算Checksum后，事务头、事务体和Checksum值将被写入文件流，放入streamsToFlush中。&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;zookeeper.forceSync&lt;/code&gt;设置是否强制将streamsToFlush中的字节流马上写入磁盘。&lt;/p&gt;
-
-&lt;h3 id=&quot;日志截断&quot;&gt;日志截断&lt;/h3&gt;
-
-&lt;p&gt;在ZooKeeper中，Leader服务器上的事务ID(Zxid)必须大于或等于非Leader服务器上的事务ID(peerLastZxid)。&lt;/p&gt;
-
-&lt;p&gt;当发现非Leader服务器上的Zxid比Leader服务器上的Zxid大时，Leader会发送TRUNC命令给该机器，进行日志截断，删除所有包含或大于peerLastZxid的事务日志文件，并重新与Leader进行同步。&lt;/p&gt;
-
-&lt;h2 id=&quot;snapshot数据快照&quot;&gt;snapshot数据快照&lt;/h2&gt;
-
-&lt;p&gt;数据快照用来记录ZooKeeper服务器上某一时刻的全量内存数据内容，并将其写入到指定的磁盘文件中。&lt;/p&gt;
-
-&lt;h3 id=&quot;文件存储-1&quot;&gt;文件存储&lt;/h3&gt;
-
-&lt;p&gt;快照数据的存储和事务日志文件类似。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;通过&lt;code class=&quot;highlighter-rouge&quot;&gt;dataDir&lt;/code&gt;属性配置文件存储位置&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;建立版本目录&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;文件名高32位为Leader选举纪元(epoch)，低32位为快照开始时最新ZXID。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;二进制存储，提供&lt;code class=&quot;highlighter-rouge&quot;&gt;SnapshotFormatter&lt;/code&gt;解码工具&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;==snapshot数据快照因为是一次全量写入，因此不需要预分配机制。==&lt;/p&gt;
-
-&lt;h3 id=&quot;快照过程&quot;&gt;快照过程&lt;/h3&gt;
-
-&lt;p&gt;FileSnap负责维护快照数据的接口，包括快照数据写入和读取。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;确定是否需要进行数据快照&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;==ZooKeeper每隔若干次事务日志记录后，进行一次数据快照。通过&lt;code class=&quot;highlighter-rouge&quot;&gt;snapCount&lt;/code&gt;参数进行配置。==&lt;/p&gt;
-
-&lt;p&gt;如果当前已经记录的事务日志数量logCount满足以下“过半随机”条件时，进行一次快照：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;randRoll = random(1, snapCount / 2);
-logCount &amp;gt; (snapCount / 2 + randRoll);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;snapCount&lt;/code&gt;默认为100000，那么ZooKeeper会在50000到100000次事务日志记录后进行一次快照。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;==切换事务日志文件==&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;==重新创建一个新的&lt;strong&gt;事务日志&lt;/strong&gt;==。&lt;/p&gt;
-
-&lt;p&gt;==事务文件不能无限制增加(按64M增量)，当事务执行数目满足&lt;code class=&quot;highlighter-rouge&quot;&gt;snapCount过半随机&lt;/code&gt;时，会切换新的事务文件。==&lt;/p&gt;
-
-&lt;p&gt;==因此快照和事务文件其实是相互影响的一体的，并不是独立的。==&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;创建数据快照异步线程&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;生成快照数据文件名&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;ZooKeeper根据当前Leader纪元(epoch)及当前ZXID生成快照数据文件名。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;序列化ZKDatabase中DataTree及会话信息，生成Checksum，写入快照文件。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;内存数据初始化&quot;&gt;内存数据初始化&lt;/h2&gt;
-
-&lt;p&gt;ZooKeeper服务器启动时，会进行数据初始化工作，将磁盘上的数据文件加载到ZooKeeper服务器内存中。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/zookeeper_init_load_data.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;初始化FileTxnSnapLog&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;FileTxnSnapLog是ZooKeeper事务日志和快照数据访问层。包括FileTxnLog和FileSnap分别为事务日志管理器和快照数据管理器。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;初始化ZKDatabase&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;初始化DataTree，创建默认节点&lt;code class=&quot;highlighter-rouge&quot;&gt;/&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;/zookeeper&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;zookeeper/quota&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;初始化sessionsWithTimeouts会话超时时间记录器。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;创建PlayBackListener监听器&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;在ZooKeeper数据恢复后期，会有一个&lt;strong&gt;事务订正&lt;/strong&gt;的过程，在这个过程中，会回调PlayBackListener监听器进行对应的数据订正。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;获取并解析快照文件&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;从所有的快照文件中，按时间逆序对快照文件进行反序列化，生成DataTree对象和sessionsWithTimeouts集合，并且进行checkSum校验。&lt;/p&gt;
-
-&lt;p&gt;只有当最新的文件不可用时，才会解析下一个，直到有一个文件通过校验，恢复完成。&lt;/p&gt;
-
-&lt;p&gt;如果读取至第100个快照文件仍然不可用，则认为无法从磁盘中加载数据，服务启动失败。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;生成快照最新的ZXID：zxid_for_snap&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;根据4中的快照文件名低32位得到快照文件恢复数据对应的最新的ZXID: zxid_for_snap。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;解析事务日志&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;由于快照文件是依据每隔一段时间才生成，包含的数据只是近似全量数据，剩余的增量数据需要从事务日志中获&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;事务应用&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;从事务日志中获取所有ZXID大于zxid_for_snap的事务，并逐个应用到DataTree和sessionsWithTimeouts中。&lt;/p&gt;
-
-&lt;p&gt;对每个应用的事务回调PlayBackListener监听器，将事务转换成Proposal保存至提议缓存队列ZKDatabase.committedLog中，以便Follower进行快速同步。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;获取最新ZXID&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;所有待提交事务被完整应用后，获取此时最大ZXID。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;校验epoch&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;从最新ZXID中解析出事务处理的Leader周期epochOfZxid，同时从磁盘的currentEpoch和acceptedEpoch文件中读取上次记录的最新epoch值，进行校验。&lt;/p&gt;
-
-&lt;h2 id=&quot;数据同步&quot;&gt;数据同步&lt;/h2&gt;
-
-&lt;p&gt;集群完成Leader选举后，Learner会向Leader服务器进行注册，当Learner服务器向Leader完成注册后，就进入数据同步环节。&lt;/p&gt;
-
-&lt;p&gt;数据同步过程就是Leader服务器将那些没有在Learner服务器上提交过的事务请求同步给Learner服务器。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/zookeeper_data_sync.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;数据同步初始化&quot;&gt;数据同步初始化&lt;/h3&gt;
-
-&lt;p&gt;Learner向Leader注册的最后阶段，Learner向Leader发送ACKEPOCH，包含Learner的currentEpoch和lastZxid。&lt;/p&gt;
-
-&lt;p&gt;Leader服务器从ZooKeeper内存中提取出&lt;strong&gt;提议缓存队列(committedLog)&lt;/strong&gt;，同时初始化三个ZXID值：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;committedLog: ZooKeeper会保存最近一段时间内执行的事务请求议案，个数限制默认为500个议案。
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;ul&gt;
-  &lt;li&gt;peerLastZxid：Learner服务器的lastZxid。&lt;/li&gt;
-  &lt;li&gt;minCommittedLog：Leader服务器提议缓存队列committedLog中的最小ZXID。&lt;/li&gt;
-  &lt;li&gt;maxCommittedLog：Leader服务器提议缓存队列committedLog中的最大ZXID。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Leader服务器根据peerLastZxid、minCommittedLog、maxCommittedLog的值决定数据同步类型：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;差异化同步(DIFF同步)&lt;/li&gt;
-  &lt;li&gt;回滚同步(TRUNC同步)&lt;/li&gt;
-  &lt;li&gt;先回滚再差异化同步(TRUNC + DIFF同步)&lt;/li&gt;
-  &lt;li&gt;全量同步(SNAP同步)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;差异化同步diff同步&quot;&gt;差异化同步(DIFF同步)&lt;/h3&gt;
-
-&lt;p&gt;当 &lt;code class=&quot;highlighter-rouge&quot;&gt;minCommittedLog&lt;/code&gt; &amp;lt;= &lt;code class=&quot;highlighter-rouge&quot;&gt;peerListZxid&lt;/code&gt; &amp;lt;= &lt;code class=&quot;highlighter-rouge&quot;&gt;maxCommittedLog&lt;/code&gt;时，进行差异化同步。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/zookeeper_sync_diff.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Leader向Learner发送DIFF指令。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;通知Learner进入差异化数据同步阶段，Leader即将把Proposal同步给自己。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Leader针对每个Proposal，先后发送PROPOSAL内容数据包和COMMIT指令数据包&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Learner依次Proposal应用到内存数据库中。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Leader发送完差异事务数据后，立即向Learner发送NEWLEADER指令&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;NEWLEADER指令通知Learner，已经将committedLog中的Proposal都同步给Learner。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Learner向Leader反馈ACK消息&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Learner向Leader反馈完成了对committedLog中Proposal的同步。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Leader进入“过半策略”等待阶段&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Leader会和其他所有Learner服务器进行同样的数据同步流程，直到集群中由过半的Learner响应并反馈ACK消息。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;向所有已经完成数据同步的Learner发送UPTODATE指令&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;当收到过半Learner的ACK消息后，通知Learner集群中已经有过半机器完成了数据同步，已经具备对外服务的能力。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Learner再次向Leader反馈ACK。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;先回滚再差异化同步trunc--diff同步&quot;&gt;先回滚再差异化同步(TRUNC + DIFF同步)&lt;/h3&gt;
-
-&lt;p&gt;当Leader服务器发现某个Learner包含一条自己没有的事务记录，就需要让该Learner进行事务回滚–回滚到Leader服务器上存在的，最接近peerLastZxid的ZXID。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/zookeeper_trunc_diff_exampe.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;在minCommittedLog &amp;lt;= peerLastZxid &amp;lt;= maxCommittedLog时，有一种特殊的情况：
-
-1. 假设有A、B、C三台机器，此时B是Leader服务器，Leader_Epoch为5，当前已经被集群中绝大部分机器都提交的ZXID为:0x500000001和0x500000002。
-2. 此时Leader正要处理ZXID: 0x500000003并且已经写入Leader本地事务日志，但是在要将该Proposal发送给其他Follower投票时Leader服务器宕机，Proposal没有被同步出去。
-3. 此时ZooKeeper集群进行新一轮选举，产生的新的Leader是A，同时Leader_Epoch变更为6。
-4. A和C继续提供服务，并提交了0x600000001和0x600000002两个事务。
-5. 此时，服务器B再次启动，作为Follower连接至新的LeaderA，并开始同步数据。
-
-此时，数据同步各值为：
-- minCommittedLog: 0x500000001
-- maxCommittedLog: 0x600000002
-- peerLastZxid: 0x500000003
-这种情况就需要进行TRUNC + DIFF同步，让Learner先TRUNC回滚到0x50000002，在DIFF同步至0x50000003。
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;仅回滚同步trunc同步&quot;&gt;仅回滚同步(TRUNC同步)&lt;/h3&gt;
-
-&lt;p&gt;当peerLastZxid比Leader中maxCommittedLog大时，Leader会要求Learner回滚到ZXID值为maxCommittedLog对应的事务操作。&lt;/p&gt;
-
-&lt;h3 id=&quot;全量同步snap同步&quot;&gt;全量同步(SNAP同步)&lt;/h3&gt;
-
-&lt;p&gt;当peerLastZxid小于minCommittedLog时，或者Leader服务器上没有提议缓存队列时，无法直接使用提议缓存队列和Learner进行数据同步。&lt;/p&gt;
-
-&lt;p&gt;只能进行全量同步(SNAP同步)，将本机上的全量内存数据都发送给Learner。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Leader服务器向Learner发送SNAP指令。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;通知Learner即将进行全量数据同步。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;==Leader从内存数据库中&lt;strong&gt;获取到全量数据节点和会话超时时间记录器，序列化后传输给Learner&lt;/strong&gt;。==&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Learner接收到全量数据后，反序列化并载入。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">ZooKeeper中，数据存储分为两部分，内存数据(ZKDatabase)与磁盘数据(事务日志 + 事务快照)。 ZKDatabase ZooKeeper的数据模型是一棵树。 而从使用角度看，ZooKeeper就像一个内存数据库一样，在内存数据库中，存储了整棵树的内容，包括所有的节点路径、节点数据以及ACL信息等。 ZKDatabase</summary></entry><entry><title type="html">ZooKeeper角色、通信及请求处理</title><link href="http://localhost:4000/2019/04/12/zookeeper-server-role-and-communication/" rel="alternate" type="text/html" title="ZooKeeper角色、通信及请求处理" /><published>2019-04-12T00:00:00+08:00</published><updated>2019-04-12T00:00:00+08:00</updated><id>http://localhost:4000/2019/04/12/zookeeper-server-role-and-communication</id><content type="html" xml:base="http://localhost:4000/2019/04/12/zookeeper-server-role-and-communication/">&lt;h2 id=&quot;服务器角色&quot;&gt;服务器角色&lt;/h2&gt;
-
-&lt;p&gt;ZooKeeper集群中，分别有Leader、Follower和Observer三种类型的服务器角色。&lt;/p&gt;
-
-&lt;p&gt;ZooKeeper使用责任链模式处理每一个客户端的请求。&lt;/p&gt;
-
-&lt;h3 id=&quot;leader&quot;&gt;Leader&lt;/h3&gt;
-
-&lt;p&gt;Leader是事务请求的唯一调度者和处理者，保证集群事务处理的顺序性。&lt;/p&gt;
-
-&lt;p&gt;Leader是集群内部各服务器的调度者。&lt;/p&gt;
-
-&lt;h4 id=&quot;leader的请求处理链&quot;&gt;Leader的请求处理链&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/zookeeper_leader_responsibility_pattern.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;PrepRequestProcessor 事务预处理处理器&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;识别当前请求是否是事务请求，并对事务请求进行预处理，如创建请求事务头、事务体、会话检查、ACL检查和版本检查等。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;ProposalRequestProcessor 事务投票处理器&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;ProposalRequestProcessor是Leader服务器事务处理流程的发起者。&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;对于事务请求，根据请求类型创建对应的Proposal提议，并发送给所有的Follower服务器，发起一次集群内的事务投票。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;将事务请求交付给SyncRequestProcessor进行事务日志的记录。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;将所有请求交给CommitProcessor。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;SyncRequestProcessor 事务日志记录处理器&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;将事务请求记录到事务日志文件中，同时触发ZooKeeper进行数据快照。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;AckRequestProcessor&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;负责在事务日志记录处理器完成记录后，向Proposal的投票收集器发送ACK反馈，以通知投票收集器当前服务器已经完成了对该Proposal的事务日志记录。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;CommitProcessor 事务提交处理器&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;对事务请求，等待集群内针对Proposal的投票直到该Proposal可被提交。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;对非事务请求，直接交付给下一级处理器ToBeCommitProcessor。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;ToBeCommitProcessor&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;将被CommitProcessor处理过的可被提交的Proposal逐个交付给FinalRequestProcessor处理器。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;FinalRequestProcessor&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;最后一个处理器，进行客户端请求返回之前的收尾工作。&lt;/p&gt;
-
-&lt;h4 id=&quot;learnerhandler&quot;&gt;LearnerHandler&lt;/h4&gt;
-
-&lt;p&gt;Leader服务器会与每一个Follower/Observer服务器建立一个TCP长连接，同时也会为每个Follower/Observer服务器都创建一个名为LearnerHandler的实体。Leader服务器保存了所有Follower/Observer对应的LearnerHandler。&lt;/p&gt;
-
-&lt;p&gt;LearnerHandler主要负责Follower/Observer服务器和Leader服务器之间的一系列网络通信，包括数据同步、请求转发和Proposal提议的投票等。&lt;/p&gt;
-
-&lt;h3 id=&quot;follower&quot;&gt;Follower&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;处理客户端非事务请求，转发事务请求给Leader服务器。&lt;/li&gt;
-  &lt;li&gt;参与事务请求Proposal的投票。&lt;/li&gt;
-  &lt;li&gt;参与Leader选举投票。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;follower的请求处理链&quot;&gt;Follower的请求处理链&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/zookeeper_follower_responsibility_patterh.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;FollowerRequestProcessor&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;识别当前请求是否是事务请求，如果是事务请求则转发给Leader服务器。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;CommitProcessor&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;同Leader。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;SyncRequestProcessor&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;同Leader。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;SendAckRequestProcessor&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;和Leader上的AckRequestProcessor想听，在SyncRequestProcessor处理器完成事务日志记录后，会向Leader服务器发送ACK消息以表明自身完成了事务日志的记录工作。&lt;/p&gt;
-
-&lt;h3 id=&quot;observer&quot;&gt;Observer&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;和Follower一样，事务请求转发给Leader服务器进行处理。&lt;/li&gt;
-  &lt;li&gt;和Follower的区别在，Observer不参与任何投票，包括Proposal投票和Leader选举投票。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Observer的请求链路和Follower也一样。&lt;/p&gt;
-
-&lt;h2 id=&quot;服务器消息通信&quot;&gt;服务器消息通信&lt;/h2&gt;
-
-&lt;p&gt;ZooKeeper服务器间消息类型分为：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;数据同步型&lt;/li&gt;
-  &lt;li&gt;服务器初始化型&lt;/li&gt;
-  &lt;li&gt;请求处理型&lt;/li&gt;
-  &lt;li&gt;会话管理型&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;数据同步型&quot;&gt;数据同步型&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;消息类型&lt;/th&gt;
-      &lt;th&gt;发送方&lt;/th&gt;
-      &lt;th&gt;接收方&lt;/th&gt;
-      &lt;th&gt;说明&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;DIFF&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Learner&lt;/td&gt;
-      &lt;td&gt;Leader通知Learner服务器，Leader即将与其进行DIFF方式的数据同步&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;SNAP&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Learner&lt;/td&gt;
-      &lt;td&gt;Leader通知Learner服务器，Leader即将与其进行全量方式的数据同步&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;UPTODATE&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Learner&lt;/td&gt;
-      &lt;td&gt;Leader通知Learner服务器，已经完成数据同步，可以开始对外提供服务&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;TRUNC&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Learner&lt;/td&gt;
-      &lt;td&gt;Leader触发Learner进行内存数据库的回滚&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;服务器初始化型&quot;&gt;服务器初始化型&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;消息类型&lt;/th&gt;
-      &lt;th&gt;发送方&lt;/th&gt;
-      &lt;th&gt;接收方&lt;/th&gt;
-      &lt;th&gt;说明&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;OBSERVERINFO&lt;/td&gt;
-      &lt;td&gt;Observer&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Observer启动时向Leader服务器注册自己，表明当前角色是Observer。消息中包含服务器SID和ZXID。&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;FOLLOWERINFO&lt;/td&gt;
-      &lt;td&gt;Follower&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Follower启动时向Leader注册自己，表明当前角色是Follower，消息中包含服务器SID和ZXID。&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;LEADERINFO&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Learner&lt;/td&gt;
-      &lt;td&gt;Leader在接收到OBSERVERINFO和FOLLOWERINFO后回复LEARNERINFO，包含当前Leader服务器的EPOCH值。&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;ACKEPOCH&lt;/td&gt;
-      &lt;td&gt;Learner&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Follower和Observer接收到LEADERINFO后，回复ACKEPOCH，包含最新的ZXID和EPOCH。&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;NEWLEADER&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Learner&lt;/td&gt;
-      &lt;td&gt;Leader在和Learner完成一个交互流程后，向Learner发送NEWLEADER消息，同时带上当前Leader服务器最新ZXID。&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;请求处理型&quot;&gt;请求处理型&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;消息类型&lt;/th&gt;
-      &lt;th&gt;发送方&lt;/th&gt;
-      &lt;th&gt;接收方&lt;/th&gt;
-      &lt;th&gt;说明&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;REQUEST&lt;/td&gt;
-      &lt;td&gt;Learner&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Learner服务器向Leader服务器转发事务请求&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;PROPOSAL&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Follower&lt;/td&gt;
-      &lt;td&gt;ZAB算法核心消息，Leader服务器将事务请求以PROPOSAL消息的形式创建投票发送给所有Follower进行事务日志记录&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;ACK&lt;/td&gt;
-      &lt;td&gt;Follower&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Follower接收到来自Leader的PROPOSAL消息后，进行事务日志记录，完成后反馈ACK给Leader。&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;COMMIT&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Follower&lt;/td&gt;
-      &lt;td&gt;用于通知集群中所有的Follower服务器，可以进行事务请求的提交了。Leader服务器在接收到过半的Follower反馈的ACK消息后，生成COMMIT消息，告知所有的Follower服务器进行事务请求的提交。&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;INFORM&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Observer&lt;/td&gt;
-      &lt;td&gt;事务提交阶段，对Follower只需要发送COMMIT，因为之前发送的Proposal中已经包含事务内容，Follower可以从缓存中再次获取到事务请求并执行提交。&lt;br /&gt; 对Observer，因为之前没有参与事务投票，因此需要另外的INFORM消息，消息中包含事务请求的内容。&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;SYNC&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Learner&lt;/td&gt;
-      &lt;td&gt;通知Learner服务器已经完成了Sync操作&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;会话管理型&quot;&gt;会话管理型&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;消息类型&lt;/th&gt;
-      &lt;th&gt;发送方&lt;/th&gt;
-      &lt;th&gt;接收方&lt;/th&gt;
-      &lt;th&gt;说明&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;PING&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;Learner&lt;/td&gt;
-      &lt;td&gt;用于Leader同步Learner服务器上的&lt;strong&gt;客户端&lt;/strong&gt;心跳检测。&lt;br /&gt;ZooKeeper客户端随机和任意一个Zookeeper服务器保持连接，因此Leader服务器需要委托给Learner来保存这些客户端的心跳检测记录。&lt;br /&gt;Leader定时向Learner发送PING消息，Learner将这段时间内保持心跳检测的客户端列表，同样以PING消息的形式反馈给Leader。&lt;br /&gt;Leader服务器逐个对接收到的客户端进行会话激活。&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;REVALIDATE&lt;/td&gt;
-      &lt;td&gt;Learner&lt;/td&gt;
-      &lt;td&gt;Leader&lt;/td&gt;
-      &lt;td&gt;在客户端重连时，重新连接上的新服务器会向Leader发送REVALIDATE确定会话是否已经超时，同时也激活会话。&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&quot;请求处理&quot;&gt;请求处理&lt;/h2&gt;
-
-&lt;p&gt;ZooKeeper服务端对于会话创建的处理，大体可以分为请求接收、会话创建、预处理、事务处理、事务应用和会话响应6大环节。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/zookeeper_server_session_start_process.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;请求接收&quot;&gt;请求接收&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;NIOServerCnxn接收请求&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;判断是否是客户端“会话创建”请求&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;每个会话对应一个NIOServerCnxn实体，如果当前NIOServerCnxn实体未初始化，就是“会话创建”请求。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;反序列化ConnectRequest请求&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;判断是否是ReadOnly客户端&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;如果服务器是以ReadOnly模式启动，那么所有来自非ReadOnly客户端的请求将无法被处理。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;检查客户端ZXID&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;同一个ZooKeeper集群中，服务端的ZXID必定大于客户端的ZXID，否则服务端将不接受客户端的“会话创建”请求。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;协商sessionTimeout&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;客户端构造ZooKeeper实例时，会向服务端发送sessionTimeout参数。&lt;/p&gt;
-
-&lt;p&gt;服务端对超时时间的限制介于2个tickTime到20个tickTime之间，如果tickTime为2000毫秒，服务端会限制客户端sessionTimeout在4秒到40秒之间。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;判断是否需要重新创建会话&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;如果客户端请求包含了sessionID，认为客户端正在进行会话重连，服务端只需要重新打开该会话。否则会进入下一步，为客户端创建会话。&lt;/p&gt;
-
-&lt;h3 id=&quot;会话创建&quot;&gt;会话创建&lt;/h3&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;为客户端生成全局唯一sessionID&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;注册会话&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;向sessionTracker维护的数据结构sessionsWithTimeout和sessionsById中插入sessionID。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;激活会话&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;在ZooKeeper会话管理的桶(分桶策略)中为会话安排一个区块。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;生成会话密码&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;服务端在创建客户端会话时，会同时为客户端生成一个会话密码，连同sessionID一起发送给客户端。&lt;/p&gt;
-
-&lt;p&gt;会话密码是会话在集群中不同机器间转移的凭证。&lt;/p&gt;
-
-&lt;h3 id=&quot;预处理&quot;&gt;预处理&lt;/h3&gt;
-
-&lt;p&gt;请求交给PrepRequestProcessor进行处理。&lt;/p&gt;
-
-&lt;p&gt;对于事务请求，创建事务头和事务体。&lt;/p&gt;
-
-&lt;h3 id=&quot;事务处理&quot;&gt;事务处理&lt;/h3&gt;
-
-&lt;p&gt;请求交给ProposalRequestProcessor，请求的处理将会进入三个子处理流程：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Sync流程&lt;/li&gt;
-  &lt;li&gt;Proposal流程&lt;/li&gt;
-  &lt;li&gt;Commit流程&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/zookeeper_leader_responsibility_pattern.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Sync流程、Proposal流程和Commit流程是同时发生的。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;sync流程&quot;&gt;Sync流程&lt;/h4&gt;
-
-&lt;p&gt;ProposalRequestProcessor处理器，针对事务请求，使用SyncRequestProcessor处理器记录事务日志。&lt;/p&gt;
-
-&lt;p&gt;Leader服务器和Follower服务器都有该处理器。&lt;/p&gt;
-
-&lt;p&gt;完成事务日志记录后，Follower服务器会向Leader服务器发送ACK消息，表明自身完成了事务日志的记录，以便Leader服务器统计每个事务请求的投票情况。&lt;/p&gt;
-
-&lt;h4 id=&quot;proposal流程&quot;&gt;Proposal流程&lt;/h4&gt;
-
-&lt;p&gt;每一个事务请求都需要集群中过半机器投票认可才能被真正应用到ZooKeeper的内存数据库中。Proposal流程负责该投票与统计过程。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;发起投票&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;如果当前请求是事务请求，Leader服务器将发起一轮事务投票。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;生成提议Proposal&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;将PrepRequestProcessor创建的事务头、事务体及Leader的ZXID序列化到Proposal对象中。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;广播提议&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Leader服务器以ZXID作为标识，将该提议放入&lt;strong&gt;投票箱outstandingProposals&lt;/strong&gt;中，同事将该提议广播给所有Follower服务器。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;收集投票&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Follower在接收到Leader发来的提议后，&lt;strong&gt;进入Sync流程记录事务日志&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;一旦日志记录完成后，向Leader服务器发送ACK消息。&lt;/p&gt;
-
-&lt;p&gt;Leader根据ACK消息统计每个提议的投票情况，&lt;strong&gt;当一个提议获得了集群中过半机器的投票，就认为提议通过，进入Commit阶段&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;将请求放入toBeApplied队列&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;在进入Commit阶段前，ZooKeeper会将请求放入toBeApplied队列中。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;广播Commit消息&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;向Follower发送COMMIT消息，向Observer发送INFORM消息。&lt;/p&gt;
-
-&lt;h4 id=&quot;commit流程&quot;&gt;Commit流程&lt;/h4&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;请求交付给CommitProcessor处理器&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;CommitProcessor处理器将请求放入&lt;strong&gt;queuedRequests队列&lt;/strong&gt;中。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;处理queuedRequests队列请求&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;CommitProcessor有&lt;strong&gt;一个单独的线程&lt;/strong&gt;逐个处理queuedRequests队列中的请求。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;标记nextPending&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;如果queuedRequests队列中正在处理的是一个事务请求，即需要等待Proposal投票结果(此时正在进行Proposal流程投票)，需要将nextPending标记为当前请求，一方面确保事务请求的顺序性，另一方面便于检测当前是否正在进行事务请求投票。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;等待Proposal投票&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Commit流程中的请求将在queuedRequests处理中等待Proposal流程完成投票。&lt;/p&gt;
-
-&lt;p&gt;当投票通过后(接收到commit消息)，请求将被放入committedRequests队列中，继续Commit流程。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;提交请求&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;将请求放入toProcess队列，应用事务。&lt;/p&gt;
-
-&lt;h3 id=&quot;事务应用&quot;&gt;事务应用&lt;/h3&gt;
-
-&lt;p&gt;FinalRequestProcessor处理器将检查请求的有效性并&lt;strong&gt;完成事务在内存数据库中的应用&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h3 id=&quot;会话响应&quot;&gt;会话响应&lt;/h3&gt;
-
-&lt;p&gt;计算请求在服务端处理花费时间、统计ZXID、lastOp、lastLatency等。&lt;/p&gt;
-
-&lt;p&gt;创建connectResponse响应并发送。&lt;/p&gt;
-
-&lt;h3 id=&quot;事务请求转发&quot;&gt;事务请求转发&lt;/h3&gt;
-
-&lt;p&gt;所有事务请求必须由Leader服务器来处理，但是并不是所有客户端都和Leader服务器保持连接，因此ZooKeeper实现了事务请求转发机制。&lt;/p&gt;
-
-&lt;p&gt;在Follower和Observer中，第一个请求处理器FollowerRequestProcessor和ObserverRequestProcessor，都会检查当前请求是否是事务请求。&lt;/p&gt;
-
-&lt;p&gt;如果是事务请求，&lt;strong&gt;以REQUEST消息形式转发给Leader服务器&lt;/strong&gt;。Leader服务器接受到消息后，解析出客户端的原始请求，提交到自己的请求处理链中进行事务请求处理。&lt;/p&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">服务器角色</summary></entry><entry><title type="html">ZooKeeper的Leader选举机制</title><link href="http://localhost:4000/2019/04/10/zookeeper-leader-election/" rel="alternate" type="text/html" title="ZooKeeper的Leader选举机制" /><published>2019-04-10T00:00:00+08:00</published><updated>2019-04-10T00:00:00+08:00</updated><id>http://localhost:4000/2019/04/10/zookeeper-leader-election</id><content type="html" xml:base="http://localhost:4000/2019/04/10/zookeeper-leader-election/">&lt;p&gt;Leader选举是ZooKeeper中最重要的技术之一，也是保证分布式数据一致性的关键所在。&lt;/p&gt;
-
-&lt;h2 id=&quot;fastleaderelection选举算法&quot;&gt;FastLeaderElection选举算法&lt;/h2&gt;
-
-&lt;h3 id=&quot;vote-投票&quot;&gt;Vote 投票&lt;/h3&gt;
-
-&lt;p&gt;SID：服务器全局唯一ID。&lt;/p&gt;
-
-&lt;p&gt;ZXID：事务ID，唯一表示一次服务器状态的变更。&lt;/p&gt;
-
-&lt;p&gt;一个投票由SID和ZXID组成：(SID, ZXID)。&lt;/p&gt;
-
-&lt;h3 id=&quot;开始投票&quot;&gt;开始投票&lt;/h3&gt;
-
-&lt;p&gt;通常有两种情况导致集群中不存在Leader：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;整个服务器刚刚初始化启动，尚未产生Leader服务器。&lt;/li&gt;
-  &lt;li&gt;运行期间当前Leader所在服务器宕机。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;此时，集群中所有服务器都处于&lt;strong&gt;LOOKING&lt;/strong&gt;状态，试图选举出Leader。向集群中其他所有机器发出投票(SID, ZXID)。&lt;/p&gt;
-
-&lt;p&gt;第一次投票时，每台自己都投自己。&lt;/p&gt;
-
-&lt;h3 id=&quot;变更投票&quot;&gt;变更投票&lt;/h3&gt;
-
-&lt;p&gt;对接收到的每一个来自其他服务器的投票(vote_sid, vote_zxid)，处理规则如下：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;先比较zxid，再比较sid。
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;如果 vote_zxid &amp;gt; self_zxid, 认可收到的投票，将收到的投票&lt;strong&gt;再次投出&lt;/strong&gt;。&lt;/li&gt;
-  &lt;li&gt;如果 vote_zxid &amp;lt; self_zxid, 坚持自己的投票，不做任何改变，不再发出投票。&lt;/li&gt;
-  &lt;li&gt;如果 vote_zxid == self_zxid 且 vote_sid &amp;gt; self_sid，认可当前收到的投票，将收到的投票&lt;strong&gt;再次投出&lt;/strong&gt;。&lt;/li&gt;
-  &lt;li&gt;如果 vote_zxid == self_zxid 且 vote_sid &amp;lt; self_sid, 坚持自己的投票，不做改变。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/zookeeper_fastLeaderElection_example.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;确定leader&quot;&gt;确定Leader&lt;/h3&gt;
-
-&lt;p&gt;每台机器收到其他机器投票并处理后，都会统计投票状态。&lt;/p&gt;
-
-&lt;p&gt;如果有一台机器收到了超过半数的相同的投票，该投票对应的SID机器即为Leader。&lt;/p&gt;
-
-&lt;h2 id=&quot;leader选举的实现&quot;&gt;Leader选举的实现&lt;/h2&gt;
-
-&lt;h3 id=&quot;投票数据结构&quot;&gt;投票数据结构&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Vote
-- id: long // 被推举的Leader的SID值。
-- zxid: long // 被推举的Leader的事务ID。
-- electionEpoch: long // 当前服务器的选举纪元，每次进入新一轮的投票，该值加一。
-- peerEpoch: long // 被推举的Leader的选举纪元。
-- state: ServerState // 当前服务器的状态 // LOOKING, FOLLOWING, LEADING, OBSERVING
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;quorumcnxmanager&quot;&gt;QuorumCnxManager&lt;/h3&gt;
-
-&lt;p&gt;QuorumCnxManager负责各台服务器之间的底层Leader选举过程中的网络通信。每台服务器启动时，都会启动一个QuorumCnxManager。&lt;/p&gt;
-
-&lt;p&gt;QuorumCnxManager内部维护一系列的队列，保存接受到的、待发送的消息，以及消息发送器：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;recvQueue&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;消息接收队列，存放从其他服务器接收到的消息。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;queueSendMap&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;消息发送队列，保存待发送的消息。&lt;code class=&quot;highlighter-rouge&quot;&gt;queueSendMap&lt;/code&gt;是一个Map，按照SID进行分组，为每个参与选举的其他服务器单独分配一个队列。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;senderWorkerMap&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;发送器集合，每个SenderWorker对应一台参与选举的其他服务器，负责消息的发送。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;lastMassageSent&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;为每个SID保留最近发送过的一个消息。&lt;/p&gt;
-
-&lt;p&gt;QuorumCnxManager在启动时，会创建ServerSocket监听Leader选举的通信端口(默认: 3888)，并向所有集群中的服务器中&lt;strong&gt;比自己SID小的&lt;/strong&gt;(防止重复连接)发起TCP连接。&lt;/p&gt;
-
-&lt;h3 id=&quot;fastleaderelection算法实现&quot;&gt;FastLeaderElection算法实现&lt;/h3&gt;
-
-&lt;h4 id=&quot;选票管理&quot;&gt;选票管理&lt;/h4&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;sendqueue&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;选票发送队列&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;recvqueue&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;选票接收队列&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;WorkerReceiver&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;选票接收器，接收器不断从QuorunCnxManager中获取选举消息，并转化成Vote选票结构，加入recvqueue。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;WorkerSender&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;选票发送器，不断从sendqueue中获取待发送的选票。并传递至底层QuorumCnxManager。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/zookeeper_fastLeaderElection_data_flow.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;选举步骤&quot;&gt;选举步骤&lt;/h4&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;自增选举轮次(ElectionEpoch)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;ZooKeeper规定所有有效的投票必须在同一轮次。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;初始化选票&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;在初始化阶段，每台服务器都推举自己为Leader。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;发送初始化选票&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;将刚刚初始化好的选票放入sendqueue队列，由发送器WorkerSender负责发送给所有其他服务器。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;接收外部投票&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;不断地从recvqueue队列中获取外部投票。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;[处理外部投票]判断选举轮次&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;外部投票选举轮次大于内部投票&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;更新本机选举轮次至外部投票轮次，清空recvset中所有已经收到的选票。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;外部投票选举轮次小于内部投票&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;忽略该外部投票。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;[处理外部投票]选票PK&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;按照ZXID、SID的规则进行PK。如果外部投票获胜，则覆盖内部投票。&lt;/p&gt;
-
-&lt;p&gt;==&lt;strong&gt;并再次将变更后的内部投票发送出去。&lt;/strong&gt;==&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;选票归档&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;每次接受到外部投票都会放入recvset中。&lt;/p&gt;
-
-&lt;p&gt;recvset记录当前服务器在本轮次的Leader选举收到的所有外部投票。一台服务器最多只会存入一张选票，recvset 是一个 HashMap，以外部服务器的 sid 作为 key，它们的选票 Vote 作为 value。&lt;/p&gt;
-
-&lt;div class=&quot;language-java highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;recvset&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;sid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Vote&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;leader&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;zxid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;electionEpoch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;n&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;peerEpoch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;统计投票&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;每次将外部投票放入recvset中时，都会统计集群中是否已经有过半的服务器认可了当前的内部投票。&lt;/p&gt;
-
-&lt;p&gt;如果已经有过半服务器认可当前的内部投票，则终止投票，否则继续接收，返回步骤4。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;更新服务器状态&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;如统计投票后终止投票，如果当前被认可的服务器是自己，则更新服务器状态为LEADING。 否则根据具体情况更新为FOLLOWING或OBSERVING。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/zookeeper_fastLeaderElection_process.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;refs&quot;&gt;REFS&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;https://juejin.im/post/5cd06b7c51882544da500e36&lt;/li&gt;
-  &lt;li&gt;http://www.chilangedu.com/blog/1000001325937566.html&lt;/li&gt;
-  &lt;li&gt;https://www.jianshu.com/p/763a5ae127a7&lt;/li&gt;
-&lt;/ul&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">Leader选举是ZooKeeper中最重要的技术之一，也是保证分布式数据一致性的关键所在。</summary></entry><entry><title type="html">ZooKeeper的Session机制</title><link href="http://localhost:4000/2019/04/09/zookeeper-session/" rel="alternate" type="text/html" title="ZooKeeper的Session机制" /><published>2019-04-09T00:00:00+08:00</published><updated>2019-04-09T00:00:00+08:00</updated><id>http://localhost:4000/2019/04/09/zookeeper-session</id><content type="html" xml:base="http://localhost:4000/2019/04/09/zookeeper-session/">&lt;p&gt;客户端与服务端之间的任何交互操作都与会话息息相关，包括临时节点的生命周期、客户端请求的顺序执行以及Watcher通知机制等。&lt;/p&gt;
-
-&lt;p&gt;ZooKeeper的连接与会话就是客户端通过实例化ZooKeeper对象来实现客户端与服务器创建并保持TCP连接的过程。&lt;/p&gt;
-
-&lt;h3 id=&quot;会话状态&quot;&gt;会话状态&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;CONNECTING&lt;/li&gt;
-  &lt;li&gt;CONNECTED&lt;/li&gt;
-  &lt;li&gt;RECONNECTING&lt;/li&gt;
-  &lt;li&gt;RECONNECTED&lt;/li&gt;
-  &lt;li&gt;CLOSE&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;当客户端开始创建ZooKeeper对象时，状态变为CONNECTING。逐个选取服务器地址列表中的IP地址尝试连接，成功连接上后状态变更为CONNECTED。&lt;/p&gt;
-
-&lt;p&gt;伴随着网络问题，客户端与服务器的连接可能断开，此时客户端会自动进行重连，状态再次变更为CONNETING，脸上后又变为CONNECTED，因此，运行期间，客户端的状态是介于CONNECTING和CONNECTED之间。&lt;/p&gt;
-
-&lt;p&gt;会话超时、权限检查失败、客户端主动退出时，客户端状态变更为CLOSE。&lt;/p&gt;
-
-&lt;h3 id=&quot;会话创建&quot;&gt;会话创建&lt;/h3&gt;
-
-&lt;h4 id=&quot;session&quot;&gt;Session&lt;/h4&gt;
-
-&lt;p&gt;&lt;strong&gt;Session&lt;/strong&gt;是ZooKeeper中的会话实体，包括：&lt;/p&gt;
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;sessionID 会话全局唯一ID&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;TimeOut 会话超时时间&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;客户端在构造ZooKeeper实例时，向服务器发送配置的SessionTimeout参数，服务器根据自己的超时时间限制确定最终会话超时时间。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;TickTime 下次会话超时时间&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;ZooKeeper对会话实行&lt;strong&gt;分桶策略&lt;/strong&gt;，根据当前时间、Timeout计算得出。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;isClosing 会话是否已经关闭&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;当&lt;code class=&quot;highlighter-rouge&quot;&gt;isClosing = true&lt;/code&gt;时，服务器不再处理来自该会话的新请求。&lt;/p&gt;
-
-&lt;h4 id=&quot;sessiontracker&quot;&gt;SessionTracker&lt;/h4&gt;
-
-&lt;p&gt;SessionTracker是ZooKeeper服务端的会话管理器，负责会话的创建、管理和清理工作。其中维护了三个Map：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;HashMap&amp;lt;Long, SessionImpl&amp;gt; &lt;strong&gt;sessionsById&lt;/strong&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;根据sessionId得到Session实体。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;ConcurrentHashMap&amp;lt;Long, Integer&amp;gt; &lt;strong&gt;sessionsWithTimeout&lt;/strong&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;根据sessionID得到会话超时时间。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;HashMap&amp;lt;Long, SessionSet&amp;gt; &lt;strong&gt;sessionSets&lt;/strong&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;根据&lt;strong&gt;分桶策略&lt;/strong&gt;管理会话。&lt;/p&gt;
-
-&lt;h4 id=&quot;分桶策略&quot;&gt;分桶策略&lt;/h4&gt;
-
-&lt;p&gt;将&lt;strong&gt;下次超时时间点(ExpirationTime)&lt;/strong&gt;相同的会话放在同一个区块中同一管理。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/zookeeper_session_bucket_expiration_management.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;ZooKeeper Leader服务器每隔&lt;strong&gt;ExpirationInterval&lt;/strong&gt;会检查会清理超时会话，为了方便多多个会话同时检查，&lt;strong&gt;ExpirationTime&lt;/strong&gt;是&lt;strong&gt;ExpirationInterval&lt;/strong&gt;的整数倍：&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ExpirationTime_ = CurrentTime + SessionTimeout
-ExpirationTime = (ExpirationTime_/ExpirationInterval + 1) * ExpirationInterval
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;会话管理&quot;&gt;会话管理&lt;/h4&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;会话激活 TouchSession (保持会话的有效性)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/Users/cdp/Work/ImageHostInGithub/zookeeper_session_touch.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;每当客户端向服务端发送请求，会触发会话激活。&lt;/li&gt;
-  &lt;li&gt;客户端在&lt;code class=&quot;highlighter-rouge&quot;&gt;sessionTimeout/3&lt;/code&gt;时间内未和服务器进行过任何通信时，客户端会向服务端发送PING请求。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;会话超时检查&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;SessionTracker中单独的线程进行会话超时检查。&lt;/p&gt;
-
-&lt;p&gt;线程每隔ExpirationInterval时间，逐个依次地对会话桶中剩下的会话进行清理。&lt;/p&gt;
-
-&lt;h4 id=&quot;会话清理&quot;&gt;会话清理&lt;/h4&gt;
-
-&lt;p&gt;SessionTracker超时检查线程会对已经过期的会话进行会话清理。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;标记isClosing = true。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;提交“会话关闭”请求，使会话关闭操作在整个服务端集群中都生效。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;收集需要清理的临时节点。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;ZooKeeper内存数据库中维护了“会话ID – 临时节点集合”的表。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;删除临时节点&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;逐个将这些临时界定啊转换成“节点删除”请求并删除会话对应的所有临时节点。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;移除会话&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;从SessionTracker中得sessionsById、sessionsWithTimeout和sessionSets中移除会话。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;关闭 NIOServerCnxn&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;重连&quot;&gt;重连&lt;/h4&gt;
-
-&lt;p&gt;客户端和服务端网络连接断开时，客户端会自动反复重连，再次连接上的客户端状态可能是：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;CONNECTED&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;在会话超时时间内重新连接上集群中任意一台机器。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;EXPIRED&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;在会话超时时间外重新连接上。&lt;/p&gt;
-
-&lt;p&gt;当客户端与服务器端连接出现问题断开时，客户端可能出现的异常有：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;CONNECTION_LOSS (org.apache.zookeeper.KeeperException$ConnectionLossException)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;场景：&lt;/p&gt;
-
-&lt;p&gt;客户端在请求服务端时，网络异常，客户端会立即接受到事件None-Disconnected通知，并抛出ConnectionLossException。&lt;/p&gt;
-
-&lt;p&gt;应对策略：&lt;/p&gt;
-
-&lt;p&gt;应用程序应该捕获该异常，并等待客户端自动完成重连，成功重连后客户端会受到None-SyncConnected通知，此时可以重新发送请求。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;SESSION_EXPIRED&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;场景：&lt;/p&gt;
-
-&lt;p&gt;在CONNECTION_LOSS期间，由于重连耗时过长，超过了会话超时时间(sessionTimeout)，成功重连后，服务器会告知客户端会话超时(SESSION_EXPIRED)。&lt;/p&gt;
-
-&lt;p&gt;应对策略：&lt;/p&gt;
-
-&lt;p&gt;用户需要重新实例化一个ZooKeeper对象。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;SESSION_MOVED&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;场景：&lt;/p&gt;
-
-&lt;p&gt;客户端和服务器S1之间的连接断开后，CONNECTION_LOSS期间，客户端重新连接了新的服务器S2。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;可能出现的问题：
-1. C1向S1发送请求R1 setData(/app/data, 1);
-2. 请求R1到达S1之前，C1与S1之间的连接断开，并重连上S2。
-3. C1向S2发送请求R2 setData(/app/data, 2);
-4. S2处理了R2后，此时R1到达S1，对于客户端来说，正确的请求R2被错误的请求R1覆盖。
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;应对策略：&lt;/p&gt;
-
-&lt;p&gt;服务端在处理客户端请求的时候，会首先检查会话所有者，如果所有者不是当前服务器，则向客户端发出SessionMovedException。&lt;/p&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">客户端与服务端之间的任何交互操作都与会话息息相关，包括临时节点的生命周期、客户端请求的顺序执行以及Watcher通知机制等。</summary></entry><entry><title type="html">ZooKeeper客户端实现简介</title><link href="http://localhost:4000/2019/04/08/zookeeper-client/" rel="alternate" type="text/html" title="ZooKeeper客户端实现简介" /><published>2019-04-08T00:00:00+08:00</published><updated>2019-04-08T00:00:00+08:00</updated><id>http://localhost:4000/2019/04/08/zookeeper-client</id><content type="html" xml:base="http://localhost:4000/2019/04/08/zookeeper-client/">&lt;h2 id=&quot;客户端&quot;&gt;客户端&lt;/h2&gt;
-
-&lt;p&gt;ZooKeeper的客户端主要由以下几个核心组件组成：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;ZooKeeper实例：客户端的入口。&lt;/li&gt;
-  &lt;li&gt;ClientWatchManager：客户端Watcher管理器。&lt;/li&gt;
-  &lt;li&gt;HostProvider：客户端地址列表管理器。&lt;/li&gt;
-  &lt;li&gt;ClientCnxn：客户端核心线程，包括SendThread和EventThread。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/zookeeper_client_structure.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;zookeeper初始化及会话流程&quot;&gt;ZooKeeper初始化及会话流程&lt;/h3&gt;
-
-&lt;p&gt;ZooKeeper实例的创建过程，就是ZooKeeper客户端的初始化与气动环节。&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ZooKeeper客户端的构造方法：
-ZooKeeper(String connectString, int sessionTimeout, Watcher watcher);
-ZooKeeper(String connectString, int sessionTimeout, Watcher watcher, boolean canBeReadOnly);
-ZooKeeper(String connectString, int sessionTimeout, Watcher watcher, long sessionId, byte[] sessionPasswd);
-ZooKeeper(String connectString, int sessionTimeout, Watcher watcher, long sessionId, byte[] sessionPasswd, boolean canBeReadOnly);
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;初始化阶段&quot;&gt;初始化阶段&lt;/h4&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;初始化ZooKeeper对象&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;构造方法实例化ZooKeeper对象。&lt;/li&gt;
-  &lt;li&gt;创建客户端Watcher管理器ClientWatchManager。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;设置默认Watcher&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;将构造方法传入的Watcher对象作为defaultWatcher存入ClientWatchManager。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;构造==服务器地址列表管理器HostProvider==&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;解析connectString, 将传入的服务器地址保存在HostProvider。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;初始化客户端网路连接器 ClientCnxn&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;CLientCnxn负责客户端与服务器的网路交互：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;outgoingQueue + pendingQueue：客户端请求发送队列 + 服务端响应等待队列。&lt;/li&gt;
-  &lt;li&gt;SendThread：负责客户端和服务器端之间的所有网络I/O。&lt;/li&gt;
-  &lt;li&gt;EventThread：负责事件处理。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&quot;会话创建阶段&quot;&gt;会话创建阶段&lt;/h4&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;启动SendThread和EventThread。&lt;/li&gt;
-  &lt;li&gt;从HostProvider随机获取一个地址，创建TCP连接。&lt;/li&gt;
-  &lt;li&gt;SendThread发出连接请求ConnectRequest。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;响应处理阶段&quot;&gt;响应处理阶段&lt;/h4&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;ClientCnxn接收服务端响应。&lt;/li&gt;
-  &lt;li&gt;处理Response，通知SendThread及HostProvider连接成功。&lt;/li&gt;
-  &lt;li&gt;生成SyncConencted-None连接成功事件。&lt;/li&gt;
-  &lt;li&gt;EventThread查询SyncConnected-None对应的Watcher并执行。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&quot;服务器地址解析&quot;&gt;服务器地址解析&lt;/h3&gt;
-
-&lt;h5 id=&quot;connectstringparser&quot;&gt;ConnectStringParser&lt;/h5&gt;
-
-&lt;p&gt;在构造ZooKeeper实例时，传入的connectString是一个服务器地址列表：&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// 所有地址在一个字符串上，使用英文逗号分隔
-192.168.0.1:2181,192.168.0.2:2181/apps/X,192.168.0.3:2181/apps/X
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;ZooKeeper客户端内部接收到服务器地址列表后，封装至ConnectStringParser对象中：&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-Java&quot;&gt;public final class ConnectStringParser {
-    String chrootPath;
-    ArrayList&amp;lt;InetSocketAddress&amp;gt; serverAddresses = new ArrayList&amp;lt;InetSocketAddress&amp;gt;();
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;chrootPath是客户端隔离命令空间，用来设置应用的根目录。一旦设置了Chroot之后，客户端和ZooKeeper服务器发起的所有请求中相关的节点路径，都是一个相对路径，根路径就是Chroot。&lt;/p&gt;
-
-&lt;p&gt;serverAddresses保存了所有设置的服务器的IP和Port。&lt;/p&gt;
-
-&lt;h5 id=&quot;hostprovider-地址列表管理器&quot;&gt;HostProvider 地址列表管理器&lt;/h5&gt;
-
-&lt;p&gt;客户端通过HostProvider从地址列表中选择连接服务器。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public interface HostProvider{
-    public int size(); // 返回当前服务器地址列表个数
-    public InetSocketAddress next(long spinDelay); // 选择一个服务器地址并返回
-    public void onConnected(); // 如果客户端与服务器成功创建连接，会调用该回调方法
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;StaticHostProvider&lt;/strong&gt;是HostProvider接口的默认实现。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;StaticHostProvider&lt;/strong&gt;首先将服务器地址列表随机排列后组织成一个环形列表，之后就一直按照该环形顺序获取服务器地址。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/zookeeper_staticHostProvider_next.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;cientcnxn-网络io&quot;&gt;CientCnxn 网络I/O&lt;/h3&gt;
-
-&lt;p&gt;ClientCnxn是客户端的核心工作类，负责维护客户端与服务端之间的网络通信。&lt;/p&gt;
-
-&lt;h4 id=&quot;packet&quot;&gt;Packet&lt;/h4&gt;
-
-&lt;p&gt;Packet是ClientCnxn内部定义的对ZooKeeper协议层的封装，是ZooKeeper中请求与响应的载体。&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Packet
-- requestHeader: RquestHeader // 请求头
-- replyHeader: ReplyHeader // 响应头
-- request: Record // 请求体
-- response: Record // 响应体
-- bb: ByteBuffer
-- clientPath: String // 节点路径
-- serverPath: String // 节点路径
-- finished: boolean
-- cb: AsyncCallback
-- ctx: Object
-- watchRegistration: WatchRegistration // 注册的Watcher
-- readOnly: boolean
--------------------------
-+ createBB(): void
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;只有&lt;code class=&quot;highlighter-rouge&quot;&gt;requestHeader&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;request&lt;/code&gt;、&lt;code class=&quot;highlighter-rouge&quot;&gt;readOnly&lt;/code&gt;会被发送给服务端，其余都直接保存在客户端的上下文中。&lt;/p&gt;
-
-&lt;h4 id=&quot;outgoingqueue和pendingqueue&quot;&gt;outgoingQueue和pendingQueue&lt;/h4&gt;
-
-&lt;p&gt;outgoingQueue：&lt;/p&gt;
-
-&lt;p&gt;存储需要发送到服务端的Packet集合。&lt;/p&gt;
-
-&lt;p&gt;pendingQueue:&lt;/p&gt;
-
-&lt;p&gt;存储已经从客户端发送到服务端，但是需要等待服务端响应的Packet集合。&lt;/p&gt;
-
-&lt;h4 id=&quot;sendthread&quot;&gt;SendThread&lt;/h4&gt;
-
-&lt;p&gt;SendThread是客户端ClientCnxn的核心I/O调度线程。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;==维护客户端与服务端的会话生命周期。==&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;周期地向服务端发送PING包实现心跳检测。&lt;/li&gt;
-  &lt;li&gt;如果和服务端的TCP连接断开，自动且透明化地完成重连。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;管理客户端所有的请求发送和响应接收操作。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;负责传递服务端的事件给EventThread。&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&quot;eventthread&quot;&gt;EventThread&lt;/h4&gt;
-
-&lt;p&gt;负责客户端事件处理，触发客户端注册的Watcher监听回调。&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;维护watingEvents队列，包括客户端注册的Watcher和异步接口中注册的AsyncCallback。&lt;/li&gt;
-  &lt;li&gt;不断从watingEvents队列中取出Object，根据类型(Watcher/AsyncCallback)执行回调。&lt;/li&gt;
-&lt;/ol&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">客户端</summary></entry></feed>
+&lt;p&gt;==如果需要删除key最新的值，可以向broker发送值为null的消息(墓碑消息)，broker首先会进行常规清理，删除null之前的消息，之后，null值消息会被保存一段时间后删除。==&lt;/p&gt;</content><author><name>Cheng Dongping</name></author><summary type="html">集群成员关系</summary></entry></feed>

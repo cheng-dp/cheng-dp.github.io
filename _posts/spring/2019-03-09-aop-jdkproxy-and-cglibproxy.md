@@ -603,3 +603,8 @@ JDK动态代理
 Spring中动态代理的创建(AOP创建)
 - https://my.oschina.net/guangshan/blog/1797461
 - 《Spring揭秘》学习笔记
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/09/aop-jdkproxy-and-cglibproxy/
+```
+ 

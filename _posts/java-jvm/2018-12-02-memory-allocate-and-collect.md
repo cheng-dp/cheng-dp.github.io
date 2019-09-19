@@ -91,3 +91,8 @@ MinorGC中，一部分晋升的对象将放入老年代，当Survivor分区容�
 -XX:PretenureSizeThreshold=10M | 大于该参数设置值的对象直接分配在老年代
 -XX:MaxTenuringThreshold=15 | 新生代对象年龄增加到超过该值时，将被移至老年代
 
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/12/02/memory-allocate-and-collect/
+```
+ 

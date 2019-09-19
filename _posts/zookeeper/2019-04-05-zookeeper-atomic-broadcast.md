@@ -222,3 +222,8 @@ ACK to UPTODATE | Follower | Leader
 - https://blog.xiaohansong.com/zab.html
 - https://blog.reactor.top/2018/04/09/zookeeper%E6%BA%90%E7%A0%81-ZAB%E5%8D%8F%E8%AE%AE%E4%B9%8B%E9%9B%86%E7%BE%A4%E5%90%8C%E6%AD%A5_3/
 - https://www.cnblogs.com/sunddenly/p/4138580.html
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/04/05/zookeeper-atomic-broadcast/
+```
+ 

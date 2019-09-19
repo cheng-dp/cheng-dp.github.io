@@ -196,3 +196,8 @@ ConcurrentLinkedQueue
 
 ArrayBlockingQueue/LinkedBlockingQueue  
 - https://fangjian0423.github.io/2016/05/10/java-arrayblockingqueue-linkedblockingqueue-analysis/
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/09/20/thread-safe-container/
+```
+ 

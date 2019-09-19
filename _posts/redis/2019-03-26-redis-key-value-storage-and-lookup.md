@@ -142,3 +142,8 @@ def slot_number(key):
 
 4. 查找clusterState.migrating_slots_to[i]，如果正在槽迁移，得到目标节点的ip和port，返回ASK错误。
 
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/26/redis-key-value-storage-and-lookup/
+```
+ 

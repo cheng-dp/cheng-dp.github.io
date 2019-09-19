@@ -166,3 +166,8 @@ WatchManager是ZooKeeper服务端Watcher的管理者，其内部有watchTable和
 3. 轻量
 
 WatchedEvent中包含发生的事件，不包含具体内容，需要客户端另外请求。
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/04/07/zookeeper-data-model-and-watcher/
+```
+ 

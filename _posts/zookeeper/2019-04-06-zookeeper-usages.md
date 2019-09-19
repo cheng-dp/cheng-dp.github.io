@@ -203,3 +203,8 @@ FIFO队列的实现类似于一个全写的共享锁模型。
 3. 创建完后，判断目前子节点个数是否等于`/queue_barrier`节点值，并注册`/queue_barrier`的Watcher通知。
 4. 如果不等，则进入等待。如果等则继续执行。
 5. 收到Watcher通知后，重复检查子节点个数。
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/04/06/zookeeper-usages/
+```
+ 

@@ -270,3 +270,8 @@ Call destroy-method myDestroy
 - https://www.cnblogs.com/zrtqsk/p/3735273.html
 - https://www.jianshu.com/p/3944792a5fff
 - http://bridgeforyou.cn/2018/06/16/BeanPostProcessor/
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/01/bean-life-cycle/
+```
+ 

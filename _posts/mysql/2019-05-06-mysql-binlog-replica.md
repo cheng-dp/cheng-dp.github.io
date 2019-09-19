@@ -277,3 +277,8 @@ binlog未传递给Slave，Slave比Master少一个事务，但是Master commit成
 ![image](https://raw.githubusercontent.com/cheng-dp/ImageHostInGithub/master/mysql_copy_sync_after_sync.png)
 
 `AFTER_SYNC`能够解决`AFTER_COMMIT`的问题，即等到slave同步后Master再进行commit操作。
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/05/06/mysql-binlog-replica/
+```
+ 

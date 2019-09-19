@@ -449,3 +449,8 @@ registerListeners();
 - http://cxis.me/2017/02/15/Spring-ApplicationContext%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6/
 GetBean
 - https://segmentfault.com/a/1190000012887776
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/05/application-context-basic-implement/
+```
+ 

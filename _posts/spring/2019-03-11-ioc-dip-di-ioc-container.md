@@ -368,3 +368,8 @@ IoC Container是能够管理并自动进行依赖注入(Dependency Injection)的
 
 - https://en.wikipedia.org/wiki/Dependency_injection
 - http://www.tutorialsteacher.com/ioc/dependency-injection
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/11/ioc-dip-di-ioc-container/
+```
+ 

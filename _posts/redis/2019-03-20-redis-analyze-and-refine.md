@@ -136,3 +136,8 @@ info stats命令可以查看目前Redis Server的命令处理情况和网络时�
 3. 使用Redis Cluster对连接分片。
 
 https://www.cnblogs.com/chenpingzhao/p/6859041.html
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/20/redis-analyze-and-refine/
+```
+ 

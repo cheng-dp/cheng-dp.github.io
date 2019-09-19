@@ -473,3 +473,8 @@ typedef struct {
     usigned char bulk_data[8];//实际长度由保存内容决定。
 }
 ```
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/25/redis-cluster/
+```
+ 

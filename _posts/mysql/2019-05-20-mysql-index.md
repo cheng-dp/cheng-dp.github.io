@@ -316,3 +316,8 @@ ADD INDEX `first_name_last_name4` (first_name, last_name(4));
 - https://dev.mysql.com/doc/refman/5.7/en/innodb-restrictions.html
 - https://www.xuebuyuan.com/3241057.html
 - https://segmentfault.com/a/1190000008131735
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/05/20/mysql-index/
+```
+ 

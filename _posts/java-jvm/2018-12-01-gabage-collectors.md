@@ -117,3 +117,8 @@ Serial收集器的老年代版本。单线程，使用**标记-整理**算法。
 refs:
 https://blog.csdn.net/zqz_zqz/article/details/70568819  
 https://crowhawk.github.io/2017/08/15/jvm_3/
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/12/01/gabage-collectors/
+```
+ 

@@ -391,3 +391,8 @@ if(partitionInfos != null) {
     consumer.assign(partitions); // 将分区全部分配给消费者。
 }
 ```
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/04/20/Kafka-consumer/
+```
+ 

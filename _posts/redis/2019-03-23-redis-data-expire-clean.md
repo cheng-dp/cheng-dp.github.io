@@ -332,3 +332,8 @@ https://yq.aliyun.com/articles/257459
 https://wiki.jikexueyuan.com/project/redis/data-elimination-mechanism.html
 
 https://github.com/bingbo/blog/wiki/Redis%E6%95%B0%E6%8D%AE%E6%B7%98%E6%B1%B0%E6%9C%BA%E5%88%B6
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/23/redis-data-expire-clean/
+```
+ 

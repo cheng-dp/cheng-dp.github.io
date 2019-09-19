@@ -80,3 +80,8 @@ keywords: Redis
 
 所有对从库的数据更新也写回到缓存中，当主库对从库的更新到达从库时，缓存会被更新。
 
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/22/cache-penetration-stampeding-herd-cache-breakdown/
+```
+ 

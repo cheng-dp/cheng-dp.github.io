@@ -295,3 +295,8 @@ public int size() {
 ```
 size操作首先在不加锁的情况下遍历所有的segments，尝试RETRIES\_BEFORE\_LOCK次，每次遍历两遍，如果这两遍得到的count总值sum相同，并且每一个segment的modCount都没有发生变化，就返回sum的值。  
 如果尝试RETRIES\_BEFORE\_LOCK次后仍然不能得到sum的值，那么对所有的segment加锁后，再计算sum的值。
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/08/26/concurrentHashMap-before-java8/
+```
+ 

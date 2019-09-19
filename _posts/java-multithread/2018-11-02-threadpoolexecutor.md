@@ -512,3 +512,8 @@ ThreadPoolExecutor提供了==线程池执行的框==架，其中通过若干域�
 ### REFS
 
 - https://blog.csdn.net/cleverGump/article/details/50688008
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/11/02/threadpoolexecutor/
+```
+ 

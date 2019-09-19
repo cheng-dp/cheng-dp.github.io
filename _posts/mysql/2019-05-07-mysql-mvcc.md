@@ -118,3 +118,8 @@ Read View可以认为是一个当前活跃事务的快照，在当前事务**SQL
 - https://sadwxqezc.github.io/HuangHuanBlog/mysql/2018/05/01/MVCC.html
 - http://mysql.taobao.org/monthly/2018/11/04/
 - https://www.imooc.com/article/17290
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/05/07/mysql-mvcc/
+```
+ 

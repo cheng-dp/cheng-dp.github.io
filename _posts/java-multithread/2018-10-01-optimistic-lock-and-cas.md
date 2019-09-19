@@ -105,3 +105,8 @@ refs:
 3. http://www.infoq.com/cn/articles/A-Post-Apocalyptic-sun.misc.Unsafe-World
 4. https://www.cnblogs.com/Mainz/p/3546347.html
 5. https://leokongwq.github.io/2016/12/31/java-magic-unsafe.html
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/10/01/optimistic-lock-and-cas/
+```
+ 

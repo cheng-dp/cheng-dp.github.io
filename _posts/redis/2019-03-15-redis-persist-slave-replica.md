@@ -336,3 +336,8 @@ struct redisServer {
 从服务器向主服务器发送PSYNC，执行同步操作。
 
 7. 命令传播和心跳检测
+ 
+```
+本文地址：https://cheng-dp.github.io/2019/03/15/redis-persist-slave-replica/
+```
+ 

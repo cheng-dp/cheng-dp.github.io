@@ -121,3 +121,8 @@ Java_com_seaboat_bytecode_ByteCodeEncryptor_encrypt(JNIEnv * env, jclass cla,jby
 
 refs:
 https://blog.csdn.net/wangyangzhizhou/article/details/74931733
+ 
+```
+本文地址：https://cheng-dp.github.io/2018/12/14/mative-method-stack/
+```
+ 
