@@ -21,7 +21,7 @@ do
       echo name=$name
       date=`echo $date | tr - /`
       echo date=$date
-      final_url="<$host_url/$date/$name/>"
+      final_url="$host_url/$date/$name/"
       echo finalUrl=$final_url
       final_sentence=$prefix_sentence$final_url
       echo finalSentence=$final_sentence
